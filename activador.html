@@ -264,7 +264,7 @@
         const workbook = new ExcelJS.Workbook();
         workbook.creator = 'Aporte Matemático';
         const sheet = workbook.addWorksheet('Registros', {
-          views: [{ showGridLines: false }] // Clean look, hide default grid
+          views: [{ showGridLines: false }] // Clean look
         });
 
         // Column widths
@@ -274,56 +274,105 @@
           { key: 'name', width: 35 },
           { key: 'phone', width: 20 },
           { key: 'lang', width: 22 },
-          { key: 'code', width: 28 }
+          { key: 'code', width: 28 },
+          { key: 'notes', width: 25 }, // ESTADO / NOTAS
+          { key: 'dashLabel', width: 18 },
+          { key: 'dashVal', width: 12 }
         ];
 
-        // 1. Title Row
-        sheet.mergeCells('B2:F2');
+        // 1. Calculate totals
+        let countES = 0, countEN = 0, countALL = 0;
+        list.forEach(i => {
+          if (i.lang === 'Español') countES++;
+          else if (i.lang === 'Inglés') countEN++;
+          else countALL++;
+        });
+
+        // 2. Title Row
+        sheet.mergeCells('B2:G2');
         const titleCell = sheet.getCell('B2');
         titleCell.value = 'APORTE MATEMÁTICO - REPORTE EJECUTIVO DE ACCESOS';
         titleCell.font = { name: 'Arial', size: 14, bold: true, color: { argb: 'FF1A202C' } };
         titleCell.alignment = { vertical: 'middle', horizontal: 'left' };
         sheet.getRow(2).height = 25;
 
-        // 2. Meta Row (Date)
-        sheet.mergeCells('B3:F3');
+        // 3. Meta Row (Date)
+        sheet.mergeCells('B3:G3');
         const metaCell = sheet.getCell('B3');
         const dateStr = new Date().toLocaleString('es-NI');
         metaCell.value = `Documento generado el: ${dateStr}`;
         metaCell.font = { name: 'Arial', size: 10, italic: true, color: { argb: 'FF718096' } };
         metaCell.alignment = { vertical: 'middle', horizontal: 'left' };
 
-        // 3. Table Header
-        const headerRow = sheet.getRow(5);
-        headerRow.values = [null, 'FECHA DE CREACIÓN', 'NOMBRE DEL CLIENTE', 'TELÉFONO', 'IDIOMA', 'CÓDIGO DE DESBLOQUEO'];
-        headerRow.height = 25;
+        // 4. Metrics Dashboard (H2:I6)
+        sheet.mergeCells('H2:I2');
+        const dashTitle = sheet.getCell('H2');
+        dashTitle.value = 'MÉTRICAS DE VENTA';
+        dashTitle.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFFFFFFF' } };
+        dashTitle.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2D3748' } };
+        dashTitle.alignment = { vertical: 'middle', horizontal: 'center' };
         
-        ['B', 'C', 'D', 'E', 'F'].forEach((col) => {
-          const cell = sheet.getCell(`${col}5`);
-          cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFFFFFFF' } };
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2D3748' } }; // Corporate dark grey/blue
-          cell.alignment = { vertical: 'middle', horizontal: 'center' };
-          if (col === 'C') cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 }; // Name
+        const metrics = [
+          { row: 3, label: 'Solo Español:', val: countES },
+          { row: 4, label: 'Solo Inglés:', val: countEN },
+          { row: 5, label: 'Ambos (Bundle):', val: countALL },
+          { row: 6, label: 'Total Códigos:', val: list.length }
+        ];
+        metrics.forEach(m => {
+          const lCell = sheet.getCell(`H${m.row}`);
+          const vCell = sheet.getCell(`I${m.row}`);
+          lCell.value = m.label;
+          vCell.value = m.val;
+          lCell.font = { name: 'Arial', size: 9, color: { argb: 'FF4A5568' } };
+          vCell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF1A202C' } };
+          lCell.border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
+          vCell.border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
+          vCell.alignment = { vertical: 'middle', horizontal: 'right' };
         });
 
-        // 4. Data Rows
-        let currentRow = 6;
+        // 5. Table Header
+        const headerRow = sheet.getRow(8);
+        headerRow.values = [null, 'FECHA DE CREACIÓN', 'NOMBRE DEL CLIENTE', 'TELÉFONO', 'IDIOMA', 'CÓDIGO DE DESBLOQUEO', 'ESTADO / NOTAS'];
+        headerRow.height = 25;
+        
+        ['B', 'C', 'D', 'E', 'F', 'G'].forEach((col) => {
+          const cell = sheet.getCell(`${col}8`);
+          cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2D3748' } };
+          cell.alignment = { vertical: 'middle', horizontal: 'center' };
+          if (col === 'C') cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
+        });
+
+        // Auto-Filter for the table
+        sheet.autoFilter = 'B8:G8';
+
+        // 6. Data Rows
+        let currentRow = 9;
         list.forEach((item) => {
           const row = sheet.getRow(currentRow);
-          row.values = [null, item.date, item.name, item.phone || 'N/A', item.lang, item.code];
+          row.values = [null, item.date, item.name, item.phone || 'N/A', item.lang, item.code, ''];
           row.height = 22;
 
-          ['B', 'C', 'D', 'E', 'F'].forEach((col) => {
+          ['B', 'C', 'D', 'E', 'F', 'G'].forEach((col) => {
             const cell = sheet.getCell(`${col}${currentRow}`);
             cell.font = { name: 'Arial', size: 10, color: { argb: 'FF2D3748' } };
             cell.alignment = { vertical: 'middle', horizontal: 'center' };
-            cell.border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } }; // Clean light bottom border
+            cell.border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } }; 
             
             if (col === 'C') {
               cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
             }
-            if (col === 'F') {
+            if (col === 'F') { // Code
               cell.font = { name: 'Consolas', size: 10, bold: true, color: { argb: 'FF4A5568' } };
+            }
+            if (col === 'E') { // Language Colors
+              if (item.lang === 'Español') {
+                cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF2B6CB0' } }; // Blue
+              } else if (item.lang === 'Inglés') {
+                cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF2F855A' } }; // Green
+              } else {
+                cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF6B46C1' } }; // Purple
+              }
             }
           });
           currentRow++;
