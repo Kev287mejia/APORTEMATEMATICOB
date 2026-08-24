@@ -373,10 +373,90 @@
               } else {
                 cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF6B46C1' } }; // Purple
               }
+            if (col === 'G') {
+              cell.dataValidation = {
+                type: 'list',
+                allowBlank: true,
+                formulae: ['"Pendiente,Pagado,Entregado,Revocado"']
+              };
             }
           });
           currentRow++;
         });
+
+        // ============================================
+        // 7. Segunda Hoja: Dashboard Analítico Matemático
+        // ============================================
+        const sheet2 = workbook.addWorksheet('Análisis Estadístico', {
+          views: [{ showGridLines: false }]
+        });
+        
+        sheet2.columns = [
+          { width: 3 }, // A (Buffer)
+          { width: 35 }, // B (Label)
+          { width: 15 }, // C (Value)
+          { width: 5 },  // D (Buffer)
+          { width: 30 }, // E (Label)
+          { width: 15 }  // F (Value)
+        ];
+        
+        // Título del Dashboard
+        sheet2.mergeCells('B2:F2');
+        const s2Title = sheet2.getCell('B2');
+        s2Title.value = 'DASHBOARD ANALÍTICO MATEMÁTICO';
+        s2Title.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FF1A202C' } };
+        s2Title.alignment = { vertical: 'middle', horizontal: 'left' };
+        sheet2.getRow(2).height = 30;
+
+        // KPI Block 1: Distribución por Idioma (Usando Fórmulas Nativas de Excel)
+        sheet2.getCell('B4').value = 'DISTRIBUCIÓN POR IDIOMA';
+        sheet2.getCell('B4').font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        sheet2.getCell('B4').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2D3748' } };
+        
+        sheet2.getCell('B5').value = 'Solo Español';
+        sheet2.getCell('C5').value = { formula: 'COUNTIF(Registros!E9:E2000, "Español")' }; // Fórmula Nativa
+        
+        sheet2.getCell('B6').value = 'Solo Inglés';
+        sheet2.getCell('C6').value = { formula: 'COUNTIF(Registros!E9:E2000, "Inglés")' }; // Fórmula Nativa
+        
+        sheet2.getCell('B7').value = 'Ambos (Bundle)';
+        sheet2.getCell('C7').value = { formula: 'COUNTIF(Registros!E9:E2000, "Español e Inglés")' }; // Fórmula Nativa
+
+        sheet2.getCell('B8').value = 'Total Accesos Generados';
+        sheet2.getCell('C8').value = { formula: 'SUM(C5:C7)' };
+        sheet2.getCell('B8').font = { bold: true, color: { argb: 'FF1A202C' } };
+        sheet2.getCell('C8').font = { bold: true, color: { argb: 'FF1A202C' } };
+
+        // KPI Block 2: Probabilidad y Tasas de Adopción
+        sheet2.getCell('E4').value = 'MÉTRICAS DE RENDIMIENTO';
+        sheet2.getCell('E4').font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        sheet2.getCell('E4').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD38D45' } };
+        
+        sheet2.getCell('E5').value = 'Tasa de Adopción Bundle (%)';
+        sheet2.getCell('F5').value = { formula: 'IF(C8=0, 0, C7/C8)' }; // Probabilidad de compra Bundle
+        sheet2.getCell('F5').numFmt = '0.00%';
+        
+        sheet2.getCell('E6').value = 'Dominancia de Mercado (ES)';
+        sheet2.getCell('F6').value = { formula: 'IF(C8=0, 0, C5/C8)' };
+        sheet2.getCell('F6').numFmt = '0.00%';
+
+        // Estilizar los bloques
+        [5,6,7,8].forEach(r => {
+          sheet2.getCell(`B${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
+          sheet2.getCell(`C${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
+          sheet2.getCell(`C${r}`).alignment = { horizontal: 'right' };
+        });
+        [5,6].forEach(r => {
+          sheet2.getCell(`E${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
+          sheet2.getCell(`F${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
+          sheet2.getCell(`F${r}`).alignment = { horizontal: 'right' };
+        });
+        
+        // Nota explicativa
+        sheet2.mergeCells('B11:F11');
+        const note = sheet2.getCell('B11');
+        note.value = 'Nota Matemática: Los valores en esta hoja se calculan en tiempo real leyendo los datos de la hoja "Registros" mediante funciones lógicas (COUNTIF, SUM, IF).';
+        note.font = { name: 'Arial', size: 9, italic: true, color: { argb: 'FFA0AEC0' } };
 
         // Generar archivo y forzar descarga
         const buffer = await workbook.xlsx.writeBuffer();
