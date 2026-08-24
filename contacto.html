@@ -101,10 +101,32 @@
   <script>
     function handleSubmit(e) {
       e.preventDefault();
-      var success = document.getElementById('formSuccess');
-      success.style.display = 'block';
-      document.getElementById('contactForm').reset();
-      setTimeout(function() { success.style.display = 'none'; }, 5000);
+      
+      var name = document.getElementById('nombre').value;
+      var email = document.getElementById('email').value;
+      var subject = document.getElementById('asunto').value;
+      var message = document.getElementById('mensaje').value;
+
+      var btn = document.getElementById('btn-enviar');
+      var originalText = btn.querySelector('span').textContent;
+      btn.querySelector('span').textContent = 'Enviando...';
+      btn.disabled = true;
+
+      sendEmailNotification('contact', {
+        name: name,
+        email: email,
+        subject: subject,
+        message: message
+      }).then(function() {
+        var success = document.getElementById('formSuccess');
+        success.style.display = 'block';
+        document.getElementById('contactForm').reset();
+        
+        btn.querySelector('span').textContent = originalText;
+        btn.disabled = false;
+        
+        setTimeout(function() { success.style.display = 'none'; }, 5000);
+      });
     }
   </script>
 </body>

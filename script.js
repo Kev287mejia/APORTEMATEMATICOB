@@ -10,6 +10,17 @@ var KASHTAG = '$aportematematico'; // Kashtag oficial para transferencias Kash
 var STORAGE_KEY = 'aporte_matematico_digital_unlocked';
 var paypalRendered = false;
 
+// Enviar notificaciones por correo via Vercel Serverless
+function sendEmailNotification(type, payloadData) {
+  return fetch('/api/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: type, data: payloadData })
+  }).catch(function(err) {
+    console.error('Error enviando correo:', err);
+  });
+}
+
 // Actualizar precio dinámicamente según idioma seleccionado
 function updateDigitalPrice() {
   var langSelect = document.getElementById('digitalBookLangSelect');
@@ -241,10 +252,22 @@ function initPayPalButtons() {
         return actions.order.capture().then(function(details) {
           var langSelect = document.getElementById('digitalBookLangSelect');
           var selectedLang = langSelect ? langSelect.value : 'all';
+          var payerName = (details.payer && details.payer.name) ? (details.payer.name.given_name + ' ' + (details.payer.name.surname || '')) : 'Comprador';
+          var payerEmail = (details.payer) ? details.payer.email_address : '';
+          
+          // Enviar alerta de compra y correo de agradecimiento (Silencioso)
+          sendEmailNotification('purchase', {
+            customerName: payerName,
+            customerEmail: payerEmail,
+            language: selectedLang,
+            price: DIGITAL_BOOK_PRICE,
+            transactionId: details.id
+          });
+
           unlockDigitalBook({
             id: details.id,
-            payerName: (details.payer && details.payer.name) ? (details.payer.name.given_name + ' ' + (details.payer.name.surname || '')) : 'Comprador',
-            payerEmail: (details.payer) ? details.payer.email_address : '',
+            payerName: payerName,
+            payerEmail: payerEmail,
             status: details.status,
             date: new Date().toISOString()
           }, selectedLang);
