@@ -413,18 +413,18 @@
         sheet2.getRow(3).height = 10; // Espaciador
 
         // Función Helper para crear bloques KPI
-        const createKPI = (col, label, formula, format, mainColor, numSize) => {
+        const createKPI = (col, startRow, label, valObj, format, mainColor, numSize) => {
           // Encabezado del KPI
-          sheet2.getCell(`${col}4`).value = label;
-          sheet2.getCell(`${col}4`).font = { size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
-          sheet2.getCell(`${col}4`).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: mainColor } };
-          sheet2.getCell(`${col}4`).alignment = { horizontal: 'center', vertical: 'middle' };
-          sheet2.getRow(4).height = 25;
+          sheet2.getCell(`${col}${startRow}`).value = label;
+          sheet2.getCell(`${col}${startRow}`).font = { size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
+          sheet2.getCell(`${col}${startRow}`).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: mainColor } };
+          sheet2.getCell(`${col}${startRow}`).alignment = { horizontal: 'center', vertical: 'middle' };
+          sheet2.getRow(startRow).height = 25;
           
           // Valor del KPI (Número gigante)
-          sheet2.mergeCells(`${col}5:${col}7`);
-          const valCell = sheet2.getCell(`${col}5`);
-          valCell.value = { formula: formula };
+          sheet2.mergeCells(`${col}${startRow+1}:${col}${startRow+3}`);
+          const valCell = sheet2.getCell(`${col}${startRow+1}`);
+          valCell.value = valObj;
           if (format) valCell.numFmt = format;
           valCell.font = { name: 'Arial', size: numSize, bold: true, color: { argb: mainColor } };
           valCell.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -449,28 +449,53 @@
         sheet2.getColumn('K').width = 12;
 
         // KPI 1: TOTAL GENERADOS
-        createKPI('B', 'VOLUMEN TOTAL (UND)', 'COUNTA(Registros!C9:C2000)', null, 'FF2D3748', 36);
+        createKPI('B', 4, 'VOLUMEN TOTAL (UND)', { formula: 'COUNTA(Registros!C9:C2000)' }, null, 'FF2D3748', 36);
 
         // KPI 2: VALOR DE CARTERA (Pipeline Value)
-        createKPI('D', 'INGRESOS TEÓRICOS', '(COUNTIF(Registros!E9:E2000, "Español")*K3) + (COUNTIF(Registros!E9:E2000, "Inglés")*K3) + (COUNTIF(Registros!E9:E2000, "Español e Inglés")*K4)', '"$"#,##0.00', 'FF2F855A', 36);
+        createKPI('D', 4, 'INGRESOS TEÓRICOS', { formula: '(COUNTIF(Registros!E9:E2000, "Español")*K3) + (COUNTIF(Registros!E9:E2000, "Inglés")*K3) + (COUNTIF(Registros!E9:E2000, "Español e Inglés")*K4)' }, '"$"#,##0.00', 'FF2F855A', 36);
 
         // KPI 3: ÍNDICE HHI (Concentración de Mercado)
-        createKPI('F', 'ÍNDICE HHI (Riesgo)', 'IF(B5=0, 0, ((COUNTIF(Registros!E9:E2000, "Español")/B5)*100)^2 + ((COUNTIF(Registros!E9:E2000, "Inglés")/B5)*100)^2 + ((COUNTIF(Registros!E9:E2000, "Español e Inglés")/B5)*100)^2)', '0', 'FF805AD5', 36);
+        createKPI('F', 4, 'ÍNDICE HHI (Riesgo)', { formula: 'IF(B5=0, 0, ((COUNTIF(Registros!E9:E2000, "Español")/B5)*100)^2 + ((COUNTIF(Registros!E9:E2000, "Inglés")/B5)*100)^2 + ((COUNTIF(Registros!E9:E2000, "Español e Inglés")/B5)*100)^2)' }, '0', 'FF805AD5', 36);
 
         // KPI 4: TASA DE UPSELL (Bundle)
-        createKPI('H', 'TASA DE UPSELL (%)', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español e Inglés") / B5)', '0.0%', 'FFD38D45', 36);
+        createKPI('H', 4, 'TASA DE UPSELL (%)', { formula: 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español e Inglés") / B5)' }, '0.0%', 'FFD38D45', 36);
+
+        // Calcular Velocidad (Días activos en JS)
+        const parseDate = (dStr) => {
+          if (!dStr) return new Date();
+          const p = dStr.split(',');
+          const dp = p[0].trim().split('/');
+          if (dp.length === 3) return new Date(dp[2], dp[1]-1, dp[0]);
+          return new Date();
+        };
+        const firstD = parseDate(list[0] ? list[0].date : null);
+        const lastD = parseDate(list[list.length-1] ? list[list.length-1].date : null);
+        let daysActive = Math.ceil(Math.abs(lastD - firstD) / (1000 * 60000 * 60 * 24));
+        if (daysActive < 1) daysActive = 1;
+        const runRate = list.length / daysActive;
+        const forecast = runRate * 30;
+
+        // KPI 5: RUN RATE (Velocidad de Ventas)
+        createKPI('B', 10, 'RUN RATE (Unds/Día)', runRate, '0.0', 'FF3182CE', 36); // Blue
+
+        // KPI 6: FORECAST (Proyección 30 días)
+        createKPI('D', 10, 'PROYECCIÓN MENSUAL', forecast, '0', 'FFDD6B20', 36); // Orange
+
+        // KPI 7: FORECAST INGRESOS (Proyección Monetaria a 30 días)
+        // Usamos el ticket promedio actual * forecast
+        createKPI('F', 10, 'PROYECCIÓN INGRESOS', { formula: 'IF(B5=0, 0, (D5/B5)*D11)' }, '"$"#,##0.00', 'FF38A169', 36); // Green
 
         // DETALLE DE VOLUMEN
-        sheet2.getRow(10).height = 20;
-        sheet2.mergeCells('B10:D10');
-        sheet2.getCell('B10').value = 'DESGLOSE DE VOLUMEN EXACTO';
-        sheet2.getCell('B10').font = { size: 12, bold: true, color: { argb: 'FF4A5568' } };
-        sheet2.getCell('B10').border = { bottom: { style: 'thin', color: { argb: 'FF4A5568' } } };
+        sheet2.getRow(16).height = 20;
+        sheet2.mergeCells('B16:D16');
+        sheet2.getCell('B16').value = 'DESGLOSE DE VOLUMEN EXACTO';
+        sheet2.getCell('B16').font = { size: 12, bold: true, color: { argb: 'FF4A5568' } };
+        sheet2.getCell('B16').border = { bottom: { style: 'thin', color: { argb: 'FF4A5568' } } };
         
         const details = [
-          { row: 12, label: 'Solo Español (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Español")' },
-          { row: 13, label: 'Solo Inglés (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Inglés")' },
-          { row: 14, label: 'Paquete Bundle (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Español e Inglés")' }
+          { row: 18, label: 'Solo Español (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Español")' },
+          { row: 19, label: 'Solo Inglés (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Inglés")' },
+          { row: 20, label: 'Paquete Bundle (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Español e Inglés")' }
         ];
 
         details.forEach(d => {
@@ -482,9 +507,9 @@
         });
 
         // Nota explicativa
-        sheet2.mergeCells('B17:H17');
-        const note = sheet2.getCell('B17');
-        note.value = 'Nota Matemática: Los bloques de KPIs reaccionan en tiempo real. Si agregas o filtras registros, estas cifras se actualizarán solas.';
+        sheet2.mergeCells('B23:H23');
+        const note = sheet2.getCell('B23');
+        note.value = 'Nota Matemática: Los bloques de KPIs reaccionan en tiempo real. Si agregas o filtras registros, o cambias los precios, las cifras se actualizarán solas.';
         note.font = { name: 'Arial', size: 9, italic: true, color: { argb: 'FFA0AEC0' } };
 
         // Generar archivo y forzar descarga
