@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  
+  <!-- ExcelJS para exportar archivos Excel con estilos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
   <style>
     .admin-card {
       background: #fff;
@@ -134,7 +137,7 @@
     <div style="margin-top: 35px; border-top: 1px solid #eee; padding-top: 20px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <h3 style="font-family: var(--font-heading); font-size: 1rem; color: #333; margin: 0;">Últimos Códigos Generados</h3>
-        <button onclick="exportToCSV()" style="background: #D38D45; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-family: var(--font-ui); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+        <button onclick="exportToExcel()" style="background: #D38D45; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-family: var(--font-ui); font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           Descargar Excel
         </button>
@@ -250,7 +253,7 @@
       } catch (err) {}
     }
 
-    function exportToCSV() {
+    async function exportToExcel() {
       try {
         var list = JSON.parse(localStorage.getItem('aporte_code_history') || '[]');
         if (!list.length) {
@@ -258,33 +261,93 @@
           return;
         }
 
-        // CSV Header
-        var csvContent = "Fecha,Cliente,Teléfono,Idioma,Código\n";
+        // Crear un nuevo libro de trabajo y una hoja
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = 'Aporte Matemático';
+        const sheet = workbook.addWorksheet('Historial de Claves');
 
-        // CSV Rows
-        list.forEach(function(item) {
-          var row = [
-            '"' + item.date + '"',
-            '"' + item.name.replace(/"/g, '""') + '"',
-            '"' + (item.phone || '').replace(/"/g, '""') + '"',
-            '"' + (item.lang || '').replace(/"/g, '""') + '"',
-            '"' + item.code + '"'
-          ];
-          csvContent += row.join(",") + "\n";
+        // Definir columnas y anchos
+        sheet.columns = [
+          { header: 'FECHA DE CREACIÓN', key: 'date', width: 22 },
+          { header: 'NOMBRE DEL CLIENTE', key: 'name', width: 35 },
+          { header: 'TELÉFONO', key: 'phone', width: 20 },
+          { header: 'IDIOMA', key: 'lang', width: 22 },
+          { header: 'CÓDIGO DE DESBLOQUEO', key: 'code', width: 30 }
+        ];
+
+        // Estilos para la cabecera (Header)
+        const headerRow = sheet.getRow(1);
+        headerRow.height = 30;
+        headerRow.eachCell((cell) => {
+          cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD38D45' } }; // Color corporativo
+          cell.alignment = { vertical: 'middle', horizontal: 'center' };
+          cell.border = {
+            top: { style: 'thin', color: { argb: 'FFC27F38' } },
+            left: { style: 'thin', color: { argb: 'FFC27F38' } },
+            bottom: { style: 'thin', color: { argb: 'FFC27F38' } },
+            right: { style: 'thin', color: { argb: 'FFC27F38' } }
+          };
         });
 
-        // Add BOM so Excel reads special characters (UTF-8) correctly
-        var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-        var blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement("a");
+        // Insertar datos
+        list.forEach(function(item) {
+          sheet.addRow(item);
+        });
+
+        // Estilos para las filas de datos
+        sheet.eachRow((row, rowNumber) => {
+          if (rowNumber > 1) { // Saltamos la cabecera
+            row.height = 25;
+            
+            // Colores intercalados para legibilidad (Zebra striping)
+            if (rowNumber % 2 === 0) {
+              row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFDFDFD' } };
+            } else {
+              row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF6F6F6' } };
+            }
+
+            row.eachCell((cell, colNumber) => {
+              cell.border = {
+                top: { style: 'thin', color: { argb: 'FFEEEEEE' } },
+                left: { style: 'thin', color: { argb: 'FFEEEEEE' } },
+                bottom: { style: 'thin', color: { argb: 'FFEEEEEE' } },
+                right: { style: 'thin', color: { argb: 'FFEEEEEE' } }
+              };
+              
+              cell.font = { name: 'Arial', size: 11, color: { argb: 'FF333333' } };
+              cell.alignment = { vertical: 'middle', horizontal: 'center' };
+
+              // Alinear a la izquierda el nombre del cliente (Columna 2)
+              if (colNumber === 2) {
+                cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
+              }
+              
+              // Estilo especial para la columna del código (Columna 5)
+              if (colNumber === 5) {
+                cell.font = { name: 'Courier New', bold: true, size: 11, color: { argb: 'FFD38D45' } };
+              }
+            });
+          }
+        });
+
+        // Generar archivo y forzar descarga
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
         link.setAttribute("href", url);
-        link.setAttribute("download", "historial_claves_" + new Date().getTime() + ".csv");
+        
+        const dateStr = new Date().toISOString().split('T')[0];
+        link.setAttribute("download", `Claves_Aporte_Matematico_${dateStr}.xlsx`);
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        
       } catch (err) {
-        alert('Ocurrió un error al exportar.');
+        console.error(err);
+        alert('Ocurrió un error al generar el archivo Excel.');
       }
     }
 
