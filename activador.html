@@ -435,17 +435,30 @@
           };
         };
 
+        // Variables Dinámicas para Cálculos (Editables por el administrador en Excel)
+        sheet2.getCell('J2').value = 'Configuración Financiera';
+        sheet2.getCell('J2').font = { bold: true, color: { argb: 'FF718096' } };
+        sheet2.getCell('J3').value = 'Precio Individual ($):';
+        sheet2.getCell('K3').value = 10;
+        sheet2.getCell('K3').numFmt = '"$"#,##0.00';
+        sheet2.getCell('J4').value = 'Precio Bundle ($):';
+        sheet2.getCell('K4').value = 15;
+        sheet2.getCell('K4').numFmt = '"$"#,##0.00';
+        
+        sheet2.getColumn('J').width = 22;
+        sheet2.getColumn('K').width = 12;
+
         // KPI 1: TOTAL GENERADOS
-        createKPI('B', 'TOTAL CÓDIGOS', 'COUNTA(Registros!C9:C2000)', null, 'FF2D3748', 36);
+        createKPI('B', 'VOLUMEN TOTAL (UND)', 'COUNTA(Registros!C9:C2000)', null, 'FF2D3748', 36);
 
-        // KPI 2: BUNDLE RATIO
-        createKPI('D', 'TASA DE BUNDLES', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español e Inglés") / B5)', '0.0%', 'FFD38D45', 36);
+        // KPI 2: VALOR DE CARTERA (Pipeline Value)
+        createKPI('D', 'INGRESOS TEÓRICOS', '(COUNTIF(Registros!E9:E2000, "Español")*K3) + (COUNTIF(Registros!E9:E2000, "Inglés")*K3) + (COUNTIF(Registros!E9:E2000, "Español e Inglés")*K4)', '"$"#,##0.00', 'FF2F855A', 36);
 
-        // KPI 3: MERCADO ESPAÑOL
-        createKPI('F', 'CUOTA ESPAÑOL', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español") / B5)', '0.0%', 'FF2B6CB0', 36);
+        // KPI 3: ÍNDICE HHI (Concentración de Mercado)
+        createKPI('F', 'ÍNDICE HHI (Riesgo)', 'IF(B5=0, 0, ((COUNTIF(Registros!E9:E2000, "Español")/B5)*100)^2 + ((COUNTIF(Registros!E9:E2000, "Inglés")/B5)*100)^2 + ((COUNTIF(Registros!E9:E2000, "Español e Inglés")/B5)*100)^2)', '0', 'FF805AD5', 36);
 
-        // KPI 4: MERCADO INGLÉS
-        createKPI('H', 'CUOTA INGLÉS', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Inglés") / B5)', '0.0%', 'FF2F855A', 36);
+        // KPI 4: TASA DE UPSELL (Bundle)
+        createKPI('H', 'TASA DE UPSELL (%)', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español e Inglés") / B5)', '0.0%', 'FFD38D45', 36);
 
         // DETALLE DE VOLUMEN
         sheet2.getRow(10).height = 20;
