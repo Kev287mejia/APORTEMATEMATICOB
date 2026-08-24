@@ -388,75 +388,90 @@
         // ============================================
         // 7. Segunda Hoja: Dashboard Analítico Matemático
         // ============================================
-        const sheet2 = workbook.addWorksheet('Análisis Estadístico', {
+        const sheet2 = workbook.addWorksheet('Dashboard KPIs', {
           views: [{ showGridLines: false }]
         });
         
         sheet2.columns = [
-          { width: 3 }, // A (Buffer)
-          { width: 35 }, // B (Label)
-          { width: 15 }, // C (Value)
-          { width: 5 },  // D (Buffer)
-          { width: 30 }, // E (Label)
-          { width: 15 }  // F (Value)
+          { width: 3 },  // A (Buffer)
+          { width: 22 }, // B (KPI 1)
+          { width: 3 },  // C (Space)
+          { width: 22 }, // D (KPI 2)
+          { width: 3 },  // E (Space)
+          { width: 22 }, // F (KPI 3)
+          { width: 3 },  // G (Space)
+          { width: 22 }, // H (KPI 4)
         ];
         
         // Título del Dashboard
-        sheet2.mergeCells('B2:F2');
+        sheet2.mergeCells('B2:H2');
         const s2Title = sheet2.getCell('B2');
-        s2Title.value = 'DASHBOARD ANALÍTICO MATEMÁTICO';
-        s2Title.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FF1A202C' } };
+        s2Title.value = 'INDICADORES CLAVE DE RENDIMIENTO (KPIs)';
+        s2Title.font = { name: 'Arial', size: 18, bold: true, color: { argb: 'FF1A202C' } };
         s2Title.alignment = { vertical: 'middle', horizontal: 'left' };
         sheet2.getRow(2).height = 30;
+        sheet2.getRow(3).height = 10; // Espaciador
 
-        // KPI Block 1: Distribución por Idioma (Usando Fórmulas Nativas de Excel)
-        sheet2.getCell('B4').value = 'DISTRIBUCIÓN POR IDIOMA';
-        sheet2.getCell('B4').font = { bold: true, color: { argb: 'FFFFFFFF' } };
-        sheet2.getCell('B4').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2D3748' } };
-        
-        sheet2.getCell('B5').value = 'Solo Español';
-        sheet2.getCell('C5').value = { formula: 'COUNTIF(Registros!E9:E2000, "Español")' }; // Fórmula Nativa
-        
-        sheet2.getCell('B6').value = 'Solo Inglés';
-        sheet2.getCell('C6').value = { formula: 'COUNTIF(Registros!E9:E2000, "Inglés")' }; // Fórmula Nativa
-        
-        sheet2.getCell('B7').value = 'Ambos (Bundle)';
-        sheet2.getCell('C7').value = { formula: 'COUNTIF(Registros!E9:E2000, "Español e Inglés")' }; // Fórmula Nativa
+        // Función Helper para crear bloques KPI
+        const createKPI = (col, label, formula, format, mainColor, numSize) => {
+          // Encabezado del KPI
+          sheet2.getCell(`${col}4`).value = label;
+          sheet2.getCell(`${col}4`).font = { size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
+          sheet2.getCell(`${col}4`).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: mainColor } };
+          sheet2.getCell(`${col}4`).alignment = { horizontal: 'center', vertical: 'middle' };
+          sheet2.getRow(4).height = 25;
+          
+          // Valor del KPI (Número gigante)
+          sheet2.mergeCells(`${col}5:${col}7`);
+          const valCell = sheet2.getCell(`${col}5`);
+          valCell.value = { formula: formula };
+          if (format) valCell.numFmt = format;
+          valCell.font = { name: 'Arial', size: numSize, bold: true, color: { argb: mainColor } };
+          valCell.alignment = { vertical: 'middle', horizontal: 'center' };
+          valCell.border = { 
+            bottom: { style: 'medium', color: { argb: mainColor } }, 
+            left: { style: 'medium', color: { argb: mainColor } }, 
+            right: { style: 'medium', color: { argb: mainColor } } 
+          };
+        };
 
-        sheet2.getCell('B8').value = 'Total Accesos Generados';
-        sheet2.getCell('C8').value = { formula: 'SUM(C5:C7)' };
-        sheet2.getCell('B8').font = { bold: true, color: { argb: 'FF1A202C' } };
-        sheet2.getCell('C8').font = { bold: true, color: { argb: 'FF1A202C' } };
+        // KPI 1: TOTAL GENERADOS
+        createKPI('B', 'TOTAL CÓDIGOS', 'COUNTA(Registros!C9:C2000)', null, 'FF2D3748', 36);
 
-        // KPI Block 2: Probabilidad y Tasas de Adopción
-        sheet2.getCell('E4').value = 'MÉTRICAS DE RENDIMIENTO';
-        sheet2.getCell('E4').font = { bold: true, color: { argb: 'FFFFFFFF' } };
-        sheet2.getCell('E4').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD38D45' } };
-        
-        sheet2.getCell('E5').value = 'Tasa de Adopción Bundle (%)';
-        sheet2.getCell('F5').value = { formula: 'IF(C8=0, 0, C7/C8)' }; // Probabilidad de compra Bundle
-        sheet2.getCell('F5').numFmt = '0.00%';
-        
-        sheet2.getCell('E6').value = 'Dominancia de Mercado (ES)';
-        sheet2.getCell('F6').value = { formula: 'IF(C8=0, 0, C5/C8)' };
-        sheet2.getCell('F6').numFmt = '0.00%';
+        // KPI 2: BUNDLE RATIO
+        createKPI('D', 'TASA DE BUNDLES', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español e Inglés") / B5)', '0.0%', 'FFD38D45', 36);
 
-        // Estilizar los bloques
-        [5,6,7,8].forEach(r => {
-          sheet2.getCell(`B${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
-          sheet2.getCell(`C${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
-          sheet2.getCell(`C${r}`).alignment = { horizontal: 'right' };
+        // KPI 3: MERCADO ESPAÑOL
+        createKPI('F', 'CUOTA ESPAÑOL', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Español") / B5)', '0.0%', 'FF2B6CB0', 36);
+
+        // KPI 4: MERCADO INGLÉS
+        createKPI('H', 'CUOTA INGLÉS', 'IF(B5=0, 0, COUNTIF(Registros!E9:E2000, "Inglés") / B5)', '0.0%', 'FF2F855A', 36);
+
+        // DETALLE DE VOLUMEN
+        sheet2.getRow(10).height = 20;
+        sheet2.mergeCells('B10:D10');
+        sheet2.getCell('B10').value = 'DESGLOSE DE VOLUMEN EXACTO';
+        sheet2.getCell('B10').font = { size: 12, bold: true, color: { argb: 'FF4A5568' } };
+        sheet2.getCell('B10').border = { bottom: { style: 'thin', color: { argb: 'FF4A5568' } } };
+        
+        const details = [
+          { row: 12, label: 'Solo Español (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Español")' },
+          { row: 13, label: 'Solo Inglés (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Inglés")' },
+          { row: 14, label: 'Paquete Bundle (Unds):', form: 'COUNTIF(Registros!E9:E2000, "Español e Inglés")' }
+        ];
+
+        details.forEach(d => {
+          sheet2.getCell(`B${d.row}`).value = d.label;
+          sheet2.getCell(`B${d.row}`).font = { size: 11, bold: true, color: { argb: 'FF718096' } };
+          sheet2.getCell(`D${d.row}`).value = { formula: d.form };
+          sheet2.getCell(`D${d.row}`).font = { size: 12, bold: true, color: { argb: 'FF2D3748' } };
+          sheet2.getCell(`D${d.row}`).alignment = { horizontal: 'left' };
         });
-        [5,6].forEach(r => {
-          sheet2.getCell(`E${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
-          sheet2.getCell(`F${r}`).border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } };
-          sheet2.getCell(`F${r}`).alignment = { horizontal: 'right' };
-        });
-        
+
         // Nota explicativa
-        sheet2.mergeCells('B11:F11');
-        const note = sheet2.getCell('B11');
-        note.value = 'Nota Matemática: Los valores en esta hoja se calculan en tiempo real leyendo los datos de la hoja "Registros" mediante funciones lógicas (COUNTIF, SUM, IF).';
+        sheet2.mergeCells('B17:H17');
+        const note = sheet2.getCell('B17');
+        note.value = 'Nota Matemática: Los bloques de KPIs reaccionan en tiempo real. Si agregas o filtras registros, estas cifras se actualizarán solas.';
         note.font = { name: 'Arial', size: 9, italic: true, color: { argb: 'FFA0AEC0' } };
 
         // Generar archivo y forzar descarga
