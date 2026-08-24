@@ -11,11 +11,29 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="bookblock.css" />
-  <link rel="stylesheet" href="book-reader.css?v=2" />
+  <link rel="stylesheet" href="book-reader.css?v=3" />
   <!-- Odrin Modernizr for 3D Transform detection -->
   <script src="assets_odrin/modernizr.js"></script>
   <!-- PayPal JavaScript SDK (Producción / Pagos Reales) -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4&currency=USD&disable-funding=credit,paylater,card"></script>
+  <style>
+    /* Force override to bypass browser cache issues */
+    .book-container.slideRight {
+      left: 0 !important;
+    }
+    .book-container.slideRight .bb-custom-wrapper {
+      left: 260px !important;
+      width: calc(100% - 260px) !important;
+    }
+    .slideRight .menu-panel,
+    .book-container.slideRight .menu-panel {
+      left: 0 !important;
+    }
+    .menu-panel {
+      top: 60px !important;
+      height: calc(100% - 60px) !important;
+    }
+  </style>
   <!-- Lordicon Professional Icons -->
   <script src="https://cdn.lordicon.com/lordicon.js"></script>
 </head>
@@ -271,10 +289,15 @@
 
     <!-- Top Bar with Mode Switcher -->
     <div class="reader-top-bar">
-      <span id="tblcontents" class="menu-button" onclick="toggleBookMenu()" title="Ver Índice">
-        <i class="icon-menu">&#9776;</i>
-        <span>&Iacute;ndice</span>
-      </span>
+      <div style="display:flex; align-items:center; gap:15px;">
+        <span onclick="closeBookReader()" title="Volver al Inicio" style="background: #c17a4d; color: #1c1a17; padding: 6px 12px; border-radius: 4px; font-family: 'Josefin Sans', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+          <span>Volver al Inicio</span>
+        </span>
+        <span id="tblcontents" class="menu-button" onclick="toggleBookMenu()" title="Ver Índice" style="position: relative; left: 0; top: 0;">
+          <i class="icon-menu">&#9776;</i>
+          <span>&Iacute;ndice</span>
+        </span>
+      </div>
 
       <div class="reader-mode-tabs">
         <button type="button" class="reader-mode-btn active" id="btnModeEs" onclick="switchBookLang('es');" style="display: inline-flex; align-items: center;">

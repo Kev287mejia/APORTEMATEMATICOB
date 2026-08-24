@@ -24,7 +24,7 @@
 }
 
 .book-container.slideRight {
-  left: 260px;
+  left: 0 !important;
 }
 
 
@@ -38,17 +38,22 @@
   height: calc(100% - 60px);
   overflow: hidden;
   background: #1a1a1a;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.book-container.slideRight .bb-custom-wrapper {
+  left: 260px;
+  width: calc(100% - 260px);
+}
 
 /* ---- MENU PANEL (TOC sidebar - 260px, slides in from left) ---- */
 .menu-panel {
   background: #fafafa;
   width: 260px;
-  height: 100%;
+  height: calc(100% - 60px);
   position: absolute;
   z-index: 1000;
-  top: 0;
+  top: 60px;
   left: -260px;
   padding: 50px 20px;
   transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
