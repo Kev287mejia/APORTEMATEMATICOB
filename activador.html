@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Activación — Aporte Matemático</title>
+  <link rel="icon" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .admin-card {
+      background: #fff;
+      border: 1px solid rgba(250, 171, 159, 0.4);
+      padding: 35px 30px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .code-display {
+      background: #fdfaf6;
+      border: 2px dashed #D38D45;
+      padding: 20px;
+      text-align: center;
+      margin: 20px 0;
+      display: none;
+    }
+    .code-value {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #D38D45;
+      letter-spacing: 2px;
+      margin: 10px 0;
+    }
+    .msg-preview {
+      background: #f9f9f9;
+      border-left: 3px solid #25D366;
+      padding: 15px;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: #333;
+      text-align: left;
+      white-space: pre-wrap;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    .btn-copy {
+      background: #25D366;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-weight: 700;
+      width: 100%;
+      margin-bottom: 10px;
+      transition: background 0.2s;
+    }
+    .btn-copy:hover { background: #128C7E; }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+    }
+    .history-table th, .history-table td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+    .history-table th {
+      background: #fafafa;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body style="background: var(--color-bg); padding: 20px;">
+
+  <div class="admin-card">
+    <div class="SpecialHeading text-center mb-20">
+      <h1 style="font-family: var(--font-heading); font-size: 1.4rem; color: #333;">Generador de Claves de Acceso</h1>
+      <div class="special-subtitle">Panel Privado para Clientes de Kash / Transferencia</div>
+      <div class="special-subtitle-line" style="margin: 0.8rem auto 1rem;"></div>
+    </div>
+
+    <form id="genForm" onsubmit="generateActivationCode(event)">
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label style="font-family: var(--font-ui); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #666; display: block; margin-bottom: 5px;">Nombre del Comprador</label>
+        <input type="text" id="buyerName" placeholder="Ej: Juan Pérez" required style="width:100%; padding:10px; border:1px solid #ddd; font-family: var(--font-body);" />
+      </div>
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label style="font-family: var(--font-ui); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #666; display: block; margin-bottom: 5px;">Teléfono / WhatsApp (Opcional)</label>
+        <input type="tel" id="buyerPhone" placeholder="Ej: 8888-0000" style="width:100%; padding:10px; border:1px solid #ddd; font-family: var(--font-body);" />
+      </div>
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label style="font-family: var(--font-ui); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #666; display: block; margin-bottom: 5px;">Idioma Comprado</label>
+        <select id="buyerLang" style="width:100%; padding:10px; border:1px solid #ddd; font-family: var(--font-body);">
+          <option value="ES">Solo Español</option>
+          <option value="EN">Solo Inglés</option>
+          <option value="ALL">Ambos (Bundle)</option>
+        </select>
+      </div>
+      <button type="submit" class="shortcode-button btn btn-color" style="width:100%; justify-content: center; padding: 12px;">
+        <span>Generar Código de Desbloqueo</span>
+      </button>
+    </form>
+
+    <!-- Display area -->
+    <div class="code-display" id="codeDisplay">
+      <div style="font-family: var(--font-ui); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888;">Código Único Generado:</div>
+      <div class="code-value" id="codeValue">MAT-XXXX-XXXX</div>
+      
+      <div class="msg-preview" id="msgPreview"></div>
+
+      <button class="btn-copy" onclick="copyMessage()">📋 Copiar Mensaje para WhatsApp</button>
+      <a id="btnSendWa" href="#" target="_blank" class="shortcode-button btn btn-normal" style="width:100%; justify-content: center; text-align: center; display: block;">
+        <span>📲 Abrir Chat de WhatsApp</span>
+      </a>
+    </div>
+
+    <!-- History -->
+    <div style="margin-top: 35px; border-top: 1px solid #eee; padding-top: 20px;">
+      <h3 style="font-family: var(--font-heading); font-size: 1rem; color: #333; margin-bottom: 10px;">Últimos Códigos Generados</h3>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Código</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <tr><td colspan="3" style="text-align:center; color:#999;">No hay códigos generados aún.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center; margin-top: 25px;">
+      <a href="index.html" style="font-family: var(--font-ui); font-size: 0.75rem; color: #999; text-decoration: none;">&larr; Volver a la página principal</a>
+    </div>
+  </div>
+
+  <script>
+    var currentMessage = '';
+
+    function makeRandomChunk(len) {
+      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      var res = '';
+      for (var i = 0; i < len; i++) {
+        res += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return res;
+    }
+
+    function generateActivationCode(e) {
+      e.preventDefault();
+      var name = document.getElementById('buyerName').value.trim();
+      var phone = document.getElementById('buyerPhone').value.trim();
+      var lang = document.getElementById('buyerLang').value;
+      
+      // Formato MAT-LANG-XXXX-YYYY
+      var code = 'MAT-' + lang + '-' + makeRandomChunk(4) + '-' + makeRandomChunk(4);
+      
+      document.getElementById('codeValue').textContent = code;
+      
+      var langText = (lang === 'ES') ? 'Español' : (lang === 'EN') ? 'Inglés' : 'Español e Inglés';
+      currentMessage = '¡Hola ' + name + '! Muchas gracias por tu compra del libro digital "Un Aporte Matemático en el Siglo 21" (Versión: ' + langText + ').\n\n'
+        + '🔑 Tu Código de Acceso es: *' + code + '*\n\n'
+        + '📖 Para desbloquearlo:\n'
+        + '1. Entra a nuestra página web.\n'
+        + '2. Toca "Comprar Libro Digital" o entra a cualquier capítulo.\n'
+        + '3. Haz clic en "¿Ya compraste este libro? Restaurar acceso".\n'
+        + '4. Pega tu código: ' + code + '\n\n'
+        + '¡Que disfrutes la lectura!';
+
+      document.getElementById('msgPreview').textContent = currentMessage;
+      document.getElementById('codeDisplay').style.display = 'block';
+
+      // WhatsApp direct link
+      var cleanPhone = phone.replace(/[^0-9]/g, '');
+      if (cleanPhone.length === 8) cleanPhone = '505' + cleanPhone;
+      var waUrl = cleanPhone 
+        ? ('https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(currentMessage))
+        : ('https://wa.me/?text=' + encodeURIComponent(currentMessage));
+      document.getElementById('btnSendWa').href = waUrl;
+
+      // Save to history
+      saveToHistory(name, code);
+    }
+
+    function copyMessage() {
+      if (!navigator.clipboard) {
+        var ta = document.createElement('textarea');
+        ta.value = currentMessage;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      } else {
+        navigator.clipboard.writeText(currentMessage);
+      }
+      alert('¡Mensaje copiado al portapapeles! Ahora puedes pegarlo en el chat de WhatsApp de tu cliente.');
+    }
+
+    function saveToHistory(name, code) {
+      try {
+        var list = JSON.parse(localStorage.getItem('aporte_code_history') || '[]');
+        list.unshift({
+          date: new Date().toLocaleDateString('es-NI') + ' ' + new Date().toLocaleTimeString('es-NI', {hour: '2-digit', minute:'2-digit'}),
+          name: name,
+          code: code
+        });
+        if (list.length > 20) list = list.slice(0, 20);
+        localStorage.setItem('aporte_code_history', JSON.stringify(list));
+        renderHistory();
+      } catch (err) {}
+    }
+
+    function renderHistory() {
+      try {
+        var list = JSON.parse(localStorage.getItem('aporte_code_history') || '[]');
+        var tbody = document.getElementById('historyBody');
+        if (!list.length) return;
+        tbody.innerHTML = '';
+        list.forEach(function(item) {
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td>' + item.date + '</td><td>' + item.name + '</td><td><strong>' + item.code + '</strong></td>';
+          tbody.appendChild(tr);
+        });
+      } catch (err) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', renderHistory);
+  </script>
+</body>
+</html>

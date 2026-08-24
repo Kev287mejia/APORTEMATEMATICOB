@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio - Aporte Matematico</title>
+  <meta name="description" content="Un Aporte Matem&aacute;tico en el Siglo 21 - Factorizaci&oacute;n de a^2+b^2, en los N&uacute;meros Reales (Spanish Edition)." />
+  <link rel="icon" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="bookblock.css" />
+  <link rel="stylesheet" href="book-reader.css?v=2" />
+  <!-- Odrin Modernizr for 3D Transform detection -->
+  <script src="assets_odrin/modernizr.js"></script>
+  <!-- PayPal JavaScript SDK (Producción / Pagos Reales) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4&currency=USD&disable-funding=credit,paylater,card"></script>
+  <!-- Lordicon Professional Icons -->
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body class="home page-id-17">
+
+  <!-- HEADER — Exact Odrin double-navigation table 39%|22%|39% -->
+  <div class="main-navigation-container is-nav-sticky double-navigation" id="top">
+    <div class="main-nav-inner">
+      <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
+        <ul>
+          <li class="menu-item current-menu-item"><a href="index.html" id="nav-inicio" class="nav-link active">Inicio</a></li>
+          <li class="menu-item"><a href="contacto.html" id="nav-contacto" class="nav-link">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="navigation-logo is-slicknav-logo">
+        <a href="index.html"><h1>Aporte Matematico</h1></a>
+      </div>
+      <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
+        <ul>
+          <li class="menu-item"><a href="pedido.html" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="#" onclick="openDigitalPurchaseModal(); return false;" class="nav-link">Libro Digital</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="is-nav-offset"></div>
+
+  <!-- MAIN -->
+  <main class="MAIN-CONTENT">
+
+    <!-- SECTION 1: HERO -->
+    <section class="fw-section section-hero pos-r">
+      <div class="fw-container">
+        <div class="fw-row">
+          <div class="fw-col-md-6 fw-col-sm-12">
+            <div class="spacer-sm"></div>
+            <div class="SpecialHeading text-left mt-20 mb-60">
+              <h2 class="special-title special-heading-letter">Un Aporte Matem&aacute;tico en el Siglo 21</h2>
+              <div class="special-subtitle">Factorizaci&oacute;n de a^2+b^2, en los N&uacute;meros Reales (Spanish Edition)</div>
+              <div class="special-subtitle-line"></div>
+            </div>
+            <div class="TextBlock is-wow fadeInUp" data-wow-delay="0s">
+              <div class="text-content">
+                Este libro presenta dos f&oacute;rmulas la <span class="a-text-bold a-text-italic">'' bienve1''</span> y la <span class="a-text-bold a-text-italic">''bienve2'',</span> que <span class="a-text-bold a-text-italic">factorizan</span> la Suma de Dos Cuadrados <span class="a-text-bold a-text-italic">a^2+b^2</span>, en los N&uacute;meros Reales.
+              </div>
+              <div class="text-content" style="margin-top:1em;">
+                Hasta la fecha los matem&aacute;ticos actuales est&aacute;n de acuerdo en que, la Suma de Dos Cuadrados: <span class="a-text-bold a-text-italic">a^2+b^2 es irreducible</span> en los N&uacute;meros Reales, es decir, no hay factorizaci&oacute;n, o no se puede factorizar en este conjunto de n&uacute;meros.
+              </div>
+              <div class="text-content" style="margin-top:1em;">
+                El aporte o la novedad de este libro es que se demuestra que <span class="a-text-bold a-text-italic">a^2+b^2, es reducible.</span> es decir, tiene factorizaci&oacute;n, o que se puede factorizar en los N&uacute;meros Reales, mediante las dos f&oacute;rmulas mencionadas al inicio del p&aacute;rrafo.
+              </div>
+            </div>
+            <div class="spacer-sm"></div>
+            <div class="buttons-row">
+              <a href="pedido.html" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-pedir-libro" data-wow-delay="0.1s">
+                <span>Pedir Libro Físico ($30)</span>
+              </a>
+              <button type="button" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-comprar-digital" data-wow-delay="0.15s" onclick="openDigitalPurchaseModal()">
+                <span>Comprar Libro Digital ($10 USD)</span>
+              </button>
+              <a href="#" onclick="openBookReader('es', 1); return false;" class="shortcode-button btn is-page-flip btn-normal is-wow fadeIn" id="btn-leer-libro" data-wow-delay="0.2s">
+                <span>Leer el libro</span>
+              </a>
+            </div>
+
+            <!-- Panel de Lectura Exclusiva para Clientes con Libro Desbloqueado -->
+            <div class="hero-unlocked-card" id="heroUnlockedCard">
+              <div style="font-family: var(--font-heading); font-size: 0.95rem; color: #d38d45; font-weight: 700; margin-bottom: 5px;">
+                ¡Edición Digital Completa Desbloqueada!
+              </div>
+              <p style="font-family: var(--font-body); font-size: 0.85rem; color: #555; margin-bottom: 10px; line-height: 1.5;">
+                Lectura interactiva y protegida habilitada en la plataforma, o descargue los archivos PDF:
+              </p>
+              <div id="unlocked-es-links" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('es', 1);">
+                  <span>Leer en Plataforma (ES)</span>
+                </button>
+                <a href="LIBROS/Libro español.pdf" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Descargar PDF (ES)</span>
+                </a>
+              </div>
+              <div id="unlocked-en-links" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
+                <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('en', 1);">
+                  <span>Read on Platform (EN)</span>
+                </button>
+                <a href="LIBROS/Libro Ingles.pdf" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Download PDF (EN)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="fw-col-md-6 fw-col-sm-12">
+            <div class="BookImage">
+              <img src="libro-full-2.png" alt="Un Aporte Matem&aacute;tico en el Siglo 21 - Portada" width="100%" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2 & 3: LA NOVEDAD DEL LIBRO & FACTORIZACION (Overlapping Slider Layout) -->
+    <section class="fw-section section-novedad pos-r">
+      <div class="fw-container">
+        <div class="fw-row">
+          <div class="fw-col-md-12 text-center">
+            <div class="SpecialHeading text-center mt-20 mb-60 is-wow fadeIn" data-wow-delay="0s">
+              <h2 class="special-title special-heading-letter">La Novedad del Libro</h2>
+            </div>
+            
+            <!-- Exact Odrin ContentSliderWrapper Layout -->
+            <div class="ContentSliderWrapper is-wow fadeInUp" data-wow-delay="0s">
+              <div class="content-slider-images">
+                <div class="content-slider-image">
+                  <img src="libro.png" alt="Factorizaci&oacute;n de una Suma de Cuadrados" />
+                </div>
+              </div>
+              <div class="content-slider">
+                <div class="content-slider-content-wrapper text-left">
+                  <div class="SpecialHeading">
+                    <h2 class="special-title-small special-heading-letter font-subheading" style="font-family: var(--font-heading); font-size: 1.6rem; color: #333; margin-bottom: 5px;">Factorizaci&oacute;n de una suma de cuadrados</h2>
+                  </div>
+                  <div class="special-subtitle-type-2 mb-20" style="font-family: var(--font-heading); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #D38D45; margin-bottom: 20px;">Teorema de Pitagoras</div>
+                  <div class="content-slider-content">
+                    <p style="text-align: justify;">El aporte o la novedad de este libro es que se demuestra que <span class="a-text-bold a-text-italic" style="font-weight: 700; font-style: italic;">a^2+b^2, es reducible.</span> es decir, tiene factorizaci&oacute;n, o que se puede factorizar en los N&uacute;meros Reales, mediante las dos f&oacute;rmulas mencionadas al inicio del p&aacute;rrafo.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: AUTHOR (Overlapping SpecialTextBlock) -->
+    <section class="fw-section section-author pos-r">
+      <div class="fw-container">
+        <div class="fw-row">
+          <div class="fw-col-md-12 text-left">
+            <div class="SpecialTextBlock special-text-block-has-image pos-r is-wow fadeInUp" data-wow-delay="0s">
+              <div class="SpecialHeading fw-heading mb-40">
+                <h2 class="special-title special-heading-letter" style="font-family: var(--font-heading); font-size: 2.2rem; color: #333; margin-bottom: 10px;">Bienvenido Hernaldo Acevedo Gonz&aacute;lez</h2>
+                <div class="special-subtitle" style="font-family: var(--font-heading); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: #D38D45;">El Autor: Nicarag&uuml;ense / Naci&oacute;: el 22 de Marzo de 1954.</div>
+              </div>
+              <div class="special-text-block-image">
+                <div class="bg-image"></div>
+              </div>
+              <div class="special-text-block-content font-subheading">
+                <p style="margin-bottom: 10px;">Ingeniero Civil (1981). UNAN-Le&oacute;n<br>
+                Docente Universitario desde 1980.<br>
+                Maestro en Pedagog&iacute;a (2008). UNAN-Managua<br>
+                Doctorado en Ciencias de la Educaci&oacute;n (D.T:7 junio 2022). AIU-USA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="overlay-pattern-6"></div>
+    <div class="footer-inner">
+      <p>&copy; APORTE MATEMATICO 2026. ALL RIGHTS RESERVED | MADE WITH LOVE BY <a href="#" class="footer-credit">EternalLabsNic</a></p>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       DIGITAL BOOK PURCHASE MODAL (PayPal Gateway)
+       ========================================================= -->
+  <div class="digital-modal-backdrop" id="digitalPurchaseModal" role="dialog" aria-modal="true" aria-labelledby="modalDigitalTitle">
+    <div class="digital-modal-card">
+      <button class="digital-modal-close" onclick="closeDigitalPurchaseModal()" title="Cerrar">&times; Cerrar</button>
+      
+      <div class="SpecialHeading text-center mb-20">
+        <h2 id="modalDigitalTitle" style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-text); margin-bottom: 0.3rem; font-weight: 700;">Edici&oacute;n Digital Completa</h2>
+        <div class="special-subtitle">Acceso Inmediato e Ilimitado en la Plataforma</div>
+        <div class="special-subtitle-line" style="margin: 0.8rem auto 1rem;"></div>
+      </div>
+
+      <div style="text-align: center;">
+        <div class="digital-price-badge">$10.00 USD</div>
+        
+        <p style="font-family: var(--font-body); font-size: 0.95rem; color: #666; line-height: 1.6; margin-bottom: 1.2rem;">
+          Desbloquea los 8 cap&iacute;tulos completos, todas las demostraciones matem&aacute;ticas y las f&oacute;rmulas <em>Bienve1</em> y <em>Bienve2</em> para lectura directa en este dispositivo.
+        </p>
+
+        <!-- Payment Method Tabs -->
+        <div class="payment-tabs">
+          <button type="button" class="payment-tab-btn active" id="tabBtnPaypal" onclick="switchPaymentTab('paypal')">
+            PayPal / Tarjeta
+          </button>
+          <button type="button" class="payment-tab-btn" id="tabBtnKash" onclick="switchPaymentTab('kash')">
+            Kash Nicaragua
+          </button>
+        </div>
+
+        <!-- PANE 1: PayPal y Tarjetas -->
+        <div class="payment-tab-pane active" id="panePaypal">
+          <div class="paypal-btn-wrapper" id="paypal-button-container"></div>
+          <p style="font-family: var(--font-body); font-style: italic; font-size: 0.82rem; color: #777; margin-top: 8px;">
+            Acepta saldo PayPal y <strong>tarjetas de d&eacute;bito o cr&eacute;dito</strong> (Visa, Mastercard, AMEX).
+          </p>
+        </div>
+
+        <!-- PANE 2: Kash Nicaragua -->
+        <div class="payment-tab-pane" id="paneKash">
+          <div class="kash-card-box">
+            <p style="font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #777;">Tu usuario para transferir $10 USD (o en Córdobas):</p>
+            
+            <div style="margin: 10px 0;">
+              <button type="button" onclick="copyKashtag()" class="kashtag-pill" style="border: none; cursor: pointer; display: inline-flex; align-items: center;" title="Haz clic para copiar">
+                <span id="kashtagText">$aportematematico</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+              <div id="copyNotice" style="display:none; font-family: var(--font-ui); font-size: 0.7rem; color: #2e7d32; font-weight: 600; margin-top: 4px;">¡Kashtag copiado al portapapeles!</div>
+            </div>
+
+            <!-- Kash QR (Carga kash_qr.png si existe o QR directo de WhatsApp) -->
+            <img id="kashQrCode" class="kash-qr-img" src="kash_qr.png" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F50584183408%3Ftext%3DHola%252C%2Bdeseo%2Bpagar%2Bpor%2BKash%2Bal%2Buser%2B%2524aportematematico';" alt="Código QR Kash $aportematematico" />
+            
+            <p style="font-family: var(--font-body); font-style: italic; font-size: 0.85rem; color: #666; margin-top: 8px; line-height: 1.5;">
+              Transfiere <strong>$10 USD</strong> a <strong>$aportematematico</strong> desde tu aplicaci&oacute;n de Kash y env&iacute;anos tu captura para recibir tu clave de desbloqueo.
+            </p>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a id="btnNotifyKash"
+               href="https://wa.me/50584183408?text=Hola%2C%20acabo%20de%20transferir%2010%20USD%20a%20su%20Kashtag%20%24aportematematico%20para%20el%20libro%20digital.%20Adjunto%20comprobante%20para%20recibir%20mi%20c%C3%B3digo%20de%20desbloqueo."
+               target="_blank"
+               class="shortcode-button btn btn-color"
+               style="width: 100%; justify-content: center; background: #25D366; display: inline-flex; align-items: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+              <span>Enviar Comprobante por WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        <a class="restore-purchase-link" onclick="restorePurchasePrompt()">
+          ¿Ya compraste este libro o tienes un código? Activar acceso &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       BOOK READER — ODRIN BOOKBLOCK 3D & 168-PAGE ENGINE
+       ========================================================= -->
+  <div id="book-container" class="book-container book-container-9" role="dialog" aria-modal="true" aria-label="Lector Interactivo de Libro">
+
+    <!-- Top Bar with Mode Switcher -->
+    <div class="reader-top-bar">
+      <span id="tblcontents" class="menu-button" onclick="toggleBookMenu()" title="Ver Índice">
+        <i class="icon-menu">&#9776;</i>
+        <span>&Iacute;ndice</span>
+      </span>
+
+      <div class="reader-mode-tabs">
+        <button type="button" class="reader-mode-btn active" id="btnModeEs" onclick="switchBookLang('es');" style="display: inline-flex; align-items: center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          Lector Digital (ES)
+        </button>
+        <button type="button" class="reader-mode-btn" id="btnModeEn" onclick="switchBookLang('en');" style="display: inline-flex; align-items: center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          Digital Reader (EN)
+        </button>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div class="unlocked-badge" id="unlockedBadge">Edici&oacute;n Completa Desbloqueada</div>
+        <span class="bb-nav-close" onclick="closeBookReader()" title="Cerrar lector">
+          <i class="close-icon-color">&#10005;</i>
+        </span>
+      </div>
+    </div>
+
+    <!-- TOC Menu Panel (slides from left) -->
+    <div class="menu-panel" id="menu-panel">
+      <h3>Índice de Capítulos (168 Págs)</h3>
+      <ul id="menu-toc" class="menu-toc">
+        <li class="menu-toc-current"><a href="#item1" onclick="goToBookPage(1); return false;">Pág 1: Portada</a></li>
+        <li><a href="#item7" onclick="goToBookPage(7); return false;">Pág 7: Resumen de la Obra</a></li>
+        <li><a href="#item11" onclick="goToBookPage(11); return false;">Pág 11: Cap. I - Algo que se dice de las Matemáticas</a></li>
+        <li><a href="#item27" onclick="goToBookPage(27); return false;">Pág 27: Cap. II - Vida y Obra de Pitágoras</a></li>
+        <li><a href="#item43" onclick="goToBookPage(43); return false;">Pág 43: Cap. III - Teorema de Pitágoras</a></li>
+        <li><a href="#item57" onclick="goToBookPage(57); return false;">Pág 57: Cap. IV - Conceptos Geométricos</a></li>
+        <li><a href="#item75" onclick="goToBookPage(75); return false;">Pág 75: Cap. V - Suma de Dos Cuadrados</a></li>
+        <li><a href="#item93" onclick="goToBookPage(93); return false;">Pág 93: Cap. VI - Fórmulas Bienve1 y Bienve2</a></li>
+        <li><a href="#item115" onclick="goToBookPage(115); return false;">Pág 115: Cap. VII - Ejemplos de Factorización</a></li>
+        <li><a href="#item147" onclick="goToBookPage(147); return false;">Pág 147: Cap. VIII - Conclusiones y Legado</a></li>
+        <li><a href="#item165" onclick="goToBookPage(165); return false;">Pág 165: Bibliografía y Contraportada</a></li>
+      </ul>
+    </div>
+
+    <!-- 3D FLIP DIGITAL BOOK READER -->
+    <div id="physicalBookWrapper" class="bb-custom-wrapper">
+      <div id="flipViewport" class="flip-viewport">
+        <div id="stPageFlipBook"></div>
+        <div id="flipPageCounter" class="flip-page-counter">Página 1 / 168</div>
+      </div>
+
+      <nav>
+        <span id="bb-nav-prev" class="bb-nav-btn prev" title="Página Anterior" onclick="prevBookPage()">&#10094;</span>
+        <span id="bb-nav-next" class="bb-nav-btn next" title="Página Siguiente" onclick="nextBookPage()">&#10095;</span>
+      </nav>
+      
+      <!-- Overlay de bloqueo para páginas > 15 en versión de prueba -->
+      <div id="physicalLockOverlay" class="physical-lock-overlay">
+        <div class="chapter-locked-box">
+          <div class="chapter-locked-icon">
+            <lord-icon src="https://cdn.lordicon.com/rqqkvjqf.json" trigger="loop" delay="2000" colors="primary:#d38d45,secondary:#faab9f" style="width:60px;height:60px"></lord-icon>
+          </div>
+          <div class="chapter-locked-title">P&aacute;gina Protegida (Edici&oacute;n Completa)</div>
+          <div class="chapter-locked-desc">Has alcanzado el l&iacute;mite de la muestra gratuita (p&aacute;ginas 1 a 15). Para continuar leyendo las 168 p&aacute;ginas completas en alta definici&oacute;n, adquiere la edici&oacute;n digital por solo $10.00 USD.</div>
+          <button type="button" class="shortcode-button btn btn-color" onclick="openDigitalPurchaseModal()">
+            <span>Desbloquear 168 P&aacute;ginas ($10 USD)</span>
+          </button>
+        </div>
+      </div>
+    </div><!-- end bb-custom-wrapper -->
+
+  </div><!-- end book-container -->
+
+  <!-- SCRIPTS -->
+  <script src="assets_odrin/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+  <script src="script.js?v=2"></script>
+</body>
+</html>

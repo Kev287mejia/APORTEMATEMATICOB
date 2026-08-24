@@ -1,0 +1,1539 @@
+/* =========================================================
+   BOOK READER — Copia exacta del tema Odrin (master.css)
+   Fullscreen, menu-panel 260px, book-content padding 22%
+   Flechas: font-size 77px, color #FAAB9F → hover #D38D45
+   ========================================================= */
+
+/* ---- BOOK CONTAINER (Exact Odrin Theme) ---- */
+.book-container {
+  transition: 0.5s transform cubic-bezier(0.4, 0, 0.2, 1), 0.35s left cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.book-container.showBook {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.book-container.slideRight {
+  left: 260px;
+}
+
+
+.bb-custom-wrapper {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: calc(100% - 60px);
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+
+/* ---- MENU PANEL (TOC sidebar - 260px, slides in from left) ---- */
+.menu-panel {
+  background: #fafafa;
+  width: 260px;
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: -260px;
+  padding: 50px 20px;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 16px;
+  overflow-y: auto;
+}
+
+.slideRight .menu-panel,
+.book-container.slideRight .menu-panel {
+  left: 0;
+}
+
+.menu-panel h3 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 1px;
+  color: #333;
+}
+
+/* ---- TOC LIST ---- */
+.menu-toc {
+  position: relative;
+  list-style: none;
+  padding: 30px 0;
+  margin: 0;
+}
+.menu-toc li a {
+  transition: border-left 0.3s;
+  display: block;
+  padding: 10px 20px;
+  border-left: 2px solid #FAAB9F;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  color: #333;
+  text-decoration: none;
+  line-height: 1.4;
+}
+.menu-toc li a:hover {
+  border-left: 10px solid #FAAB9F;
+  color: #FAAB9F;
+}
+.menu-toc .menu-toc-current a {
+  border-left: 10px solid #FAAB9F;
+  color: #FAAB9F;
+  font-weight: 700;
+}
+.menu-panel div {
+  margin-top: 20px;
+}
+.menu-panel div a {
+  text-transform: uppercase;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.7em;
+  line-height: 1;
+  padding: 5px 20px;
+  display: block;
+  border: none;
+  color: #FAAB9F;
+  letter-spacing: 1px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.menu-panel div a:hover {
+  color: #D38D45;
+}
+
+/* ---- MENU BUTTON (top left, shows TOC) ---- */
+.menu-button,
+#tblcontents.menu-button {
+  position: absolute;
+  left: 50px;
+  top: 40px;
+  color: #FAAB9F;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  z-index: 1000;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+.menu-button i {
+  transition: 0.18s;
+  font-size: 22px;
+}
+.menu-button:hover i { transform: scale(1.2); }
+.menu-button:hover { color: #D38D45; }
+
+/* ---- CLOSE BUTTON (top right) ---- */
+.bb-nav-close {
+  position: absolute;
+  right: 50px;
+  top: 40px;
+  color: #FAAB9F;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  border: none;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700;
+  transition: 0.18s;
+  user-select: none;
+}
+.bb-nav-close:hover { color: #D38D45; }
+
+/* ---- NAVIGATION ARROWS (Exact Odrin 77px) ---- */
+.bb-custom-wrapper nav span,
+#bb-nav-prev,
+#bb-nav-next {
+  position: absolute;
+  top: 50%;
+  color: #FAAB9F;
+  font-size: 77px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  transform: translateY(-50%);
+  user-select: none;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#bb-nav-prev {
+  left: 4%;
+}
+
+#bb-nav-next {
+  right: 4%;
+}
+
+#bb-nav-prev:hover,
+#bb-nav-next:hover {
+  color: #D38D45;
+  transform: translateY(-50%) scale(1.1);
+}
+.bb-custom-wrapper.panel-open .book-content {
+  left: 260px;
+}
+
+.bb-item {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  background: #fff;
+}
+.bb-item:first-child {
+  display: block;
+}
+
+.book-content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 60px 10%;
+  overflow-y: auto;
+  font-size: 18px;
+  line-height: 1.8;
+  background: #181a1b;
+}
+
+/* 168 Physical Pages in 3D Flip Engine */
+.book-page-content-wrapper {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  padding: 60px 10px 15px 10px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #181a1b !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.book-3d-page-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-height: calc(100vh - 90px);
+  width: 100%;
+}
+
+.book-3d-page-img {
+  max-height: calc(100vh - 120px);
+  max-width: calc(100vw - 180px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  background: #fff;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.book-3d-page-number {
+  margin-top: 6px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.78rem;
+  color: #faab9f;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Chapter heading */
+.chapter-heading,
+.book-content h1,
+.book-content h2,
+.bb-page-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  font-size: 2rem;
+  padding: 0 0 15px;
+  color: #2c2c2c;
+  margin: 0 0 35px;
+  text-align: center;
+  border-bottom: 2px dotted rgba(250, 171, 159, 0.6);
+}
+
+.book-content p,
+.bb-chapter-content p {
+  font-family: 'Playfair Display', Georgia, serif;
+  text-align: justify;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.08rem;
+  line-height: 1.85;
+}
+
+/* Drop cap special first letter */
+.special-first-letter p:first-of-type:first-letter {
+  color: #faab9f;
+  float: left;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 4.8rem;
+  line-height: 0.8;
+  padding: 4px 10px 0 0;
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+/* Drop cap */
+.bb-drop-intro {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  color: #333;
+  text-align: justify;
+  line-height: 1.9;
+}
+.bb-drop-cap {
+  float: left;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 5rem;
+  font-weight: 700;
+  color: #D38D45;
+  line-height: 0.75;
+  margin-right: 0.1em;
+  margin-top: 0.08em;
+  padding: 0.15em 0.2em;
+  border: 1.5px solid #FAAB9F;
+}
+
+/* Chapter labels */
+.bb-chapter-label {
+  display: block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #FAAB9F;
+  margin-bottom: 0.5rem;
+}
+.bb-chapter-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px dotted rgba(250,171,159,0.5);
+  text-align: left;
+}
+
+/* Formula */
+.bb-formula {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  padding: 1rem 2rem;
+  background: rgba(250,171,159,0.07);
+  border-left: 3px solid #FAAB9F;
+  margin: 1.2rem 0;
+  letter-spacing: 0.04em;
+}
+
+/* ---- NAV ARROWS (exact from master.css — font-size 77px icons) ---- */
+.bb-custom-wrapper nav {
+  position: relative;
+  z-index: 500;
+}
+.bb-custom-wrapper nav span {
+  position: absolute;
+  top: 50vh;
+  left: 7%;
+  color: #FAAB9F;
+  font-size: 77px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  transform: translateY(-50%);
+  transition: color 0.18s;
+  user-select: none;
+  line-height: 1;
+}
+.bb-custom-wrapper nav span:last-child {
+  left: auto;
+  right: 7%;
+}
+.bb-custom-wrapper nav span:hover { color: #D38D45; }
+
+/* Fallback nav buttons styled the same as the original nav spans */
+.bb-nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FAAB9F;
+  font-size: 77px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  background: none;
+  border: none;
+  line-height: 1;
+  padding: 0;
+  font-family: serif;
+  transition: color 0.18s;
+  user-select: none;
+}
+.bb-nav-btn:hover { color: #D38D45; }
+.bb-nav-btn.prev { left: 7%; }
+.bb-nav-btn.next { right: 7%; }
+
+/* ---- BOOK PAGE TRANSITIONS ---- */
+.bb-page {
+  display: none;
+  animation: bbPageIn 0.4s ease both;
+}
+.bb-page.active { display: block; }
+
+@keyframes bbPageIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- PAGE COUNTER ---- */
+.bb-page-counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #aaa;
+  z-index: 100;
+}
+
+/* ---- DOUBLE PAGE (bb-custom-side) — two-column layout for desktop ---- */
+.bb-custom-side {
+  position: relative;
+  float: left;
+  overflow: hidden;
+  width: 50%;
+  height: 100%;
+}
+.bb-custom-side::before {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  width: 80px;
+  height: 100%;
+  box-shadow: inset 30px 0 40px -20px rgba(0,0,0,0.1);
+  content: "";
+}
+.bb-custom-side:first-child::before {
+  right: 0;
+  box-shadow: inset -1px 0 0 rgba(0,0,0,0.05), inset -30px 0 40px -20px rgba(0,0,0,0.15);
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 1199px) {
+  .book-content { padding: 100px 14% 80px; }
+  .menu-button { left: 40px; padding-left: 45px; top: 40px; }
+  .bb-nav-close { right: 40px; top: 40px; }
+  .bb-nav-btn.prev { left: 3%; }
+  .bb-nav-btn.next { right: 3%; }
+}
+@media (max-width: 991px) {
+  .book-content-inner { padding-right: 45px; }
+  .book-content, .menu-panel { font-size: 20px; }
+  .bb-nav-btn { font-size: 72px; }
+}
+@media (max-width: 767px) {
+  .book-content { padding: 60px 30px 50px; }
+  .menu-button { left: 20px; top: 20px; }
+  .bb-nav-close { right: 20px; top: 20px; }
+  .book-content, .menu-panel { font-size: 18px; line-height: 30px; }
+  .book-content-inner { padding-bottom: 70px; }
+  .bb-nav-btn {
+    position: fixed;
+    top: auto;
+    bottom: 20px;
+    transform: none;
+    font-size: 66px;
+    background: rgba(255,255,255,0.9);
+  }
+  .bb-nav-btn.prev { left: 10%; }
+  .bb-nav-btn.next { right: 10%; }
+}
+@media (max-width: 480px) {
+  .book-content { padding: 60px 10px 0; }
+  .book-content-inner { padding-right: 30px; }
+  .menu-panel { width: 200px; left: -200px; padding: 100px 10px 50px; }
+  .bb-nav-btn { font-size: 55px; }
+}
+
+/* =========================================================
+   DIGITAL BOOK PAYWALL & PAYPAL MODAL STYLES (Odrin Theme)
+   ========================================================= */
+
+/* Chapter Locked Screen */
+.chapter-locked-box {
+  background: rgba(245, 240, 235, 0.9);
+  border: 1px solid rgba(250, 171, 159, 0.4);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+.chapter-locked-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.chapter-locked-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chapter-locked-desc {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 1.8rem;
+}
+
+.unlocked-badge {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #2e7d32;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  z-index: 100;
+  display: none;
+}
+.unlocked-badge.show {
+  display: block;
+}
+
+/* Digital Purchase Modal */
+.digital-modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.digital-modal-backdrop.open {
+  display: flex;
+}
+
+.digital-modal-card {
+  background: #fff;
+  width: 100%;
+  max-width: 540px;
+  padding: 2.5rem 2.2rem;
+  position: relative;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  border-top: 4px solid #FAAB9F;
+  animation: modalFadeIn 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.digital-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #999;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+}
+.digital-modal-close:hover {
+  color: #FAAB9F;
+}
+
+.digital-price-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(250, 171, 159, 0.2), rgba(211, 141, 69, 0.2));
+  border: 1px solid rgba(250, 171, 159, 0.5);
+  color: #D38D45;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 6px 18px;
+  margin-bottom: 1rem;
+}
+
+.paypal-btn-wrapper {
+  margin-top: 1.5rem;
+  min-height: 120px;
+}
+
+.restore-purchase-link {
+  display: block;
+  text-align: center;
+  margin-top: 1.2rem;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  text-decoration: none;
+  cursor: pointer;
+}
+/* Payment Tabs (PayPal vs Kash) */
+.payment-tabs {
+  display: flex;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  gap: 10px;
+}
+
+.payment-tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  margin-bottom: -2px;
+}
+
+.payment-tab-btn:hover {
+  color: #D38D45;
+}
+
+.payment-tab-btn.active {
+  color: #D38D45;
+  border-bottom-color: #D38D45;
+}
+
+.payment-tab-pane {
+  display: none;
+  animation: modalFadeIn 0.3s ease;
+}
+.payment-tab-pane.active {
+  display: block;
+}
+
+.kash-card-box {
+  background: #fdfaf6;
+  border: 1px solid rgba(211, 141, 69, 0.3);
+  padding: 1.5rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.kashtag-pill {
+  display: inline-block;
+  background: #5b2c6f;
+  color: #fff;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 8px 22px;
+  border-radius: 25px;
+  letter-spacing: 1px;
+  margin: 10px 0;
+  box-shadow: 0 4px 15px rgba(91, 44, 111, 0.25);
+}
+
+.kash-qr-img {
+  max-width: 140px;
+  height: auto;
+  border: 1px solid #ddd;
+  padding: 6px;
+  background: #fff;
+  margin: 10px auto;
+  display: block;
+}
+
+/* =====================================================
+   RICH CHAPTER STYLING & FORMULAS (Odrin Exact Look)
+   ===================================================== */
+.bb-formula-box {
+  background: #fbf7f2;
+  border-left: 4px solid #d38d45;
+  border-right: 1px solid rgba(211, 141, 69, 0.2);
+  border-top: 1px solid rgba(211, 141, 69, 0.2);
+  border-bottom: 1px solid rgba(211, 141, 69, 0.2);
+  padding: 16px 20px;
+  margin: 18px 0;
+  text-align: center;
+  border-radius: 3px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.bb-formula-main {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.bb-formula-desc {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #d38d45;
+  font-weight: 600;
+}
+
+.bb-quote {
+  font-style: italic;
+  padding: 14px 20px;
+  border-left: 3px solid #faab9f;
+  margin: 16px 0;
+  background: rgba(250, 171, 159, 0.08);
+  font-family: 'Playfair Display', serif;
+  line-height: 1.7;
+  font-size: 0.92rem;
+  color: #444;
+}
+
+.bb-step-box {
+  background: #ffffff;
+  border: 1px solid rgba(211, 141, 69, 0.25);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  border-radius: 4px;
+}
+
+.bb-step-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #d38d45;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.08em;
+}
+
+.bb-subheading {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #333;
+  margin: 18px 0 10px 0;
+  letter-spacing: 0.04em;
+}
+
+.bb-example-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+}
+
+.bb-example-table th {
+  background: #f5ede4;
+  color: #2c2c2c;
+  padding: 10px 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-align: left;
+  border: 1px solid rgba(211, 141, 69, 0.3);
+}
+
+.bb-example-table td {
+  padding: 10px 14px;
+  border: 1px solid rgba(211, 141, 69, 0.2);
+  color: #444;
+}
+
+/* =====================================================
+   FULL PDF VIEWER & LANGUAGE SWITCHER
+   ===================================================== */
+.pdf-viewer-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pdf-viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(211, 141, 69, 0.2);
+}
+
+.pdf-lang-switcher {
+  display: flex;
+  gap: 8px;
+}
+
+.pdf-lang-btn {
+  background: #fff;
+  border: 1px solid #d38d45;
+  padding: 8px 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #d38d45;
+}
+
+.pdf-lang-btn:hover {
+  background: #faab9f;
+  color: #fff;
+}
+
+.pdf-lang-btn.active {
+  background: #d38d45;
+  color: #fff;
+  border-color: #d38d45;
+  box-shadow: 0 4px 12px rgba(211, 141, 69, 0.3);
+}
+
+.pdf-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fdfaf6;
+  padding: 4px 10px;
+  border: 1px solid rgba(211, 141, 69, 0.3);
+}
+
+.pdf-ctrl-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 5px 12px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pdf-ctrl-btn:hover {
+  background: #d38d45;
+  color: #fff;
+  border-color: #d38d45;
+}
+
+.pdf-page-indicator {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #555;
+  padding: 0 8px;
+  min-width: 85px;
+  text-align: center;
+}
+
+.pdf-protected-badge {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #2e7d32;
+  border: 1px solid rgba(46, 125, 50, 0.3);
+  padding: 6px 12px;
+  background: rgba(46, 125, 50, 0.06);
+  font-weight: 700;
+}
+
+/* =====================================================
+   READER MODE TABS & TOP BAR
+   ===================================================== */
+.reader-top-bar {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  padding: 0 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+.reader-top-bar > * {
+  pointer-events: auto;
+}
+
+.reader-mode-tabs {
+  display: flex;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 4px 6px;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  border: 1px solid rgba(211, 141, 69, 0.35);
+}
+
+.reader-mode-btn {
+  background: transparent;
+  border: none;
+  padding: 7px 15px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #555;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.reader-mode-btn:hover {
+  color: #d38d45;
+}
+.reader-mode-btn.active {
+  background: #d38d45;
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(211, 141, 69, 0.4);
+}
+
+/* =====================================================
+   168-PAGE COMPLETE PHYSICAL BOOK VIEWER (High-Res)
+   ===================================================== */
+.physical-book-wrapper {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #181a1b;
+  z-index: 500;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 68px 15px 15px;
+}
+.physical-book-wrapper.active {
+  display: flex;
+}
+
+.physical-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 960px;
+  background: rgba(35, 38, 40, 0.95);
+  border: 1px solid rgba(211, 141, 69, 0.35);
+  padding: 6px 14px;
+  border-radius: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  color: #eee;
+}
+
+.physical-chapter-select {
+  background: #2b2e30;
+  color: #fff;
+  border: 1px solid rgba(211, 141, 69, 0.4);
+  padding: 6px 10px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.78rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.physical-nav-btn {
+  background: #d38d45;
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.physical-nav-btn:hover {
+  background: #faab9f;
+}
+
+.physical-page-input {
+  width: 50px;
+  text-align: center;
+  background: #2b2e30;
+  border: 1px solid rgba(211, 141, 69, 0.4);
+  color: #fff;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.8rem;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.physical-page-viewport {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 960px;
+  height: calc(100vh - 165px);
+  overflow: auto;
+  user-select: none;
+}
+
+.physical-page-img {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.2s ease;
+}
+
+.physical-security-shield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  cursor: default;
+}
+
+.physical-lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 20, 22, 0.94);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.physical-lock-overlay.show {
+  display: flex;
+}
+
+.physical-scrubber-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 960px;
+  gap: 12px;
+  background: rgba(35, 38, 40, 0.95);
+  border: 1px solid rgba(211, 141, 69, 0.3);
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.hero-unlocked-card {
+  display: none;
+  background: #fdfaf6;
+  border: 1px solid #d38d45;
+  padding: 15px 20px;
+  margin-top: 15px;
+  border-radius: 4px;
+}
+.hero-unlocked-card.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+/* =====================================================
+   ANTI-PIRACY & CONTENT PROTECTION
+   ===================================================== */
+/* Bloqueo total de selección de texto */
+.bb-custom-wrapper,
+.book-content,
+.bb-page,
+.bb-chapter-content,
+.pdf-viewer-container,
+.pdf-frame-wrapper,
+.main-navigation-container,
+.hero-unlocked-card {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Bloqueo total de impresión (genera hoja en blanco si intentan imprimir a PDF) */
+@media print {
+  html, body, .bb-custom-wrapper, .pdf-viewer-container, iframe {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+
+
+
+
+/* ---- CSS SLIDE TRANSITIONS FOR DIGITAL READER ---- */
+@keyframes slideOutLeft {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-50px); opacity: 0; }
+}
+@keyframes slideInRight {
+  0% { transform: translateX(50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRight {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(50px); opacity: 0; }
+}
+@keyframes slideInLeft {
+  0% { transform: translateX(-50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.physical-page-img.slide-out-left {
+  animation: slideOutLeft 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.physical-page-img.slide-in-right {
+  animation: slideInRight 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.physical-page-img.slide-out-right {
+  animation: slideOutRight 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.physical-page-img.slide-in-left {
+  animation: slideInLeft 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- MODERN READER ENHANCEMENTS ---- */
+.physical-book-wrapper {
+  background: radial-gradient(circle at center, #2a2d30 0%, #111213 100%) !important;
+  padding: 60px 0 20px 0 !important;
+}
+
+.physical-page-viewport {
+  height: calc(100vh - 120px) !important;
+}
+
+.minimal-reader-header {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.book-page-shadow {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* ---- CSS SLIDE TRANSITIONS FOR DIGITAL READER ---- */
+@keyframes slideOutLeft {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(-50px); opacity: 0; }
+}
+@keyframes slideInRight {
+  0% { transform: translateX(50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideOutRight {
+  0% { transform: translateX(0); opacity: 1; }
+  100% { transform: translateX(50px); opacity: 0; }
+}
+@keyframes slideInLeft {
+  0% { transform: translateX(-50px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+.physical-page-img.slide-out-left {
+  animation: slideOutLeft 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.physical-page-img.slide-in-right {
+  animation: slideInRight 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.physical-page-img.slide-out-right {
+  animation: slideOutRight 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+.physical-page-img.slide-in-left {
+  animation: slideInLeft 0.25s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- MODERN READER ENHANCEMENTS ---- */
+.physical-book-wrapper {
+  background: radial-gradient(circle at center, #2a2d30 0%, #111213 100%) !important;
+  padding: 60px 0 20px 0 !important;
+}
+
+.physical-page-viewport {
+  height: calc(100vh - 120px) !important;
+}
+
+.minimal-reader-header {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.book-page-shadow {
+  max-height: 100%;
+  max-width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  display: flex;
+  overflow: hidden;
+  background: #fff;
+}
+
+.physical-page-img {
+  box-shadow: none !important; /* using wrapper shadow instead */
+  border-radius: 0 !important;
+}
+
+/* Big Navigation Arrows */
+.modern-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 80px;
+  color: rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  padding: 20px;
+}
+.modern-nav-btn:hover {
+  color: #faab9f;
+  transform: translateY(-50%) scale(1.1);
+}
+.modern-nav-btn.prev {
+  left: 4%;
+}
+.modern-nav-btn.next {
+  right: 4%;
+}
+
+@media (max-width: 768px) {
+  .modern-nav-btn { font-size: 50px; }
+  .modern-nav-btn.prev { left: 0%; }
+  .modern-nav-btn.next { right: 0%; }
+}
+
+
+/* ---- 3D BOOK IMAGES ---- */
+.bb-item {
+  display: none; 
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background: transparent !important;
+}
+
+.book-page-shadow {
+  height: 90vh;
+  max-width: 100%;
+  border-radius: 2px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  display: flex;
+  background: #fff;
+}
+
+.book-3d-page-img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .book-page-shadow {
+    height: auto;
+    width: 95vw;
+  }
+  .book-3d-page-img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+
+/* =====================================================
+   PURE CSS3 PAGE-FLIP VIEWER (replaces BookBlock engine)
+   ===================================================== */
+
+.bb-custom-wrapper {
+  position: absolute !important;
+  top: 60px !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: calc(100% - 60px) !important;
+  overflow: hidden !important;
+  background: radial-gradient(ellipse at center, #2c2f33 0%, #111214 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#bb-bookblock { display: none !important; }
+
+.flip-viewport {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.flip-scene {
+  position: relative !important;
+  height: calc(100vh - 150px) !important;
+  max-height: 82vh !important;
+  aspect-ratio: 922 / 1178 !important;
+  max-width: 90vw !important;
+  perspective: 2000px !important;
+  transform-style: preserve-3d !important;
+}
+
+.flip-page {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6) !important;
+  background: #ffffff !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+.flip-page-a {
+  z-index: 2 !important;
+  transform-origin: left center !important;
+}
+
+.flip-page-b {
+  z-index: 1 !important;
+  opacity: 0 !important;
+  transform-origin: left center !important;
+}
+
+.flip-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: fill !important;
+  display: block !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+  background: #ffffff !important;
+}
+
+/* 3D Page Turn Animation Forward (Next: Turning left like a book) */
+@keyframes pageTurnForward {
+  0% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(0.65);
+  }
+  100% {
+    transform: rotateY(-90deg);
+    filter: brightness(0.35);
+  }
+}
+
+/* 3D Page Turn Animation Backward (Prev: Turning right back in) */
+@keyframes pageTurnBackward {
+  0% {
+    transform: rotateY(-90deg);
+    filter: brightness(0.35);
+  }
+  50% {
+    filter: brightness(0.7);
+  }
+  100% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+  }
+}
+
+.anim-turn-forward {
+  animation: pageTurnForward 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+.anim-turn-backward {
+  animation: pageTurnBackward 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+}
+
+/* Page Counter Badge */
+.flip-page-counter {
+  margin-top: 14px !important;
+  font-family: 'Josefin Sans', sans-serif !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 2px !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+  text-transform: uppercase !important;
+  user-select: none !important;
+}
+
+/* Navigation Arrows Floating Buttons */
+.bb-nav-btn {
+  position: fixed !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 72px !important;
+  color: rgba(255, 255, 255, 0.35) !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 1000 !important;
+  padding: 20px !important;
+  transition: color 0.2s ease, transform 0.2s ease !important;
+  line-height: 1 !important;
+  user-select: none !important;
+}
+.bb-nav-btn:hover {
+  color: #d38d45 !important;
+  transform: translateY(-50%) scale(1.1) !important;
+}
+.bb-nav-btn.prev, #bb-nav-prev { left: 3% !important; }
+.bb-nav-btn.next, #bb-nav-next { right: 3% !important; }
+
+@media (max-width: 768px) {
+  .flip-scene {
+    height: auto !important;
+    width: 90vw !important;
+    aspect-ratio: 922 / 1178 !important;
+    max-height: calc(100vh - 160px) !important;
+  }
+  .bb-nav-btn {
+    font-size: 48px !important;
+    padding: 10px !important;
+  }
+  .bb-nav-btn.prev, #bb-nav-prev { left: 1% !important; }
+  .bb-nav-btn.next, #bb-nav-next { right: 1% !important; }
+}
+
+/* Estilos para StPageFlip */
+.st-page { background-color: #fff; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); }
+.st-page img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; }
+.st-page.--cover { background-color: #1a1a1a; }
+#stPageFlipBook {
+  display: none;
+  width: 90vw;
+  height: calc(100vh - 150px);
+  max-width: 1200px;
+  max-height: 85vh;
+}
+

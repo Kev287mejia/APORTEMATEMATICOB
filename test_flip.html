@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Flip Reader</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #111; font-family: sans-serif; overflow: hidden; height: 100vh; }
+    
+    .flip-viewport {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at center, #2c2f33 0%, #111214 100%);
+      user-select: none;
+    }
+    
+    .flip-scene {
+      position: relative;
+      height: calc(100vh - 120px);
+      max-height: 85vh;
+      aspect-ratio: 922 / 1178;
+      max-width: 90vw;
+      perspective: 2000px;
+      transform-style: preserve-3d;
+    }
+    
+    .flip-page {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 20px rgba(0,0,0,0.5);
+      background: #fff;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    
+    .flip-page-a {
+      z-index: 2;
+      transform-origin: left center;
+    }
+    
+    .flip-page-b {
+      z-index: 1;
+      opacity: 0;
+      transform-origin: left center;
+    }
+    
+    .flip-img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+      pointer-events: none;
+    }
+    
+    /* 3D Page Turn Animation Forward (Next) */
+    @keyframes pageTurnForward {
+      0% {
+        transform: rotateY(0deg);
+        filter: brightness(1);
+      }
+      50% {
+        filter: brightness(0.65);
+      }
+      100% {
+        transform: rotateY(-90deg);
+        filter: brightness(0.4);
+      }
+    }
+    
+    /* 3D Page Turn Animation Backward (Prev) */
+    @keyframes pageTurnBackward {
+      0% {
+        transform: rotateY(-90deg);
+        filter: brightness(0.4);
+      }
+      50% {
+        filter: brightness(0.7);
+      }
+      100% {
+        transform: rotateY(0deg);
+        filter: brightness(1);
+      }
+    }
+    
+    .anim-turn-forward {
+      animation: pageTurnForward 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    
+    .anim-turn-backward {
+      animation: pageTurnBackward 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* Page Counter */
+    .flip-page-counter {
+      margin-top: 15px;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+    }
+
+    /* Navigation Arrows */
+    .nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 64px;
+      color: rgba(255, 255, 255, 0.3);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+      padding: 20px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .nav-btn:hover {
+      color: #d38d45;
+      transform: translateY(-50%) scale(1.1);
+    }
+    .nav-btn.prev { left: 4%; }
+    .nav-btn.next { right: 4%; }
+  </style>
+</head>
+<body>
+  <div class="flip-viewport">
+    <div id="flipScene" class="flip-scene">
+      <div id="flipPageA" class="flip-page flip-page-a">
+        <img id="flipImgA" class="flip-img" src="LIBROS/paginas_es/page_1.jpg" alt="Página 1" />
+      </div>
+      <div id="flipPageB" class="flip-page flip-page-b">
+        <img id="flipImgB" class="flip-img" src="LIBROS/paginas_es/page_2.jpg" alt="Página 2" />
+      </div>
+    </div>
+    <div id="flipPageCounter" class="flip-page-counter">Página 1 / 168</div>
+    
+    <button class="nav-btn prev" onclick="prevPage()">&#10094;</button>
+    <button class="nav-btn next" onclick="nextPage()">&#10095;</button>
+  </div>
+
+  <script>
+    var currentPage = 1;
+    var totalPages = 168;
+    var isFlipping = false;
+    var folder = 'LIBROS/paginas_es';
+
+    function updateCounter(p) {
+      document.getElementById('flipPageCounter').textContent = 'Página ' + p + ' / ' + totalPages;
+    }
+
+    function nextPage() {
+      if (isFlipping || currentPage >= totalPages) return;
+      isFlipping = true;
+      var nextP = currentPage + 1;
+      
+      var pageA = document.getElementById('flipPageA');
+      var pageB = document.getElementById('flipPageB');
+      var imgA = document.getElementById('flipImgA');
+      var imgB = document.getElementById('flipImgB');
+      
+      // Slot B gets the next page and sits UNDER Slot A
+      imgB.src = folder + '/page_' + nextP + '.jpg';
+      pageB.style.zIndex = '1';
+      pageB.style.opacity = '1';
+      pageB.style.transform = 'rotateY(0deg)';
+      pageB.className = 'flip-page flip-page-b';
+      
+      // Slot A is on TOP and rotates away
+      pageA.style.zIndex = '2';
+      pageA.style.opacity = '1';
+      pageA.className = 'flip-page flip-page-a anim-turn-forward';
+      
+      setTimeout(function() {
+        // Complete flip: update Slot A to new page, reset transforms
+        imgA.src = folder + '/page_' + nextP + '.jpg';
+        pageA.className = 'flip-page flip-page-a';
+        pageA.style.transform = 'rotateY(0deg)';
+        pageB.style.opacity = '0';
+        currentPage = nextP;
+        updateCounter(currentPage);
+        isFlipping = false;
+      }, 400);
+    }
+
+    function prevPage() {
+      if (isFlipping || currentPage <= 1) return;
+      isFlipping = true;
+      var prevP = currentPage - 1;
+      
+      var pageA = document.getElementById('flipPageA');
+      var pageB = document.getElementById('flipPageB');
+      var imgA = document.getElementById('flipImgA');
+      var imgB = document.getElementById('flipImgB');
+      
+      // Slot A has current page underneath (zIndex 1)
+      pageA.style.zIndex = '1';
+      pageA.className = 'flip-page flip-page-a';
+      pageA.style.transform = 'rotateY(0deg)';
+      
+      // Slot B has the previous page on top (zIndex 2) and animates in from -90deg
+      imgB.src = folder + '/page_' + prevP + '.jpg';
+      pageB.style.zIndex = '2';
+      pageB.style.opacity = '1';
+      pageB.className = 'flip-page flip-page-b anim-turn-backward';
+      
+      setTimeout(function() {
+        // Complete flip: Slot A takes the previous page
+        imgA.src = folder + '/page_' + prevP + '.jpg';
+        pageA.style.zIndex = '2';
+        pageA.className = 'flip-page flip-page-a';
+        pageB.style.opacity = '0';
+        pageB.className = 'flip-page flip-page-b';
+        currentPage = prevP;
+        updateCounter(currentPage);
+        isFlipping = false;
+      }, 400);
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevPage();
+    });
+  </script>
+</body>
+</html>

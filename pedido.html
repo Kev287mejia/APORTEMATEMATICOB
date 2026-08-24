@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedir Libro F&iacute;sico - Aporte Matematico</title>
+  <meta name="description" content="Adquiere la edici&oacute;n impresa de 'Un Aporte Matem&aacute;tico en el Siglo 21' por $30 USD y rec&iacute;bela en cualquier parte de Nicaragua mediante Cargo Trans." />
+  <link rel="icon" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* =========================================================
+       PEDIDO PAGE — Editorial Styles (harmonized with Odrin)
+       ========================================================= */
+    .order-card {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(250, 171, 159, 0.35);
+      padding: 2.5rem 2.2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      position: relative;
+    }
+    
+    .order-info-box {
+      background: rgba(255, 255, 255, 0.6);
+      border-left: 3px solid var(--color-accent);
+      padding: 1.5rem 1.8rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+    
+    .price-value {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--color-text);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    
+    .price-sub {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1.2rem;
+    }
+    
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .info-list li {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      line-height: 2;
+      border-bottom: 1px dotted rgba(250, 171, 159, 0.3);
+      padding: 0.35rem 0;
+    }
+    
+    .info-list li strong {
+      color: var(--color-accent2);
+      font-weight: 600;
+    }
+    
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    
+    .contact-form select {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      border-bottom: 1.5px solid #bbb;
+      padding: 0.6rem 0.2rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--color-text);
+      outline: none;
+      transition: border-color 0.25s;
+      border-radius: 0;
+      cursor: pointer;
+    }
+    
+    .contact-form select:focus {
+      border-color: var(--color-accent);
+    }
+    
+    .step-card {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .step-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .step-num {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--color-accent2);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+    
+    .step-name {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.6rem;
+    }
+    
+    .step-text {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .dept-item {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-text);
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(250, 171, 159, 0.3);
+      padding: 0.75rem 1rem;
+      transition: all 0.25s ease;
+    }
+    
+    .dept-item:hover {
+      background: rgba(250, 171, 159, 0.15);
+      border-color: var(--color-accent);
+      color: var(--color-accent2);
+    }
+    
+    @media (max-width: 768px) {
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .order-card { padding: 1.8rem 1.2rem; }
+    }
+  </style>
+</head>
+<body class="page-pedido">
+
+  <!-- HEADER — Exact Odrin double-navigation table 39%|22%|39% -->
+  <div class="main-navigation-container is-nav-sticky double-navigation" id="top">
+    <div class="main-nav-inner">
+      <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
+        <ul>
+          <li class="menu-item"><a href="index.html" id="nav-inicio" class="nav-link">Inicio</a></li>
+          <li class="menu-item"><a href="contacto.html" id="nav-contacto" class="nav-link">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="navigation-logo is-slicknav-logo">
+        <a href="index.html"><h1>Aporte Matematico</h1></a>
+      </div>
+      <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
+        <ul>
+          <li class="menu-item current-menu-item"><a href="pedido.html" class="nav-link active">Libro Físico</a></li>
+          <li class="menu-item"><a href="index.html" class="nav-link">Libro Digital</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="is-nav-offset"></div>
+
+  <!-- MAIN -->
+  <main class="MAIN-CONTENT">
+
+    <!-- SECTION 1: HERO & ORDER FORM -->
+    <section class="fw-section section-hero pos-r">
+      <div class="fw-container">
+        <div class="fw-row">
+          
+          <!-- Left Column: Book details & information -->
+          <div class="fw-col-md-6 fw-col-sm-12">
+            <div class="spacer-sm"></div>
+            <div class="SpecialHeading text-left mt-20 mb-30 is-wow fadeIn" data-wow-delay="0s">
+              <h1 class="special-title special-heading-letter">Libro F&iacute;sico</h1>
+              <div class="special-subtitle">Edici&oacute;n Impresa &bull; Env&iacute;o Nacional Cargo Trans</div>
+              <div class="special-subtitle-line"></div>
+            </div>
+
+            <div class="TextBlock is-wow fadeInUp" data-wow-delay="0.1s">
+              <div class="text-content">
+                Adquiere el ejemplar f&iacute;sico de la obra <span class="a-text-bold a-text-italic">''Un Aporte Matem&aacute;tico en el Siglo 21''</span>, escrita por el <span class="a-text-bold">Dr. Bienvenido Hernaldo Acevedo Gonz&aacute;lez</span>.
+              </div>
+              <div class="text-content" style="margin-top: 0.8rem;">
+                Realizamos env&iacute;os directos y seguros a cualquier departamento y municipio del territorio de Nicaragua mediante la empresa de paqueter&iacute;a <span class="a-text-bold a-text-italic">Cargo Trans</span>.
+              </div>
+            </div>
+
+            <!-- Price & Logistics Box -->
+            <div class="order-info-box is-wow fadeInUp" data-wow-delay="0.15s">
+              <div class="price-value">$30 USD</div>
+              <div class="price-sub">Valor por ejemplar (+ costo de env&iacute;o seg&uacute;n destino)</div>
+              
+              <ul class="info-list">
+                <li><strong>Empresa de env&iacute;o:</strong> Cargo Trans</li>
+                <li><strong>Tiempo de entrega:</strong> 1 a 3 d&iacute;as h&aacute;biles</li>
+                <li><strong>Cobertura:</strong> Todo el territorio nacional</li>
+                <li><strong>Modalidad de pago:</strong> Coordinada al confirmar su pedido</li>
+              </ul>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="buttons-row is-wow fadeIn" data-wow-delay="0.2s">
+              <a id="btnWhatsappDirect"
+                 href="https://wa.me/50584183408?text=Hola%2C%20quiero%20pedir%20el%20libro%20f%C3%ADsico%20%22Un%20Aporte%20Matem%C3%A1tico%20en%20el%20Siglo%2021%22"
+                 target="_blank"
+                 class="shortcode-button btn btn-normal">
+                <span>Consultar por WhatsApp</span>
+              </a>
+              <a href="index.html" class="shortcode-button btn btn-normal">
+                <span>Volver al Inicio</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Order Form -->
+          <div class="fw-col-md-6 fw-col-sm-12">
+            <div class="spacer-sm"></div>
+            <div class="order-card is-wow fadeInUp" data-wow-delay="0.15s">
+              
+              <div class="SpecialHeading mb-30">
+                <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--color-text); margin-bottom: 0.3rem; font-weight: 700;">Formulario de Pedido</h2>
+                <div style="font-family: var(--font-body); font-style: italic; font-size: 0.95rem; color: #777;">Ingresa tus datos y te contactaremos para concretar el despacho.</div>
+                <div class="contact-dotted" style="margin-top: 0.8rem; margin-bottom: 1.2rem;"></div>
+              </div>
+
+              <form class="contact-form" id="orderForm" novalidate>
+                
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="order-name">Nombre Completo *</label>
+                    <input type="text" id="order-name" name="nombre" placeholder="Tu nombre y apellido" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="order-phone">Tel&eacute;fono / WhatsApp *</label>
+                    <input type="tel" id="order-phone" name="telefono" placeholder="Ej: 8888-0000" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="order-email">Correo Electr&oacute;nico *</label>
+                  <input type="email" id="order-email" name="correo" placeholder="tu@correo.com" required />
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="form-group">
+                    <label for="order-city">Departamento / Ciudad *</label>
+                    <select id="order-city" name="ciudad" required>
+                      <option value="">Seleccionar destino...</option>
+                      <option>Managua</option>
+                      <option>Le&oacute;n</option>
+                      <option>Chinandega</option>
+                      <option>Masaya</option>
+                      <option>Granada</option>
+                      <option>Carazo</option>
+                      <option>Rivas</option>
+                      <option>Matagalpa</option>
+                      <option>Jinotega</option>
+                      <option>Boaco</option>
+                      <option>Chontales</option>
+                      <option>Estel&iacute;</option>
+                      <option>Madriz</option>
+                      <option>Nueva Segovia</option>
+                      <option>R&iacute;o San Juan</option>
+                      <option>RAAN (Caribe Norte)</option>
+                      <option>RAAS (Caribe Sur)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="order-qty">Cantidad de Ejemplares *</label>
+                    <select id="order-qty" name="cantidad" required>
+                      <option value="1">1 ejemplar ($30 USD)</option>
+                      <option value="2">2 ejemplares ($60 USD)</option>
+                      <option value="3">3 ejemplares ($90 USD)</option>
+                      <option value="4">4 ejemplares ($120 USD)</option>
+                      <option value="5">5 ejemplares ($150 USD)</option>
+                      <option value="otro">M&aacute;s de 5 ejemplares</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="order-address">Direcci&oacute;n o Agencia Cargo Trans de Referencia</label>
+                  <textarea id="order-address" name="direccion" placeholder="Direcci&oacute;n exacta de entrega o nombre de la agencia Cargo Trans de su preferencia..."></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="order-notes">Observaciones (Opcional)</label>
+                  <input type="text" id="order-notes" name="notas" placeholder="Indicaciones adicionales sobre el env&iacute;o" />
+                </div>
+
+                <div style="margin-top: 1rem;">
+                  <button type="submit" class="shortcode-button btn btn-color" id="btnOrder" style="width: 100%; justify-content: center;">
+                    <span>Enviar Pedido</span>
+                  </button>
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                  <a id="btnWhatsappForm"
+                     href="https://wa.me/50584183408?text=Hola%2C%20quiero%20pedir%20el%20libro%20f%C3%ADsico%20%22Un%20Aporte%20Matem%C3%A1tico%20en%20el%20Siglo%2021%22"
+                     target="_blank"
+                     style="font-family: var(--font-ui); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-text-light); text-decoration: none;">
+                    O cont&aacute;ctanos directamente v&iacute;a WhatsApp &rarr;
+                  </a>
+                </div>
+
+              </form>
+
+              <div class="order-success" id="orderSuccess" style="display:none; text-align: center; padding: 2rem 1rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: var(--color-text); margin-bottom: 0.8rem;">&iexcl;Pedido Recibido con &Eacute;xito!</h3>
+                <p style="font-family: var(--font-body); font-style: italic; color: #555; line-height: 1.8;">
+                  Muchas gracias por tu inter&eacute;s. Nos pondremos en contacto contigo a la brevedad para coordinar la entrega v&iacute;a Cargo Trans y el comprobante de pago.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: PROCESO DE ENVIO (4 PASOS) -->
+    <section class="fw-section section-novedad pos-r">
+      <div class="fw-container">
+        <div class="fw-row">
+          <div class="fw-col-md-12 text-center">
+            
+            <div class="SpecialHeading text-center mt-20 mb-60 is-wow fadeIn" data-wow-delay="0s">
+              <h2 class="special-title special-heading-letter">Proceso de Env&iacute;o</h2>
+              <div class="special-subtitle">4 Pasos Sencillos para Recibir tu Ejemplar</div>
+              <div class="special-subtitle-line" style="margin: 0.8rem auto 0;"></div>
+            </div>
+
+            <div class="fw-row">
+              
+              <div class="fw-col-md-3 fw-col-sm-6 step-card is-wow fadeInUp" data-wow-delay="0.1s">
+                <div class="step-num">I</div>
+                <div class="step-name">Solicitud</div>
+                <p class="step-text">Completa tus datos de contacto y direcci&oacute;n en el formulario de pedido.</p>
+              </div>
+
+              <div class="fw-col-md-3 fw-col-sm-6 step-card is-wow fadeInUp" data-wow-delay="0.2s">
+                <div class="step-num">II</div>
+                <div class="step-name">Confirmaci&oacute;n</div>
+                <p class="step-text">Nos comunicamos contigo por WhatsApp para confirmar disponibilidad y costo total.</p>
+              </div>
+
+              <div class="fw-col-md-3 fw-col-sm-6 step-card is-wow fadeInUp" data-wow-delay="0.3s">
+                <div class="step-num">III</div>
+                <div class="step-name">Pago y Despacho</div>
+                <p class="step-text">Efect&uacute;as el pago y gestionamos el env&iacute;o de tu paquete con Cargo Trans.</p>
+              </div>
+
+              <div class="fw-col-md-3 fw-col-sm-6 step-card is-wow fadeInUp" data-wow-delay="0.4s">
+                <div class="step-num">IV</div>
+                <div class="step-name">Recepci&oacute;n</div>
+                <p class="step-text">Recibes tu libro en la agencia Cargo Trans m&aacute;s cercana o en tu domicilio.</p>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: COBERTURA NACIONAL -->
+    <section class="fw-section section-factorizacion pos-r">
+      <div class="fw-container">
+        <div class="fw-row">
+          <div class="fw-col-md-12 text-center">
+            
+            <div class="SpecialHeading text-center mt-20 mb-40 is-wow fadeIn" data-wow-delay="0s">
+              <h2 class="special-title special-heading-letter">Cobertura Nacional</h2>
+              <div class="special-subtitle">Envíos a todos los departamentos v&iacute;a Cargo Trans</div>
+              <div class="special-subtitle-line" style="margin: 0.8rem auto 0;"></div>
+            </div>
+
+            <div class="dept-grid is-wow fadeInUp" data-wow-delay="0.1s">
+              <div class="dept-item">Managua</div>
+              <div class="dept-item">Le&oacute;n</div>
+              <div class="dept-item">Chinandega</div>
+              <div class="dept-item">Masaya</div>
+              <div class="dept-item">Granada</div>
+              <div class="dept-item">Carazo</div>
+              <div class="dept-item">Rivas</div>
+              <div class="dept-item">Matagalpa</div>
+              <div class="dept-item">Jinotega</div>
+              <div class="dept-item">Boaco</div>
+              <div class="dept-item">Chontales</div>
+              <div class="dept-item">Estel&iacute;</div>
+              <div class="dept-item">Madriz</div>
+              <div class="dept-item">Nueva Segovia</div>
+              <div class="dept-item">R&iacute;o San Juan</div>
+              <div class="dept-item">RAAN / RAAS</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>&copy; APORTE MATEMATICO 2026. ALL RIGHTS RESERVED | MADE WITH LOVE BY <a href="#" class="footer-credit">EternalLabsNic</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // === WhatsApp number configuration ===
+    // Configura el número telefónico de WhatsApp con código de país (505 = Nicaragua)
+    var WHATSAPP_NUMBER = '50584183408'; 
+
+    // Dynamic WhatsApp URL builder
+    function updateWhatsAppLinks(nombre, ciudad, cantidad) {
+      var msg = 'Hola, deseo solicitar el libro físico "Un Aporte Matemático en el Siglo 21".';
+      if (nombre) msg += '\n\nNombre: ' + nombre;
+      if (ciudad) msg += '\nDestino: ' + ciudad;
+      if (cantidad) msg += '\nCantidad: ' + cantidad;
+      var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+      var btnForm = document.getElementById('btnWhatsappForm');
+      var btnDirect = document.getElementById('btnWhatsappDirect');
+      if (btnForm) btnForm.href = url;
+      if (btnDirect) btnDirect.href = url;
+    }
+
+    // Scroll Animations Observer
+    document.addEventListener('DOMContentLoaded', function() {
+      var els = document.querySelectorAll('.is-wow');
+      if (els.length) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (!e.isIntersecting) return;
+            var delay = e.target.dataset.wowDelay || '0s';
+            e.target.style.animationDelay = delay;
+            e.target.classList.add('animated', 'fadeInUp');
+            obs.unobserve(e.target);
+          });
+        }, { threshold: 0.1 });
+        els.forEach(function(el) { obs.observe(el); });
+      }
+
+      // Order Form submit handler
+      var form = document.getElementById('orderForm');
+      var btn = document.getElementById('btnOrder');
+      if (form) {
+        ['order-name', 'order-city', 'order-qty'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener('change', function() {
+            updateWhatsAppLinks(
+              document.getElementById('order-name').value,
+              document.getElementById('order-city').value,
+              document.getElementById('order-qty').value
+            );
+          });
+        });
+
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var name = document.getElementById('order-name').value.trim();
+          var phone = document.getElementById('order-phone').value.trim();
+          var email = document.getElementById('order-email').value.trim();
+          var city = document.getElementById('order-city').value;
+          
+          if (!name || !phone || !email || !city) {
+            alert('Por favor completa todos los campos obligatorios marcados con asterisco (*).');
+            return;
+          }
+
+          btn.innerHTML = '<span>Procesando...</span>';
+          btn.disabled = true;
+
+          var address = document.getElementById('order-address').value.trim();
+          var qty = document.getElementById('order-qty').value;
+          var notes = document.getElementById('order-notes').value.trim();
+          
+          var msg = 'PEDIDO DE LIBRO FÍSICO\n'
+            + 'Obra: Un Aporte Matemático en el Siglo 21\n\n'
+            + 'Nombre: ' + name + '\n'
+            + 'Teléfono: ' + phone + '\n'
+            + 'Correo: ' + email + '\n'
+            + 'Destino: ' + city + '\n'
+            + 'Cantidad: ' + qty + '\n'
+            + 'Dirección / Agencia: ' + (address || 'Por coordinar') + '\n'
+            + (notes ? 'Notas: ' + notes + '\n' : '')
+            + '\nSolicitud enviada para coordinar envío Cargo Trans.';
+
+          var waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+
+          setTimeout(function() {
+            form.style.display = 'none';
+            document.getElementById('orderSuccess').style.display = 'block';
+            window.open(waUrl, '_blank');
+          }, 600);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
