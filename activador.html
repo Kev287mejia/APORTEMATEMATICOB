@@ -261,74 +261,72 @@
           return;
         }
 
-        // Crear un nuevo libro de trabajo y una hoja
         const workbook = new ExcelJS.Workbook();
         workbook.creator = 'Aporte Matemático';
-        const sheet = workbook.addWorksheet('Historial de Claves');
+        const sheet = workbook.addWorksheet('Registros', {
+          views: [{ showGridLines: false }] // Clean look, hide default grid
+        });
 
-        // Definir columnas y anchos
+        // Column widths
         sheet.columns = [
-          { header: 'FECHA DE CREACIÓN', key: 'date', width: 22 },
-          { header: 'NOMBRE DEL CLIENTE', key: 'name', width: 35 },
-          { header: 'TELÉFONO', key: 'phone', width: 20 },
-          { header: 'IDIOMA', key: 'lang', width: 22 },
-          { header: 'CÓDIGO DE DESBLOQUEO', key: 'code', width: 30 }
+          { key: 'colA', width: 3 }, // Buffer column
+          { key: 'date', width: 22 },
+          { key: 'name', width: 35 },
+          { key: 'phone', width: 20 },
+          { key: 'lang', width: 22 },
+          { key: 'code', width: 28 }
         ];
 
-        // Estilos para la cabecera (Header)
-        const headerRow = sheet.getRow(1);
-        headerRow.height = 30;
-        headerRow.eachCell((cell) => {
-          cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD38D45' } }; // Color corporativo
+        // 1. Title Row
+        sheet.mergeCells('B2:F2');
+        const titleCell = sheet.getCell('B2');
+        titleCell.value = 'APORTE MATEMÁTICO - REPORTE EJECUTIVO DE ACCESOS';
+        titleCell.font = { name: 'Arial', size: 14, bold: true, color: { argb: 'FF1A202C' } };
+        titleCell.alignment = { vertical: 'middle', horizontal: 'left' };
+        sheet.getRow(2).height = 25;
+
+        // 2. Meta Row (Date)
+        sheet.mergeCells('B3:F3');
+        const metaCell = sheet.getCell('B3');
+        const dateStr = new Date().toLocaleString('es-NI');
+        metaCell.value = `Documento generado el: ${dateStr}`;
+        metaCell.font = { name: 'Arial', size: 10, italic: true, color: { argb: 'FF718096' } };
+        metaCell.alignment = { vertical: 'middle', horizontal: 'left' };
+
+        // 3. Table Header
+        const headerRow = sheet.getRow(5);
+        headerRow.values = [null, 'FECHA DE CREACIÓN', 'NOMBRE DEL CLIENTE', 'TELÉFONO', 'IDIOMA', 'CÓDIGO DE DESBLOQUEO'];
+        headerRow.height = 25;
+        
+        ['B', 'C', 'D', 'E', 'F'].forEach((col) => {
+          const cell = sheet.getCell(`${col}5`);
+          cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2D3748' } }; // Corporate dark grey/blue
           cell.alignment = { vertical: 'middle', horizontal: 'center' };
-          cell.border = {
-            top: { style: 'thin', color: { argb: 'FFC27F38' } },
-            left: { style: 'thin', color: { argb: 'FFC27F38' } },
-            bottom: { style: 'thin', color: { argb: 'FFC27F38' } },
-            right: { style: 'thin', color: { argb: 'FFC27F38' } }
-          };
+          if (col === 'C') cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 }; // Name
         });
 
-        // Insertar datos
-        list.forEach(function(item) {
-          sheet.addRow(item);
-        });
+        // 4. Data Rows
+        let currentRow = 6;
+        list.forEach((item) => {
+          const row = sheet.getRow(currentRow);
+          row.values = [null, item.date, item.name, item.phone || 'N/A', item.lang, item.code];
+          row.height = 22;
 
-        // Estilos para las filas de datos
-        sheet.eachRow((row, rowNumber) => {
-          if (rowNumber > 1) { // Saltamos la cabecera
-            row.height = 25;
+          ['B', 'C', 'D', 'E', 'F'].forEach((col) => {
+            const cell = sheet.getCell(`${col}${currentRow}`);
+            cell.font = { name: 'Arial', size: 10, color: { argb: 'FF2D3748' } };
+            cell.alignment = { vertical: 'middle', horizontal: 'center' };
+            cell.border = { bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } } }; // Clean light bottom border
             
-            // Colores intercalados para legibilidad (Zebra striping)
-            if (rowNumber % 2 === 0) {
-              row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFDFDFD' } };
-            } else {
-              row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF6F6F6' } };
+            if (col === 'C') {
+              cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
             }
-
-            row.eachCell((cell, colNumber) => {
-              cell.border = {
-                top: { style: 'thin', color: { argb: 'FFEEEEEE' } },
-                left: { style: 'thin', color: { argb: 'FFEEEEEE' } },
-                bottom: { style: 'thin', color: { argb: 'FFEEEEEE' } },
-                right: { style: 'thin', color: { argb: 'FFEEEEEE' } }
-              };
-              
-              cell.font = { name: 'Arial', size: 11, color: { argb: 'FF333333' } };
-              cell.alignment = { vertical: 'middle', horizontal: 'center' };
-
-              // Alinear a la izquierda el nombre del cliente (Columna 2)
-              if (colNumber === 2) {
-                cell.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
-              }
-              
-              // Estilo especial para la columna del código (Columna 5)
-              if (colNumber === 5) {
-                cell.font = { name: 'Courier New', bold: true, size: 11, color: { argb: 'FFD38D45' } };
-              }
-            });
-          }
+            if (col === 'F') {
+              cell.font = { name: 'Consolas', size: 10, bold: true, color: { argb: 'FF4A5568' } };
+            }
+          });
+          currentRow++;
         });
 
         // Generar archivo y forzar descarga
@@ -338,8 +336,8 @@
         const link = document.createElement("a");
         link.setAttribute("href", url);
         
-        const dateStr = new Date().toISOString().split('T')[0];
-        link.setAttribute("download", `Claves_Aporte_Matematico_${dateStr}.xlsx`);
+        const fileDate = new Date().toISOString().split('T')[0];
+        link.setAttribute("download", `Reporte_Claves_${fileDate}.xlsx`);
         
         document.body.appendChild(link);
         link.click();
