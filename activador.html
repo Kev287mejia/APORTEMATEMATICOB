@@ -349,8 +349,13 @@
         // 6. Data Rows
         let currentRow = 9;
         list.forEach((item) => {
+          let langName = item.lang;
+          if (langName === 'ES' || langName === 'Español') langName = 'Español';
+          else if (langName === 'EN' || langName === 'Inglés') langName = 'Inglés';
+          else langName = 'Español e Inglés'; // ALL or others
+
           const row = sheet.getRow(currentRow);
-          row.values = [null, item.date, item.name, item.phone || 'N/A', item.lang, item.code, ''];
+          row.values = [null, item.date, item.name, item.phone || 'N/A', langName, item.code, ''];
           row.height = 22;
 
           ['B', 'C', 'D', 'E', 'F', 'G'].forEach((col) => {
@@ -366,9 +371,9 @@
               cell.font = { name: 'Consolas', size: 10, bold: true, color: { argb: 'FF4A5568' } };
             }
             if (col === 'E') { // Language Colors
-              if (item.lang === 'Español') {
+              if (langName === 'Español') {
                 cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF2B6CB0' } }; // Blue
-              } else if (item.lang === 'Inglés') {
+              } else if (langName === 'Inglés') {
                 cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF2F855A' } }; // Green
               } else {
                 cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF6B46C1' } }; // Purple
@@ -471,7 +476,7 @@
         const firstD = parseDate(list[0] ? list[0].date : null);
         const lastD = parseDate(list[list.length-1] ? list[list.length-1].date : null);
         let daysActive = Math.ceil(Math.abs(lastD - firstD) / (1000 * 60000 * 60 * 24));
-        if (daysActive < 1) daysActive = 1;
+        if (!daysActive || isNaN(daysActive) || daysActive < 1) daysActive = 1;
         const runRate = list.length / daysActive;
         const forecast = runRate * 30;
 
