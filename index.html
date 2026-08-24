@@ -15,7 +15,7 @@
   <!-- Odrin Modernizr for 3D Transform detection -->
   <script src="assets_odrin/modernizr.js"></script>
   <!-- PayPal JavaScript SDK (Producción / Pagos Reales) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4&currency=USD&disable-funding=credit,paylater,card"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4&currency=USD&disable-funding=credit,paylater"></script>
   <style>
     /* Force override to bypass browser cache issues */
     .book-container.slideRight {
@@ -218,7 +218,14 @@
       </div>
 
       <div style="text-align: center;">
-        <div class="digital-price-badge">$10.00 USD</div>
+        <div style="margin-bottom: 1rem;">
+          <select id="digitalBookLangSelect" onchange="updateDigitalPrice()" style="padding: 10px; font-family: var(--font-body); font-size: 0.95rem; border: 1px solid #ddd; border-radius: 4px; width: 100%; max-width: 250px;">
+            <option value="es">Libro Solo Español ($10.00)</option>
+            <option value="en">Libro Solo Inglés ($10.00)</option>
+            <option value="all">Paquete Bundle Ambos Idiomas ($15.00)</option>
+          </select>
+        </div>
+        <div class="digital-price-badge" id="digitalPriceBadge">$10.00 USD</div>
         
         <p style="font-family: var(--font-body); font-size: 0.95rem; color: #666; line-height: 1.6; margin-bottom: 1.2rem;">
           Desbloquea los 8 cap&iacute;tulos completos, todas las demostraciones matem&aacute;ticas y las f&oacute;rmulas <em>Bienve1</em> y <em>Bienve2</em> para lectura directa en este dispositivo.

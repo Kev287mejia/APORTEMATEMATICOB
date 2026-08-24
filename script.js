@@ -10,6 +10,21 @@ var KASHTAG = '$aportematematico'; // Kashtag oficial para transferencias Kash
 var STORAGE_KEY = 'aporte_matematico_digital_unlocked';
 var paypalRendered = false;
 
+// Actualizar precio dinámicamente según idioma seleccionado
+function updateDigitalPrice() {
+  var langSelect = document.getElementById('digitalBookLangSelect');
+  var badge = document.getElementById('digitalPriceBadge');
+  if (langSelect && badge) {
+    if (langSelect.value === 'all') {
+      DIGITAL_BOOK_PRICE = '15.00';
+      badge.textContent = '$15.00 USD';
+    } else {
+      DIGITAL_BOOK_PRICE = '10.00';
+      badge.textContent = '$10.00 USD';
+    }
+  }
+}
+
 // Cambiar entre pestañas de pago (PayPal vs Kash)
 function switchPaymentTab(tab) {
   var btnPaypal = document.getElementById('tabBtnPaypal');
@@ -224,13 +239,15 @@ function initPayPalButtons() {
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
+          var langSelect = document.getElementById('digitalBookLangSelect');
+          var selectedLang = langSelect ? langSelect.value : 'all';
           unlockDigitalBook({
             id: details.id,
             payerName: (details.payer && details.payer.name) ? (details.payer.name.given_name + ' ' + (details.payer.name.surname || '')) : 'Comprador',
             payerEmail: (details.payer) ? details.payer.email_address : '',
             status: details.status,
             date: new Date().toISOString()
-          });
+          }, selectedLang);
         });
       },
       onError: function(err) {
