@@ -39,6 +39,17 @@
 </head>
 <body class="home page-id-17">
 
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+    <div class="mobile-nav-logo">Aporte Matematico</div>
+    <ul>
+      <li><a href="index.html" class="active">Inicio</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="pedido.html">Libro Físico</a></li>
+      <li><a href="#" onclick="closeMobileNav(); openDigitalPurchaseModal(); return false;">Libro Digital</a></li>
+    </ul>
+  </div>
+
   <!-- HEADER — Exact Odrin double-navigation table 39%|22%|39% -->
   <div class="main-navigation-container is-nav-sticky double-navigation" id="top">
     <div class="main-nav-inner">
@@ -57,6 +68,12 @@
           <li class="menu-item"><a href="#" onclick="openDigitalPurchaseModal(); return false;" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
+      <!-- Botón Hamburguesa (solo móvil) -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </div>
   <div class="is-nav-offset"></div>
@@ -376,5 +393,54 @@
   <script src="assets_odrin/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
   <script src="script.js?v=2"></script>
+
+  <script>
+    /* ---- Menú Hamburguesa Móvil ---- */
+    function toggleMobileNav() {
+      var overlay = document.getElementById('mobileNavOverlay');
+      var btn = document.getElementById('navHamburger');
+      var isOpen = overlay.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    function closeMobileNav() {
+      var overlay = document.getElementById('mobileNavOverlay');
+      var btn = document.getElementById('navHamburger');
+      overlay.classList.remove('is-open');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    /* Cerrar con tecla Escape */
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMobileNav();
+    });
+    /* Cerrar al hacer clic en el overlay */
+    document.getElementById('mobileNavOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeMobileNav();
+    });
+
+    /* ---- Touch Swipe para el lector de libro ---- */
+    (function() {
+      var startX = 0;
+      var startY = 0;
+      var threshold = 60;
+      document.addEventListener('touchstart', function(e) {
+        if (!document.getElementById('book-container').classList.contains('showBook')) return;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
+      document.addEventListener('touchend', function(e) {
+        if (!document.getElementById('book-container').classList.contains('showBook')) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        var dy = e.changedTouches[0].clientY - startY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > threshold) {
+          if (dx < 0) { nextBookPage(); }
+          else { prevBookPage(); }
+        }
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>

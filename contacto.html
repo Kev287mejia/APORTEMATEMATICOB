@@ -13,6 +13,17 @@
 </head>
 <body class="page-contacto">
 
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+    <div class="mobile-nav-logo">Aporte Matematico</div>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="contacto.html" class="active">Contacto</a></li>
+      <li><a href="pedido.html">Libro Físico</a></li>
+      <li><a href="index.html#digital">Libro Digital</a></li>
+    </ul>
+  </div>
+
   <!-- HEADER - Exact Odrin double-navigation table structure -->
   <div class="main-navigation-container is-nav-sticky double-navigation" id="top">
     <div class="main-nav-inner">
@@ -33,6 +44,12 @@
           <li class="menu-item"><a href="index.html" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
+      <!-- Botón Hamburguesa (solo móvil) -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </div>
   <div class="is-nav-offset"></div>
@@ -128,6 +145,30 @@
         setTimeout(function() { success.style.display = 'none'; }, 5000);
       });
     }
+
+    /* ---- Menú Hamburguesa Móvil ---- */
+    function toggleMobileNav() {
+      var overlay = document.getElementById('mobileNavOverlay');
+      var btn = document.getElementById('navHamburger');
+      var isOpen = overlay.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    function closeMobileNav() {
+      var overlay = document.getElementById('mobileNavOverlay');
+      var btn = document.getElementById('navHamburger');
+      overlay.classList.remove('is-open');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMobileNav();
+    });
+    document.getElementById('mobileNavOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeMobileNav();
+    });
   </script>
 </body>
 </html>

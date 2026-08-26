@@ -798,14 +798,260 @@ a:hover { color: var(--color-accent2); }
   padding: 0.5rem 0;
 }
 
+/* =========================================================
+   HAMBURGER MENU — Botón y overlay móvil
+   ========================================================= */
+
+/* Botón hamburguesa (oculto en desktop) */
+.nav-hamburger {
+  display: none;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 600;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animación X al abrir */
+.nav-hamburger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.is-open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-hamburger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Menú móvil desplegable */
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(250, 245, 240, 0.98);
+  backdrop-filter: blur(8px);
+  z-index: 498;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mobile-nav-overlay.is-open {
+  display: flex;
+  opacity: 1;
+}
+.mobile-nav-overlay ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+.mobile-nav-overlay ul li {
+  border-bottom: 1px dotted rgba(250, 171, 159, 0.3);
+}
+.mobile-nav-overlay ul li:first-child {
+  border-top: 1px dotted rgba(250, 171, 159, 0.3);
+}
+.mobile-nav-overlay ul li a {
+  display: block;
+  padding: 1.2rem 2rem;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-nav-overlay ul li a:hover,
+.mobile-nav-overlay ul li a.active {
+  color: var(--color-accent2);
+  background: rgba(250, 171, 159, 0.08);
+}
+.mobile-nav-logo {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+
+/* =========================================================
+   RESPONSIVE — 768px (Tablet / Móvil Grande)
+   ========================================================= */
 @media (max-width: 768px) {
-  .contact-section { grid-template-columns: 1fr; }
+  :root { --nav-height: 72px; }
+
+  /* Navegación: activar hamburguesa */
+  .main-navigation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 72px;
+    padding: 0 16px;
+    position: relative;
+  }
+  .main-nav-inner {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-left,
+  .nav-right {
+    display: none !important;
+  }
+  .navigation-logo {
+    display: block !important;
+    width: auto !important;
+    text-align: center;
+  }
+  .navigation-logo a {
+    padding: 16px 0;
+  }
+  .navigation-logo h1 {
+    font-size: 1.1rem;
+    letter-spacing: 0.03em;
+  }
+  .nav-hamburger {
+    display: flex;
+  }
+
+  /* Hero section */
+  .section-hero {
+    min-height: auto;
+    padding: 40px 0 50px;
+    align-items: flex-start;
+  }
+  .fw-container { padding: 0 18px; }
+
+  /* Botones: apilar en columna */
+  .buttons-row {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+  .shortcode-button.btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 0.9rem 1.5rem;
+  }
+
+  /* Texto del hero */
+  .special-title { font-size: clamp(1.6rem, 7vw, 2.6rem); }
+  .TextBlock { font-size: 0.98rem; }
+
+  /* Imagen del libro */
+  .BookImage { padding: 1.5rem 0; }
+  .BookImage img { max-width: 75%; }
+
+  /* Hero unlocked card */
+  .hero-unlocked-card { padding: 1rem; }
+
+  /* Sección novedad */
+  .section-novedad { padding: 40px 0; }
+
+  /* Contact */
+  .contact-section {
+    grid-template-columns: 1fr;
+    padding: 3rem 0;
+    gap: 2.5rem;
+  }
+
+  /* Book reader modal */
   .bb-progress-bar { display: none; }
-  .bb-pages-wrapper { padding: 4rem 2rem 2rem 2rem; }
+  .bb-pages-wrapper { padding: 4rem 1.5rem 2rem 1.5rem; }
   .bb-book-container { height: 95vh; }
-  .main-nav-inner { padding: 0 1rem; gap: 0.5rem; }
-  .navigation-logo h1 { font-size: 1rem; }
-  .nav-link { font-size: 0.6rem; }
+
+  /* Footer */
+  .site-footer { padding: 1.2rem 1rem; }
+}
+
+/* =========================================================
+   RESPONSIVE — 480px (Móvil Estándar)
+   ========================================================= */
+@media (max-width: 480px) {
+  :root { --nav-height: 64px; }
+
+  .main-navigation-container { height: 64px; }
+  .navigation-logo h1 { font-size: 0.95rem; }
+
+  .fw-container { padding: 0 14px; }
+  .fw-section { padding: 50px 0; }
+
+  /* Hero text más compacto */
+  .special-title { font-size: clamp(1.4rem, 8vw, 2rem); }
+  .special-subtitle { font-size: 0.65rem; }
+  .TextBlock { font-size: 0.95rem; line-height: 1.75; }
+  .spacer-sm { height: 1rem; }
+
+  /* Imagen libro reducida */
+  .BookImage img { max-width: 85%; }
+
+  /* Botones */
+  .shortcode-button.btn { font-size: 0.65rem; padding: 0.8rem 1.2rem; }
+
+  /* Author section */
+  .SpecialTextBlock { padding-top: 60px; min-height: auto; }
+  .SpecialTextBlock .special-text-block-content {
+    width: 100% !important;
+    padding: 20px 0 !important;
+    font-size: 16px;
+  }
+
+  /* ContentSlider más compacto */
+  .ContentSliderWrapper { min-height: auto; margin-bottom: 30px; }
+  .ContentSliderWrapper .content-slider .content-slider-content-wrapper {
+    padding: 20px 14px !important;
+  }
+  .ContentSliderWrapper .content-slider .content-slider-content {
+    padding: 10px 0 0 0 !important;
+  }
+
+  /* Contact section */
+  .contact-section { padding: 2rem 0; gap: 1.5rem; }
+
+  /* Footer */
+  .site-footer p, .footer-inner p { font-size: 0.55rem; letter-spacing: 0.1em; }
+}
+
+/* =========================================================
+   RESPONSIVE — 360px (Móvil Pequeño)
+   ========================================================= */
+@media (max-width: 360px) {
+  .navigation-logo h1 { font-size: 0.82rem; }
+  .fw-container { padding: 0 10px; }
+  .special-title { font-size: 1.3rem; }
+  .shortcode-button.btn { padding: 0.75rem 1rem; font-size: 0.6rem; }
+  .BookImage img { max-width: 90%; }
 }
 
 /* =========================================================
