@@ -10,17 +10,6 @@ var KASHTAG = '$aportematematico'; // Kashtag oficial para transferencias Kash
 var STORAGE_KEY = 'aporte_matematico_digital_unlocked';
 var paypalRendered = false;
 
-// Enviar notificaciones por correo via Vercel Serverless
-function sendEmailNotification(type, payloadData) {
-  return fetch('/api/send-email', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ type: type, data: payloadData })
-  }).catch(function(err) {
-    console.error('Error enviando correo:', err);
-  });
-}
-
 // Actualizar precio dinámicamente según idioma seleccionado
 function updateDigitalPrice() {
   var langSelect = document.getElementById('digitalBookLangSelect');
@@ -289,14 +278,17 @@ function initPayPalButtons() {
           var payerName = (details.payer && details.payer.name) ? (details.payer.name.given_name + ' ' + (details.payer.name.surname || '')) : 'Comprador';
           var payerEmail = (details.payer) ? details.payer.email_address : '';
           
-          // Enviar alerta de compra y correo de agradecimiento (Silencioso)
-          sendEmailNotification('purchase', {
-            customerName: payerName,
-            customerEmail: payerEmail,
-            language: selectedLang,
-            price: DIGITAL_BOOK_PRICE,
-            transactionId: details.id
-          });
+          // Al no tener backend estático para correos, redirigimos al WhatsApp oficial con el recibo
+          var phone = '50588880000'; // <- Reemplazar con WhatsApp real
+          var langText = (selectedLang === 'es') ? 'Español' : (selectedLang === 'en') ? 'Inglés' : 'Bundle (Ambos)';
+          var waMsg = '¡Hola! Acabo de comprar tu libro digital a través de PayPal.\n\n' +
+                      'Mi nombre: ' + payerName + '\n' +
+                      'Mi correo PayPal: ' + payerEmail + '\n' +
+                      'ID de Transacción: ' + details.id + '\n' +
+                      'Idioma comprado: ' + langText + '\n\n' +
+                      'Ya se me desbloqueó en la página, pero te envío esto como comprobante.';
+          var waUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(waMsg);
+          window.open(waUrl, '_blank');
 
           unlockDigitalBook({
             id: details.id,

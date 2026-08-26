@@ -142,26 +142,23 @@
       var subject = document.getElementById('asunto').value;
       var message = document.getElementById('mensaje').value;
 
-      var btn = document.getElementById('btn-enviar');
-      var originalText = btn.querySelector('span').textContent;
-      btn.querySelector('span').textContent = 'Enviando...';
-      btn.disabled = true;
+      // Al no tener backend, redirigimos la consulta directamente al WhatsApp oficial
+      var phone = '50588880000'; // <- Reemplazar con el número real de WhatsApp del profesor
+      var waMsg = 'Hola, mi nombre es ' + name + ' (' + email + ').\n\n' +
+                  'Asunto: ' + subject + '\n\n' +
+                  'Mensaje:\n' + message;
+      
+      var waUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(waMsg);
+      
+      // Abrir WhatsApp en nueva pestaña
+      window.open(waUrl, '_blank');
 
-      sendEmailNotification('contact', {
-        name: name,
-        email: email,
-        subject: subject,
-        message: message
-      }).then(function() {
-        var success = document.getElementById('formSuccess');
-        success.style.display = 'block';
-        document.getElementById('contactForm').reset();
-        
-        btn.querySelector('span').textContent = originalText;
-        btn.disabled = false;
-        
-        setTimeout(function() { success.style.display = 'none'; }, 5000);
-      });
+      // Limpiar formulario y mostrar éxito
+      var success = document.getElementById('formSuccess');
+      success.style.display = 'block';
+      document.getElementById('contactForm').reset();
+  
+      setTimeout(function() { success.style.display = 'none'; }, 5000);
     }
 
     /* ---- Menú Hamburguesa Móvil ---- */
