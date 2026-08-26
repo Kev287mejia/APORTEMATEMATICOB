@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /_dev/
 Disallow: /activador.html
+Disallow: /api/
 
 Sitemap: https://kev287mejia.github.io/APORTEMATEMATICOB/sitemap.xml

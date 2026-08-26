@@ -87,6 +87,63 @@
 </head>
 <body style="background: var(--color-bg); padding: 20px;">
 
+  <!-- ===== PANEL DE LOGIN — PROTECCIÓN SHA-256 ===== -->
+  <div id="adminLoginOverlay" style="
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--color-bg, #0d0d0d);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-body, 'Playfair Display', serif);
+  ">
+    <div style="
+      background: #fff; border: 1px solid rgba(211,141,69,0.35);
+      padding: 45px 40px; max-width: 400px; width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      text-align: center;
+    ">
+      <!-- Lock icon -->
+      <div style="font-size: 2.5rem; margin-bottom: 1rem; color: #D38D45;">🔐</div>
+      <h2 style="font-family: var(--font-heading,'Cinzel Decorative',serif); font-size: 1.1rem; color: #1a1a1a; margin: 0 0 0.3rem;">Panel Privado</h2>
+      <p style="font-family: var(--font-ui,'Josefin Sans',sans-serif); font-size: 0.72rem; color: #999; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 1.8rem;">Generador de Claves de Acceso</p>
+
+      <div style="position: relative; margin-bottom: 1rem;">
+        <input
+          type="password"
+          id="adminPassInput"
+          placeholder="Contraseña de administrador"
+          onkeydown="if(event.key==='Enter') verifyAdminPass()"
+          style="width:100%; box-sizing:border-box; padding: 12px 40px 12px 14px;
+            border: 1px solid #ddd; font-family: var(--font-body); font-size: 0.9rem;
+            outline: none; transition: border 0.2s;"
+          onfocus="this.style.borderColor='#D38D45'"
+          onblur="this.style.borderColor='#ddd'"
+        />
+        <!-- Toggle show/hide -->
+        <span onclick="togglePassVis()" style="
+          position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+          cursor: pointer; font-size: 1rem; color: #aaa; user-select: none;" title="Mostrar/ocultar">👁</span>
+      </div>
+
+      <p id="loginError" style="
+        color: #c0392b; font-size: 0.75rem; font-family: var(--font-ui);
+        letter-spacing: 0.05em; min-height: 1.2em; margin: 0 0 0.8rem;
+      "></p>
+
+      <button onclick="verifyAdminPass()" style="
+        background: #D38D45; color: #fff; border: none; width: 100%;
+        padding: 13px; font-family: var(--font-ui,'Josefin Sans',sans-serif);
+        font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+        font-weight: 700; cursor: pointer; transition: background 0.2s;
+      " onmouseover="this.style.background='#b5722e'" onmouseout="this.style.background='#D38D45'">
+        Acceder
+      </button>
+
+      <a href="index.html" style="display:block; margin-top:1.2rem; font-size:0.72rem;
+        color:#bbb; text-decoration:none; font-family:var(--font-ui);">← Volver a la página principal</a>
+    </div>
+  </div>
+  <!-- ===== FIN PANEL DE LOGIN ===== -->
+
+
   <div class="admin-card">
     <div class="SpecialHeading text-center mb-20">
       <h1 style="font-family: var(--font-heading); font-size: 1.4rem; color: #333;">Generador de Claves de Acceso</h1>
@@ -539,5 +596,82 @@
 
     document.addEventListener('DOMContentLoaded', renderHistory);
   </script>
+
+  <!-- ===== LOGIN LOGIC — SHA-256 via SubtleCrypto ===== -->
+  <script>
+    // Hash SHA-256 de la contraseña "AporteAdmin2026"
+    // Para cambiarla: genera un nuevo hash con -> https://emn178.github.io/online-tools/sha256.html
+    var ADMIN_HASH = 'e69b444b35c86308c8e0dd4941292e916e8187da8278de054d0d9f9ac929cf76';
+    var loginAttempts = 0;
+    var lockUntil = 0;
+
+    // Si ya se autenticó en esta pestaña, ocultar el overlay
+    if (sessionStorage.getItem('adminAuth') === '1') {
+      document.getElementById('adminLoginOverlay').style.display = 'none';
+    }
+
+    function togglePassVis() {
+      var inp = document.getElementById('adminPassInput');
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+
+    async function hashText(text) {
+      var encoder = new TextEncoder();
+      var data = encoder.encode(text);
+      var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      var hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+    }
+
+    async function verifyAdminPass() {
+      var now = Date.now();
+      var errEl = document.getElementById('loginError');
+
+      // Verificar bloqueo temporal
+      if (now < lockUntil) {
+        var secsLeft = Math.ceil((lockUntil - now) / 1000);
+        errEl.textContent = 'Demasiados intentos. Espera ' + secsLeft + ' segundos.';
+        return;
+      }
+
+      var pass = document.getElementById('adminPassInput').value;
+      if (!pass) { errEl.textContent = 'Ingresa la contraseña.'; return; }
+
+      var hash = await hashText(pass);
+
+      if (hash === ADMIN_HASH) {
+        // Correcto — ocultar overlay y guardar sesión
+        sessionStorage.setItem('adminAuth', '1');
+        var overlay = document.getElementById('adminLoginOverlay');
+        overlay.style.transition = 'opacity 0.4s';
+        overlay.style.opacity = '0';
+        setTimeout(function() { overlay.style.display = 'none'; }, 400);
+        loginAttempts = 0;
+      } else {
+        loginAttempts++;
+        if (loginAttempts >= 3) {
+          lockUntil = Date.now() + 30000; // Bloquear 30 segundos
+          errEl.textContent = 'Contraseña incorrecta. Bloqueado por 30 segundos.';
+          loginAttempts = 0;
+          // Countdown en el mensaje
+          var countdown = setInterval(function() {
+            var remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+            if (remaining <= 0) {
+              clearInterval(countdown);
+              errEl.textContent = '';
+            } else {
+              errEl.textContent = 'Demasiados intentos. Espera ' + remaining + ' segundos.';
+            }
+          }, 1000);
+        } else {
+          errEl.textContent = 'Contraseña incorrecta. Intento ' + loginAttempts + ' de 3.';
+        }
+        document.getElementById('adminPassInput').value = '';
+        document.getElementById('adminPassInput').focus();
+      }
+    }
+  </script>
+
 </body>
 </html>
+

@@ -172,14 +172,23 @@ function updateUnlockUI() {
 function isValidActivationCode(code) {
   if (!code) return false;
   var c = code.trim().toUpperCase();
-  // Acepta códigos maestros directos
-  if (c.indexOf('BIENVE') === 0 || c.indexOf('APORTE') === 0 || c === 'LIBRO2026' || c === 'ACTIVAR100') return true;
-  // Acepta formato MAT-ES, MAT-EN, MAT-ALL
+
+  // 1. Códigos maestros con prefijo controlado
+  if (c.indexOf('BIENVE') === 0 || c.indexOf('APORTE') === 0) return true;
+  if (c === 'LIBRO2026' || c === 'ACTIVAR100') return true;
+
+  // 2. Formato oficial del generador: MAT-ES-XXXX-XXXX / MAT-EN-XXXX-XXXX / MAT-ALL-XXXX-XXXX
   if (/^MAT-(ES|EN|ALL)-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(c)) return true;
-  // Legacy formato
+
+  // 3. Formato legacy: MAT-XXXX-XXXX
   if (/^MAT-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(c)) return true;
-  // Acepta ID de transacción de PayPal
-  if (c.indexOf('@') > 0 || c.length >= 8) return true;
+
+  // 4. ID de transacción real de PayPal (formato: 17-22 chars alfanuméricos uppercase, sin espacios)
+  //    Ejemplo real: 6XG44893VE123456A   /   PAYID-XXXXXXXXXXXXXXX
+  if (/^[A-Z0-9]{17,22}$/.test(c)) return true;
+  if (/^PAYID-[A-Z0-9]{15,20}$/.test(c)) return true;
+
+  // Cualquier otra cadena genérica es RECHAZADA
   return false;
 }
 
@@ -312,7 +321,7 @@ function initScrollAnimations() {
 //  PURE CSS3 3D PAGE-FLIP DIGITAL BOOK READER ENGINE
 // =====================================================
 var TOTAL_BOOK_PAGES = 168;
-var SAMPLE_LIMIT = 168;         // Free sample limit (pages visible without purchase)
+var SAMPLE_LIMIT = 15;          // Páginas de muestra gratuita antes del paywall
 var currentBookPage = 1;
 var currentBookLang = 'es';
 var isFlipping = false;
