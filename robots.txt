@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /_dev/
+Disallow: /activador.html
+
+Sitemap: https://kev287mejia.github.io/APORTEMATEMATICOB/sitemap.xml

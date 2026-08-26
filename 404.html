@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página no encontrada - Aporte Matematico</title>
+  <meta name="description" content="La página que buscas no existe. Regresa al inicio de Aporte Matemático." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="icon" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .error-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 113px - 60px);
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .error-code {
+      font-family: var(--font-heading);
+      font-size: clamp(5rem, 18vw, 10rem);
+      font-weight: 900;
+      color: var(--color-accent);
+      line-height: 1;
+      margin-bottom: 0.2em;
+      opacity: 0.35;
+      letter-spacing: 0.05em;
+    }
+    .error-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--color-text);
+      margin-bottom: 0.8rem;
+    }
+    .error-desc {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      color: var(--color-text-light);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+    .error-line {
+      width: 60px;
+      height: 0;
+      border-bottom: 2px dotted var(--color-accent);
+      margin: 1rem auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+    <div class="mobile-nav-logo">Aporte Matematico</div>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="pedido.html">Libro Físico</a></li>
+      <li><a href="index.html">Libro Digital</a></li>
+    </ul>
+  </div>
+
+  <!-- HEADER -->
+  <div class="main-navigation-container is-nav-sticky double-navigation" id="top">
+    <div class="main-nav-inner">
+      <nav class="main-navigation-menu navigation-left nav-left">
+        <ul>
+          <li class="menu-item"><a href="index.html" class="nav-link">Inicio</a></li>
+          <li class="menu-item"><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+      </nav>
+      <div class="navigation-logo is-slicknav-logo">
+        <a href="index.html"><h1>Aporte Matematico</h1></a>
+      </div>
+      <nav class="main-navigation-menu navigation-right nav-right">
+        <ul>
+          <li class="menu-item"><a href="pedido.html" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="index.html" class="nav-link">Libro Digital</a></li>
+        </ul>
+      </nav>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileNav()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="is-nav-offset"></div>
+
+  <main class="MAIN-CONTENT">
+    <section class="fw-section section-hero pos-r">
+      <div class="fw-container">
+        <div class="error-page">
+          <div class="error-code">404</div>
+          <div class="error-title">Página no encontrada</div>
+          <div class="error-line"></div>
+          <p class="error-desc">
+            La página que estás buscando no existe o ha sido movida.<br>
+            Regresa al inicio para explorar el libro.
+          </p>
+          <div class="buttons-row" style="justify-content:center;">
+            <a href="index.html" class="shortcode-button btn btn-color">
+              <span>Volver al Inicio</span>
+            </a>
+            <a href="contacto.html" class="shortcode-button btn btn-normal">
+              <span>Contacto</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="overlay-pattern-6"></div>
+    <div class="footer-inner">
+      <p>&copy; APORTE MATEMATICO 2026. ALL RIGHTS RESERVED | MADE WITH LOVE BY <a href="#" class="footer-credit">EternalLabsNic</a></p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMobileNav() {
+      var overlay = document.getElementById('mobileNavOverlay');
+      var btn = document.getElementById('navHamburger');
+      var isOpen = overlay.classList.toggle('is-open');
+      btn.classList.toggle('is-open', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    function closeMobileNav() {
+      var overlay = document.getElementById('mobileNavOverlay');
+      var btn = document.getElementById('navHamburger');
+      overlay.classList.remove('is-open');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMobileNav(); });
+    document.getElementById('mobileNavOverlay').addEventListener('click', function(e) { if (e.target === this) closeMobileNav(); });
+  </script>
+</body>
+</html>
