@@ -168,27 +168,51 @@ function updateUnlockUI() {
   }
 }
 
-// Algoritmo de validación de códigos de activación
-function isValidActivationCode(code) {
+// =====================================================
+//  SISTEMA DE VALIDACIÓN CON CHECKSUM CRIPTOGRÁFICO
+//  Los códigos MAT tienen su propio hash de verificación.
+//  Sin la clave secreta del generador, es imposible fabricar
+//  un código válido aunque se conozca el formato.
+// =====================================================
+var CODE_SECRET = 'SYXK3mdnN3Sv$4ayGh#xZKHfsF8hj77n';
+
+// Códigos maestros directos (whitelist cerrada)
+var MASTER_CODES = [
+  'LIBRO2026', 'ACTIVAR100'
+];
+
+async function sha256Hex(text) {
+  var encoder = new TextEncoder();
+  var data = encoder.encode(text);
+  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  var hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+async function isValidActivationCode(code) {
   if (!code) return false;
   var c = code.trim().toUpperCase();
 
-  // 1. Códigos maestros con prefijo controlado
-  if (c.indexOf('BIENVE') === 0 || c.indexOf('APORTE') === 0) return true;
-  if (c === 'LIBRO2026' || c === 'ACTIVAR100') return true;
+  // 1. Whitelist de códigos maestros (lista cerrada)
+  if (MASTER_CODES.indexOf(c) !== -1) return true;
 
-  // 2. Formato oficial del generador: MAT-ES-XXXX-XXXX / MAT-EN-XXXX-XXXX / MAT-ALL-XXXX-XXXX
-  if (/^MAT-(ES|EN|ALL)-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(c)) return true;
+  // 2. Formato MAT con checksum: MAT-(ES|EN|ALL)-XXXX-CCCC
+  //    donde CCCC = primeros 4 chars del SHA-256("MAT-LANG-XXXX" + SECRET)
+  var matMatch = c.match(/^MAT-(ES|EN|ALL)-([A-Z0-9]{4})-([A-Z0-9]{4})$/);
+  if (matMatch) {
+    var lang   = matMatch[1];
+    var body   = matMatch[2];
+    var check  = matMatch[3];
+    var prefix = 'MAT-' + lang + '-' + body;
+    var hash   = await sha256Hex(prefix + CODE_SECRET);
+    var expected = hash.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 4);
+    return check === expected;
+  }
 
-  // 3. Formato legacy: MAT-XXXX-XXXX
-  if (/^MAT-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(c)) return true;
-
-  // 4. ID de transacción real de PayPal (formato: 17-22 chars alfanuméricos uppercase, sin espacios)
-  //    Ejemplo real: 6XG44893VE123456A   /   PAYID-XXXXXXXXXXXXXXX
+  // 3. ID de transacción real de PayPal (17-22 chars alfanuméricos, sin guiones)
   if (/^[A-Z0-9]{17,22}$/.test(c)) return true;
   if (/^PAYID-[A-Z0-9]{15,20}$/.test(c)) return true;
 
-  // Cualquier otra cadena genérica es RECHAZADA
   return false;
 }
 
@@ -197,20 +221,21 @@ function restorePurchasePrompt() {
   var code = prompt('Ingresa tu Código de Activación (enviado por WhatsApp) o tu ID de transacción de PayPal:');
   if (code && code.trim().length > 0) {
     var cleanCode = code.trim().toUpperCase();
-    if (isValidActivationCode(cleanCode)) {
-      var langUnlocked = 'all';
-      if (cleanCode.indexOf('MAT-ES-') === 0) langUnlocked = 'es';
-      else if (cleanCode.indexOf('MAT-EN-') === 0) langUnlocked = 'en';
-      else if (cleanCode.indexOf('MAT-ALL-') === 0) langUnlocked = 'all';
-
-      unlockDigitalBook({
-        id: cleanCode,
-        type: 'ACTIVATION_CODE',
-        date: new Date().toISOString()
-      }, langUnlocked);
-    } else {
-      alert('El código ingresado no es válido. Por favor verifica que esté bien escrito o contáctanos por WhatsApp.');
-    }
+    isValidActivationCode(cleanCode).then(function(valid) {
+      if (valid) {
+        var langUnlocked = 'all';
+        if (cleanCode.indexOf('MAT-ES-') === 0) langUnlocked = 'es';
+        else if (cleanCode.indexOf('MAT-EN-') === 0) langUnlocked = 'en';
+        else if (cleanCode.indexOf('MAT-ALL-') === 0) langUnlocked = 'all';
+        unlockDigitalBook({
+          id: cleanCode,
+          type: 'ACTIVATION_CODE',
+          date: new Date().toISOString()
+        }, langUnlocked);
+      } else {
+        alert('El código ingresado no es válido. Por favor verifica que esté bien escrito o contáctanos por WhatsApp.');
+      }
+    });
   }
 }
 

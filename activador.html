@@ -221,6 +221,9 @@
   <script>
     var currentMessage = '';
 
+    // Debe coincidir EXACTAMENTE con CODE_SECRET en script.js
+    var CODE_SECRET = 'SYXK3mdnN3Sv$4ayGh#xZKHfsF8hj77n';
+
     function makeRandomChunk(len) {
       var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       var res = '';
@@ -230,17 +233,32 @@
       return res;
     }
 
-    function generateActivationCode(e) {
+    async function sha256Hex(text) {
+      var encoder = new TextEncoder();
+      var data = encoder.encode(text);
+      var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      var hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+    }
+
+    async function generateActivationCode(e) {
       e.preventDefault();
       var name = document.getElementById('buyerName').value.trim();
       var phone = document.getElementById('buyerPhone').value.trim();
       var lang = document.getElementById('buyerLang').value;
-      
-      // Formato MAT-LANG-XXXX-YYYY
-      var code = 'MAT-' + lang + '-' + makeRandomChunk(4) + '-' + makeRandomChunk(4);
-      
+
+      // Generar parte aleatoria del cuerpo (4 chars)
+      var body = makeRandomChunk(4);
+      var prefix = 'MAT-' + lang + '-' + body;
+
+      // Calcular checksum: primeros 4 chars alfanuméricos del SHA-256(prefix + SECRET)
+      var hash = await sha256Hex(prefix + CODE_SECRET);
+      var checksum = hash.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 4);
+
+      var code = prefix + '-' + checksum;
+
       document.getElementById('codeValue').textContent = code;
-      
+
       var langText = (lang === 'ES') ? 'Español' : (lang === 'EN') ? 'Inglés' : 'Español e Inglés';
       currentMessage = '¡Hola ' + name + '! Muchas gracias por tu compra del libro digital "Un Aporte Matemático en el Siglo 21" (Versión: ' + langText + ').\n\n'
         + '🔑 Tu Código de Acceso es: *' + code + '*\n\n'
@@ -257,7 +275,7 @@
       // WhatsApp direct link
       var cleanPhone = phone.replace(/[^0-9]/g, '');
       if (cleanPhone.length === 8) cleanPhone = '505' + cleanPhone;
-      var waUrl = cleanPhone 
+      var waUrl = cleanPhone
         ? ('https://wa.me/' + cleanPhone + '?text=' + encodeURIComponent(currentMessage))
         : ('https://wa.me/?text=' + encodeURIComponent(currentMessage));
       document.getElementById('btnSendWa').href = waUrl;
