@@ -1,4 +1,4 @@
-{% load static %}
+﻿{% load static %}
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
 <head>
@@ -9,16 +9,16 @@
   
   <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
   <meta property="og:type" content="book" />
-  <meta property="og:title" content="Un Aporte Matemático en el Siglo 21" />
-  <meta property="og:description" content="Descubre la factorización de a^2+b^2 en los Números Reales. Un libro revelador de Kevin Mejia." />
+  <meta property="og:title" content="Un Aporte MatemÃ¡tico en el Siglo 21" />
+  <meta property="og:description" content="Descubre la factorizaciÃ³n de a^2+b^2 en los NÃºmeros Reales. Un libro revelador de Kevin Mejia." />
   <meta property="og:image" content="https://kev287mejia.github.io/APORTEMATEMATICOB/IMG-20240409-WA0001.jpg" />
   <meta property="og:url" content="https://kev287mejia.github.io/APORTEMATEMATICOB/index.html" />
   <meta property="og:locale" content="es_NI" />
 
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Un Aporte Matemático en el Siglo 21" />
-  <meta name="twitter:description" content="Descubre la factorización de a^2+b^2 en los Números Reales. Un libro revelador de Kevin Mejia." />
+  <meta name="twitter:title" content="Un Aporte MatemÃ¡tico en el Siglo 21" />
+  <meta name="twitter:description" content="Descubre la factorizaciÃ³n de a^2+b^2 en los NÃºmeros Reales. Un libro revelador de Kevin Mejia." />
   <meta name="twitter:image" content="https://kev287mejia.github.io/APORTEMATEMATICOB/IMG-20240409-WA0001.jpg" />
 
   <!-- Canonical URL -->
@@ -29,12 +29,12 @@
   {
     "@context": "https://schema.org",
     "@type": "Book",
-    "name": "Un Aporte Matemático en el Siglo 21",
+    "name": "Un Aporte MatemÃ¡tico en el Siglo 21",
     "author": {
       "@type": "Person",
       "name": "Kevin Mejia"
     },
-    "description": "Factorización de a^2+b^2, en los Números Reales (Spanish Edition)",
+    "description": "FactorizaciÃ³n de a^2+b^2, en los NÃºmeros Reales (Spanish Edition)",
     "inLanguage": ["es", "en"],
     "offers": {
       "@type": "Offer",
@@ -54,7 +54,7 @@
   <link rel="stylesheet" href="{% static 'book-reader.css?v=3' %}" />
   <!-- Odrin Modernizr for 3D Transform detection -->
   <script src="{% static 'assets_odrin/modernizr.js' %}"></script>
-  <!-- PayPal JavaScript SDK (Producción / Pagos Reales) -->
+  <!-- PayPal JavaScript SDK (ProducciÃ³n / Pagos Reales) -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4&currency=USD&disable-funding=credit,paylater"></script>
   <style>
     /* Force override to bypass browser cache issues */
@@ -80,17 +80,17 @@
 <body class="home page-id-17">
 
   <!-- MOBILE NAV OVERLAY -->
-  <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="MenÃº de navegaciÃ³n">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
       <li><a href="{% url 'index' %}" class="active">Inicio</a></li>
       <li><a href="{% url 'contacto' %}">Contacto</a></li>
-      <li><a href="{% url 'pedido' %}">Libro Físico</a></li>
+      <li><a href="{% url 'pedido' %}">Libro FÃ­sico</a></li>
       <li><a href="#" onclick="closeMobileNav(); openDigitalPurchaseModal(); return false;">Libro Digital</a></li>
     </ul>
   </div>
 
-  <!-- HEADER — Exact Odrin double-navigation table 39%|22%|39% -->
+  <!-- HEADER â€” Exact Odrin double-navigation table 39%|22%|39% -->
   <div class="main-navigation-container is-nav-sticky double-navigation" id="top">
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
@@ -104,12 +104,12 @@
       </div>
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
-          <li class="menu-item"><a href="{% url 'pedido' %}" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% url 'pedido' %}" class="nav-link">Libro FÃ­sico</a></li>
           <li class="menu-item"><a href="#" onclick="openDigitalPurchaseModal(); return false;" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
-      <!-- Botón Hamburguesa (solo móvil) -->
-      <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileNav()">
+      <!-- BotÃ³n Hamburguesa (solo mÃ³vil) -->
+      <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menÃº" aria-expanded="false" onclick="toggleMobileNav()">
         <span></span>
         <span></span>
         <span></span>
@@ -146,7 +146,7 @@
             <div class="spacer-sm"></div>
             <div class="buttons-row">
               <a href="{% url 'pedido' %}" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-pedir-libro" data-wow-delay="0.1s">
-                <span>Pedir Libro Físico ($30)</span>
+                <span>Pedir Libro FÃ­sico ($30)</span>
               </a>
               <button type="button" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-comprar-digital" data-wow-delay="0.15s" onclick="openDigitalPurchaseModal()">
                 <span>Comprar Libro Digital ($10 USD)</span>
@@ -159,7 +159,7 @@
             <!-- Panel de Lectura Exclusiva para Clientes con Libro Desbloqueado -->
             <div class="hero-unlocked-card" id="heroUnlockedCard">
               <div style="font-family: var(--font-heading); font-size: 0.95rem; color: #d38d45; font-weight: 700; margin-bottom: 5px;">
-                ¡Edición Digital Completa Desbloqueada!
+                Â¡EdiciÃ³n Digital Completa Desbloqueada!
               </div>
               <p style="font-family: var(--font-body); font-size: 0.85rem; color: #555; margin-bottom: 10px; line-height: 1.5;">
                 Lectura interactiva y protegida habilitada en la plataforma, o descargue los archivos PDF:
@@ -168,7 +168,7 @@
                 <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('es', 1);">
                   <span>Leer en Plataforma (ES)</span>
                 </button>
-                <a href="{% static 'LIBROS/Libro español.pdf' %}" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
+                <a href="{% static 'LIBROS/Libro espaÃ±ol.pdf' %}" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                   <span>Descargar PDF (ES)</span>
                 </a>
@@ -186,7 +186,7 @@
           </div>
           <div class="fw-col-md-6 fw-col-sm-12">
             <div class="BookImage">
-              <img src="{% static 'libro-full-2.png' %}" alt="Un Aporte Matem&aacute;tico en el Siglo 21 - Portada" width="100%" />
+              <img src="{% static 'libro-full-2.jpg' %}" alt="Un Aporte Matem&aacute;tico en el Siglo 21 - Portada" width="100%" />
             </div>
           </div>
         </div>
@@ -206,7 +206,7 @@
             <div class="ContentSliderWrapper is-wow fadeInUp" data-wow-delay="0s">
               <div class="content-slider-images">
                 <div class="content-slider-image">
-                  <img src="{% static 'libro.png' %}" alt="Factorizaci&oacute;n de una Suma de Cuadrados" />
+                  <img src="{% static 'libro.jpg' %}" alt="Factorizaci&oacute;n de una Suma de Cuadrados" />
                 </div>
               </div>
               <div class="content-slider">
@@ -277,8 +277,8 @@
       <div style="text-align: center;">
         <div style="margin-bottom: 1rem;">
           <select id="digitalBookLangSelect" onchange="updateDigitalPrice()" style="padding: 10px; font-family: var(--font-body); font-size: 0.95rem; border: 1px solid #ddd; border-radius: 4px; width: 100%; max-width: 250px;">
-            <option value="es">Libro Solo Español ($10.00)</option>
-            <option value="en">Libro Solo Inglés ($10.00)</option>
+            <option value="es">Libro Solo EspaÃ±ol ($10.00)</option>
+            <option value="en">Libro Solo InglÃ©s ($10.00)</option>
             <option value="all">Paquete Bundle Ambos Idiomas ($15.00)</option>
           </select>
         </div>
@@ -309,18 +309,18 @@
         <!-- PANE 2: Kash Nicaragua -->
         <div class="payment-tab-pane" id="paneKash">
           <div class="kash-card-box">
-            <p style="font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #777;">Tu usuario para transferir $10 USD (o en Córdobas):</p>
+            <p style="font-family: var(--font-ui); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: #777;">Tu usuario para transferir $10 USD (o en CÃ³rdobas):</p>
             
             <div style="margin: 10px 0;">
               <button type="button" onclick="copyKashtag()" class="kashtag-pill" style="border: none; cursor: pointer; display: inline-flex; align-items: center;" title="Haz clic para copiar">
                 <span id="kashtagText">$aportematematico</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               </button>
-              <div id="copyNotice" style="display:none; font-family: var(--font-ui); font-size: 0.7rem; color: #2e7d32; font-weight: 600; margin-top: 4px;">¡Kashtag copiado al portapapeles!</div>
+              <div id="copyNotice" style="display:none; font-family: var(--font-ui); font-size: 0.7rem; color: #2e7d32; font-weight: 600; margin-top: 4px;">Â¡Kashtag copiado al portapapeles!</div>
             </div>
 
             <!-- Kash QR (Carga kash_qr.png si existe o QR directo de WhatsApp) -->
-            <img id="kashQrCode" class="kash-qr-img" src="{% static 'kash_qr.png' %}" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F50584183408%3Ftext%3DHola%252C%2Bdeseo%2Bpagar%2Bpor%2BKash%2Bal%2Buser%2B%2524aportematematico';" alt="Código QR Kash $aportematematico" />
+            <img id="kashQrCode" class="kash-qr-img" src="{% static 'kash_qr.png' %}" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F50584183408%3Ftext%3DHola%252C%2Bdeseo%2Bpagar%2Bpor%2BKash%2Bal%2Buser%2B%2524aportematematico';" alt="CÃ³digo QR Kash $aportematematico" />
             
             <p style="font-family: var(--font-body); font-style: italic; font-size: 0.85rem; color: #666; margin-top: 8px; line-height: 1.5;">
               Transfiere <strong>$10 USD</strong> a <strong>$aportematematico</strong> desde tu aplicaci&oacute;n de Kash y env&iacute;anos tu captura para recibir tu clave de desbloqueo.
@@ -340,14 +340,14 @@
         </div>
 
         <a class="restore-purchase-link" onclick="restorePurchasePrompt()">
-          ¿Ya compraste este libro o tienes un código? Activar acceso &rarr;
+          Â¿Ya compraste este libro o tienes un cÃ³digo? Activar acceso &rarr;
         </a>
       </div>
     </div>
   </div>
 
   <!-- =========================================================
-       BOOK READER — ODRIN BOOKBLOCK 3D & 168-PAGE ENGINE
+       BOOK READER â€” ODRIN BOOKBLOCK 3D & 168-PAGE ENGINE
        ========================================================= -->
   <div id="book-container" class="book-container book-container-9" role="dialog" aria-modal="true" aria-label="Lector Interactivo de Libro">
 
@@ -357,7 +357,7 @@
         <span onclick="closeBookReader()" title="Volver al Inicio" style="background: #c17a4d; color: #1c1a17; padding: 6px 12px; border-radius: 4px; font-family: 'Josefin Sans', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
           <span>Volver al Inicio</span>
         </span>
-        <span id="tblcontents" class="menu-button" onclick="toggleBookMenu()" title="Ver Índice" style="position: relative; left: 0; top: 0;">
+        <span id="tblcontents" class="menu-button" onclick="toggleBookMenu()" title="Ver Ãndice" style="position: relative; left: 0; top: 0;">
           <i class="icon-menu">&#9776;</i>
           <span>&Iacute;ndice</span>
         </span>
@@ -384,19 +384,19 @@
 
     <!-- TOC Menu Panel (slides from left) -->
     <div class="menu-panel" id="menu-panel">
-      <h3>Índice de Capítulos (168 Págs)</h3>
+      <h3>Ãndice de CapÃ­tulos (168 PÃ¡gs)</h3>
       <ul id="menu-toc" class="menu-toc">
-        <li class="menu-toc-current"><a href="#item1" onclick="goToBookPage(1); return false;">Pág 1: Portada</a></li>
-        <li><a href="#item7" onclick="goToBookPage(7); return false;">Pág 7: Resumen de la Obra</a></li>
-        <li><a href="#item11" onclick="goToBookPage(11); return false;">Pág 11: Cap. I - Algo que se dice de las Matemáticas</a></li>
-        <li><a href="#item27" onclick="goToBookPage(27); return false;">Pág 27: Cap. II - Vida y Obra de Pitágoras</a></li>
-        <li><a href="#item43" onclick="goToBookPage(43); return false;">Pág 43: Cap. III - Teorema de Pitágoras</a></li>
-        <li><a href="#item57" onclick="goToBookPage(57); return false;">Pág 57: Cap. IV - Conceptos Geométricos</a></li>
-        <li><a href="#item75" onclick="goToBookPage(75); return false;">Pág 75: Cap. V - Suma de Dos Cuadrados</a></li>
-        <li><a href="#item93" onclick="goToBookPage(93); return false;">Pág 93: Cap. VI - Fórmulas Bienve1 y Bienve2</a></li>
-        <li><a href="#item115" onclick="goToBookPage(115); return false;">Pág 115: Cap. VII - Ejemplos de Factorización</a></li>
-        <li><a href="#item147" onclick="goToBookPage(147); return false;">Pág 147: Cap. VIII - Conclusiones y Legado</a></li>
-        <li><a href="#item165" onclick="goToBookPage(165); return false;">Pág 165: Bibliografía y Contraportada</a></li>
+        <li class="menu-toc-current"><a href="#item1" onclick="goToBookPage(1); return false;">PÃ¡g 1: Portada</a></li>
+        <li><a href="#item7" onclick="goToBookPage(7); return false;">PÃ¡g 7: Resumen de la Obra</a></li>
+        <li><a href="#item11" onclick="goToBookPage(11); return false;">PÃ¡g 11: Cap. I - Algo que se dice de las MatemÃ¡ticas</a></li>
+        <li><a href="#item27" onclick="goToBookPage(27); return false;">PÃ¡g 27: Cap. II - Vida y Obra de PitÃ¡goras</a></li>
+        <li><a href="#item43" onclick="goToBookPage(43); return false;">PÃ¡g 43: Cap. III - Teorema de PitÃ¡goras</a></li>
+        <li><a href="#item57" onclick="goToBookPage(57); return false;">PÃ¡g 57: Cap. IV - Conceptos GeomÃ©tricos</a></li>
+        <li><a href="#item75" onclick="goToBookPage(75); return false;">PÃ¡g 75: Cap. V - Suma de Dos Cuadrados</a></li>
+        <li><a href="#item93" onclick="goToBookPage(93); return false;">PÃ¡g 93: Cap. VI - FÃ³rmulas Bienve1 y Bienve2</a></li>
+        <li><a href="#item115" onclick="goToBookPage(115); return false;">PÃ¡g 115: Cap. VII - Ejemplos de FactorizaciÃ³n</a></li>
+        <li><a href="#item147" onclick="goToBookPage(147); return false;">PÃ¡g 147: Cap. VIII - Conclusiones y Legado</a></li>
+        <li><a href="#item165" onclick="goToBookPage(165); return false;">PÃ¡g 165: BibliografÃ­a y Contraportada</a></li>
       </ul>
     </div>
 
@@ -404,15 +404,15 @@
     <div id="physicalBookWrapper" class="bb-custom-wrapper">
       <div id="flipViewport" class="flip-viewport">
         <div id="stPageFlipBook"></div>
-        <div id="flipPageCounter" class="flip-page-counter">Página 1 / 168</div>
+        <div id="flipPageCounter" class="flip-page-counter">PÃ¡gina 1 / 168</div>
       </div>
 
       <nav>
-        <span id="bb-nav-prev" class="bb-nav-btn prev" title="Página Anterior" onclick="prevBookPage()">&#10094;</span>
-        <span id="bb-nav-next" class="bb-nav-btn next" title="Página Siguiente" onclick="nextBookPage()">&#10095;</span>
+        <span id="bb-nav-prev" class="bb-nav-btn prev" title="PÃ¡gina Anterior" onclick="prevBookPage()">&#10094;</span>
+        <span id="bb-nav-next" class="bb-nav-btn next" title="PÃ¡gina Siguiente" onclick="nextBookPage()">&#10095;</span>
       </nav>
       
-      <!-- Overlay de bloqueo para páginas > 15 en versión de prueba -->
+      <!-- Overlay de bloqueo para pÃ¡ginas > 15 en versiÃ³n de prueba -->
       <div id="physicalLockOverlay" class="physical-lock-overlay">
         <div class="chapter-locked-box">
           <div class="chapter-locked-icon">
@@ -435,7 +435,7 @@
   <script src="{% static 'script.js?v=2' %}"></script>
 
   <script>
-    /* ---- Menú Hamburguesa Móvil ---- */
+    /* ---- MenÃº Hamburguesa MÃ³vil ---- */
     function toggleMobileNav() {
       var overlay = document.getElementById('mobileNavOverlay');
       var btn = document.getElementById('navHamburger');
