@@ -107,7 +107,11 @@ def save_paypal_purchase(request):
                     <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">Estimado/a Lector/a,</p>
                     
                     <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                        Es un verdadero honor para mí agradecerle personalmente por la adquisición de mi libro digital: <strong>"Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"</strong>. Espero sinceramente que esta obra le sea de gran utilidad, enriqueciendo su conocimiento y facilitando el proceso de aprendizaje sobre la factorización de polinomios.
+                        Es un verdadero honor para mí agradecerle personalmente por la adquisición de mi libro digital: <strong>"Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"</strong>.
+                    </p>
+                    
+                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
+                        Espero con esta obra satisfacer su curiosidad sobre la factorización de la suma de dos cuadrados (a² + b², el Teorema de Pitágoras), porque éste hasta la fecha ha sido irreductible y nadie lo ha podido factorizar. Únicamente en esta obra está factorizado, facilitándole la factorización de la suma de dos cuadrados en los números reales.
                     </p>
                     
                     <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
