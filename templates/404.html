@@ -61,10 +61,10 @@
   <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
-      <li><a href="{% static 'index.html' %}">Inicio</a></li>
-      <li><a href="{% static 'contacto.html' %}">Contacto</a></li>
-      <li><a href="{% static 'pedido.html' %}">Libro Físico</a></li>
-      <li><a href="{% static 'index.html' %}">Libro Digital</a></li>
+      <li><a href="{% url 'index' %}">Inicio</a></li>
+      <li><a href="{% url 'contacto' %}">Contacto</a></li>
+      <li><a href="{% url 'pedido' %}">Libro Físico</a></li>
+      <li><a href="{% url 'index' %}">Libro Digital</a></li>
     </ul>
   </div>
 
@@ -73,17 +73,17 @@
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left">
         <ul>
-          <li class="menu-item"><a href="{% static 'index.html' %}" class="nav-link">Inicio</a></li>
-          <li class="menu-item"><a href="{% static 'contacto.html' %}" class="nav-link">Contacto</a></li>
+          <li class="menu-item"><a href="{% url 'index' %}" class="nav-link">Inicio</a></li>
+          <li class="menu-item"><a href="{% url 'contacto' %}" class="nav-link">Contacto</a></li>
         </ul>
       </nav>
       <div class="navigation-logo is-slicknav-logo">
-        <a href="{% static 'index.html' %}"><h1>Aporte Matematico</h1></a>
+        <a href="{% url 'index' %}"><h1>Aporte Matematico</h1></a>
       </div>
       <nav class="main-navigation-menu navigation-right nav-right">
         <ul>
-          <li class="menu-item"><a href="{% static 'pedido.html' %}" class="nav-link">Libro Físico</a></li>
-          <li class="menu-item"><a href="{% static 'index.html' %}" class="nav-link">Libro Digital</a></li>
+          <li class="menu-item"><a href="{% url 'pedido' %}" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% url 'index' %}" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
       <button class="nav-hamburger" id="navHamburger" aria-label="Abrir menú" aria-expanded="false" onclick="toggleMobileNav()">
@@ -105,10 +105,10 @@
             Regresa al inicio para explorar el libro.
           </p>
           <div class="buttons-row" style="justify-content:center;">
-            <a href="{% static 'index.html' %}" class="shortcode-button btn btn-color">
+            <a href="{% url 'index' %}" class="shortcode-button btn btn-color">
               <span>Volver al Inicio</span>
             </a>
-            <a href="{% static 'contacto.html' %}" class="shortcode-button btn btn-normal">
+            <a href="{% url 'contacto' %}" class="shortcode-button btn btn-normal">
               <span>Contacto</span>
             </a>
           </div>

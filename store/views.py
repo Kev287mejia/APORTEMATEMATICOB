@@ -97,7 +97,7 @@ def save_paypal_purchase(request):
                 <div style="font-family: 'Playfair Display', Georgia, serif; background-color: #f5f0eb; color: #2c2c2c; max-width: 600px; margin: 0 auto; padding: 40px 30px; border: 1px solid #e0d8cf; border-radius: 4px;">
                     
                     <div style="text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #d38d45;">
-                        <h1 style="font-family: 'Cinzel Decorative', serif; color: #333; font-size: 28px; margin: 0; letter-spacing: 1px; text-transform: uppercase;">Aporte Matematico</h1>
+        <h1 style="font-family: 'Cinzel Decorative', serif; color: #333; font-size: 28px; margin: 0; letter-spacing: 1px; text-transform: uppercase;">Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales</h1>
                     </div>
                     
                     <h2 style="font-family: 'Cinzel Decorative', serif; color: #d38d45; text-align: center; font-size: 22px; margin-bottom: 30px;">
@@ -208,7 +208,7 @@ def submit_contact(request):
                         <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">Hola, <strong>Prof. Bienvenido</strong>,</p>
                         
                         <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                            Ha recibido un nuevo mensaje a través de la página web de su libro <em>"Un Aporte Matemático en el Siglo 21"</em>.
+                            Ha recibido un nuevo mensaje a través de la página web de su libro <em>"Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"</em>.
                         </p>
                         
                         <div style="background-color: #fafafa; padding: 25px; border-radius: 4px; border: 1px solid #faab9f; margin: 30px 0;">

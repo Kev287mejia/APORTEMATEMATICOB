@@ -36,9 +36,9 @@
   <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
-      <li><a href="{% static 'index.html' %}">Inicio</a></li>
-      <li><a href="{% static 'contacto.html' %}" class="active">Contacto</a></li>
-      <li><a href="{% static 'pedido.html' %}">Libro Físico</a></li>
+      <li><a href="{% url 'index' %}">Inicio</a></li>
+      <li><a href="{% url 'contacto' %}" class="active">Contacto</a></li>
+      <li><a href="{% url 'pedido' %}">Libro Físico</a></li>
       <li><a href="{% static 'index.html#digital' %}">Libro Digital</a></li>
     </ul>
   </div>
@@ -48,19 +48,19 @@
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
         <ul>
-          <li class="menu-item"><a href="{% static 'index.html' %}" id="nav-inicio" class="nav-link">Inicio</a></li>
-          <li class="menu-item current-menu-item"><a href="{% static 'contacto.html' %}" id="nav-contacto" class="nav-link active">Contacto</a></li>
+          <li class="menu-item"><a href="{% url 'index' %}" id="nav-inicio" class="nav-link">Inicio</a></li>
+          <li class="menu-item current-menu-item"><a href="{% url 'contacto' %}" id="nav-contacto" class="nav-link active">Contacto</a></li>
         </ul>
       </nav>
       <div class="navigation-logo is-slicknav-logo">
-        <a href="{% static 'index.html' %}">
+        <a href="{% url 'index' %}">
           <h1>Aporte Matematico</h1>
         </a>
       </div>
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
-          <li class="menu-item"><a href="{% static 'pedido.html' %}" class="nav-link">Libro Físico</a></li>
-          <li class="menu-item"><a href="{% static 'index.html' %}" class="nav-link">Libro Digital</a></li>
+          <li class="menu-item"><a href="{% url 'pedido' %}" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% url 'index' %}" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
       <!-- Botón Hamburguesa (solo móvil) -->
