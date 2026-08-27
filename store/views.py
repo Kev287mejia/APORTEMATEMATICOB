@@ -111,7 +111,7 @@ def save_paypal_purchase(request):
                     </p>
                     
                     <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                        Espero con esta obra satisfacer su curiosidad sobre la factorización de la suma de dos cuadrados (a² + b², el Teorema de Pitágoras), porque éste hasta la fecha ha sido irreductible y nadie lo ha podido factorizar. Únicamente en esta obra está factorizado, facilitándole la factorización de la suma de dos cuadrados en los números reales.
+                        Espero con esta obra satisfacer su curiosidad sobre la factorización de la suma de dos cuadrados (a² + b², el Teorema de Pitágoras), porque éste hasta la fecha ha sido irreductible.
                     </p>
                     
                     <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
