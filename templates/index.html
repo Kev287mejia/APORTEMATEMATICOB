@@ -86,7 +86,7 @@
       <li><a href="{% url 'index' %}" class="active">Inicio</a></li>
       <li><a href="{% url 'contacto' %}">Contacto</a></li>
       <li><a href="{% url 'pedido' %}">Libro Físico</a></li>
-      <li><a href="#" onclick="closeMobileNav(); openDigitalPurchaseModal(); return false;">Libro Digital</a></li>
+      <li><a href="javascript:void(0)" onclick="closeMobileNav(); openDigitalPurchaseModal();">Libro Digital</a></li>
     </ul>
   </div>
 
@@ -105,7 +105,7 @@
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
           <li class="menu-item"><a href="{% url 'pedido' %}" class="nav-link">Libro Físico</a></li>
-          <li class="menu-item"><a href="#" onclick="openDigitalPurchaseModal(); return false;" class="nav-link">Libro Digital</a></li>
+          <li class="menu-item"><a href="javascript:void(0)" onclick="openDigitalPurchaseModal();" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
       <!-- Botón Hamburguesa (solo móvil) -->
