@@ -1,14 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel de Activación — Aporte Matemático</title>
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="{% static 'favicon.png' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
   
   <!-- ExcelJS para exportar archivos Excel con estilos -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
@@ -137,7 +138,7 @@
         Acceder
       </button>
 
-      <a href="index.html" style="display:block; margin-top:1.2rem; font-size:0.72rem;
+      <a href="{% static 'index.html' %}" style="display:block; margin-top:1.2rem; font-size:0.72rem;
         color:#bbb; text-decoration:none; font-family:var(--font-ui);">← Volver a la página principal</a>
     </div>
   </div>
@@ -214,7 +215,7 @@
     </div>
 
     <div style="text-align: center; margin-top: 25px;">
-      <a href="index.html" style="font-family: var(--font-ui); font-size: 0.75rem; color: #999; text-decoration: none;">&larr; Volver a la página principal</a>
+      <a href="{% static 'index.html' %}" style="font-family: var(--font-ui); font-size: 0.75rem; color: #999; text-decoration: none;">&larr; Volver a la página principal</a>
     </div>
   </div>
 

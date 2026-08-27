@@ -10,6 +10,113 @@ var KASHTAG = '$aportematematico'; // Kashtag oficial para transferencias Kash
 var STORAGE_KEY = 'aporte_matematico_digital_unlocked';
 var paypalRendered = false;
 
+// Sistema de alertas personalizado
+function injectGlobalModalCSS() {
+  if (!document.getElementById('g-modal-style')) {
+    var style = document.createElement('style');
+    style.id = 'g-modal-style';
+    style.innerHTML = `
+      .g-modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(3px);
+        z-index: 99999; display: flex; justify-content: center; align-items: center;
+        opacity: 0; visibility: hidden; transition: all 0.3s ease;
+      }
+      .g-modal-overlay.is-active { opacity: 1; visibility: visible; }
+      .g-modal-content {
+        background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(250, 171, 159, 0.5);
+        padding: 2.5rem 2rem; max-width: 450px; width: 90%; text-align: center;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s ease;
+      }
+      .g-modal-overlay.is-active .g-modal-content { transform: translateY(0); }
+      .g-modal-title { font-family: var(--font-heading, serif); font-size: 1.5rem; font-weight: 700; color: var(--color-accent2, #b8860b); margin-bottom: 0.8rem; }
+      .g-modal-text { font-family: var(--font-body, sans-serif); font-size: 0.95rem; color: var(--color-text, #333); line-height: 1.6; margin-bottom: 1.5rem; }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+function showGlobalAlert(title, message) {
+  injectGlobalModalCSS();
+  var overlay = document.getElementById('globalCustomAlertOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'globalCustomAlertOverlay';
+    overlay.className = 'g-modal-overlay';
+    overlay.innerHTML = `
+      <div class="g-modal-content">
+        <div class="g-modal-title" id="globalCustomAlertTitle"></div>
+        <div class="g-modal-text" id="globalCustomAlertText"></div>
+        <button class="shortcode-button btn btn-normal" onclick="document.getElementById('globalCustomAlertOverlay').classList.remove('is-active')" style="width: 100%; justify-content: center;">
+          <span>Aceptar</span>
+        </button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  document.getElementById('globalCustomAlertTitle').textContent = title || 'Aviso';
+  document.getElementById('globalCustomAlertText').textContent = message || '';
+  overlay.classList.add('is-active');
+}
+
+function showGlobalPrompt(title, message, callback) {
+  injectGlobalModalCSS();
+  var overlay = document.getElementById('globalCustomPromptOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'globalCustomPromptOverlay';
+    overlay.className = 'g-modal-overlay';
+    overlay.innerHTML = `
+      <div class="g-modal-content">
+        <div class="g-modal-title" id="globalCustomPromptTitle"></div>
+        <div class="g-modal-text" id="globalCustomPromptText"></div>
+        <input type="text" id="globalCustomPromptInput" style="width: 100%; padding: 0.8rem; margin-bottom: 1.5rem; border: 1px solid #ccc; font-family: var(--font-body, sans-serif); font-size: 1rem; outline: none; text-align: center;" autocomplete="off" />
+        <div style="display: flex; gap: 1rem;">
+          <button class="shortcode-button btn btn-normal" id="globalCustomPromptCancel" style="flex: 1; justify-content: center; background: #eee; color: #555; border: none;">
+            <span>Cancelar</span>
+          </button>
+          <button class="shortcode-button btn btn-color" id="globalCustomPromptOk" style="flex: 1; justify-content: center;">
+            <span>Aceptar</span>
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  document.getElementById('globalCustomPromptTitle').textContent = title || 'Ingresar Dato';
+  document.getElementById('globalCustomPromptText').textContent = message || '';
+  var inputEl = document.getElementById('globalCustomPromptInput');
+  inputEl.value = '';
+  
+  var btnOk = document.getElementById('globalCustomPromptOk');
+  var btnCancel = document.getElementById('globalCustomPromptCancel');
+  
+  var newBtnOk = btnOk.cloneNode(true);
+  var newBtnCancel = btnCancel.cloneNode(true);
+  btnOk.parentNode.replaceChild(newBtnOk, btnOk);
+  btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+  
+  newBtnOk.onclick = function() {
+    overlay.classList.remove('is-active');
+    if (callback) callback(inputEl.value);
+  };
+  
+  newBtnCancel.onclick = function() {
+    overlay.classList.remove('is-active');
+  };
+
+  // Soportar tecla "Enter" en el input
+  inputEl.onkeydown = function(e) {
+    if (e.key === 'Enter') newBtnOk.click();
+    if (e.key === 'Escape') newBtnCancel.click();
+  };
+
+  overlay.classList.add('is-active');
+  setTimeout(function() { inputEl.focus(); }, 100);
+}
+
 // Actualizar precio dinámicamente según idioma seleccionado
 function updateDigitalPrice() {
   var langSelect = document.getElementById('digitalBookLangSelect');
@@ -113,7 +220,7 @@ function unlockDigitalBook(purchaseData, langUnlocked) {
 
   // Notificación formal
   var langText = (lang === 'es') ? 'Español' : (lang === 'en') ? 'Inglés' : 'Español e Inglés';
-  alert('¡Pago completado con éxito! Las 168 páginas completas del libro han sido desbloqueadas (' + langText + ').');
+  showGlobalAlert('¡Pago Exitoso!', 'Las 168 páginas completas del libro han sido desbloqueadas (' + langText + ').');
 }
 
 // Actualizar elementos visuales de desbloqueo en la página y lector
@@ -163,69 +270,52 @@ function updateUnlockUI() {
 //  Sin la clave secreta del generador, es imposible fabricar
 //  un código válido aunque se conozca el formato.
 // =====================================================
-var CODE_SECRET = 'SYXK3mdnN3Sv$4ayGh#xZKHfsF8hj77n';
-
-// Códigos maestros directos (whitelist cerrada)
-var MASTER_CODES = [
-  'LIBRO2026', 'ACTIVAR100'
-];
-
-async function sha256Hex(text) {
-  var encoder = new TextEncoder();
-  var data = encoder.encode(text);
-  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  var hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-}
-
 async function isValidActivationCode(code) {
   if (!code) return false;
   var c = code.trim().toUpperCase();
 
-  // 1. Whitelist de códigos maestros (lista cerrada)
-  if (MASTER_CODES.indexOf(c) !== -1) return true;
-
-  // 2. Formato MAT con checksum: MAT-(ES|EN|ALL)-XXXX-CCCC
-  //    donde CCCC = primeros 4 chars del SHA-256("MAT-LANG-XXXX" + SECRET)
-  var matMatch = c.match(/^MAT-(ES|EN|ALL)-([A-Z0-9]{4})-([A-Z0-9]{4})$/);
-  if (matMatch) {
-    var lang   = matMatch[1];
-    var body   = matMatch[2];
-    var check  = matMatch[3];
-    var prefix = 'MAT-' + lang + '-' + body;
-    var hash   = await sha256Hex(prefix + CODE_SECRET);
-    var expected = hash.toUpperCase().replace(/[^A-Z0-9]/g, '').substring(0, 4);
-    return check === expected;
+  try {
+    var response = await fetch('/api/verify-purchase/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ code: c })
+    });
+    var data = await response.json();
+    return data.success === true;
+  } catch (e) {
+    console.error("Error validando el código con el servidor:", e);
+    return false;
   }
-
-  // 3. ID de transacción real de PayPal (17-22 chars alfanuméricos, sin guiones)
-  if (/^[A-Z0-9]{17,22}$/.test(c)) return true;
-  if (/^PAYID-[A-Z0-9]{15,20}$/.test(c)) return true;
-
-  return false;
 }
 
 // Restaurar compra manual o activar mediante código de WhatsApp / Kash
 function restorePurchasePrompt() {
-  var code = prompt('Ingresa tu Código de Activación (enviado por WhatsApp) o tu ID de transacción de PayPal:');
-  if (code && code.trim().length > 0) {
-    var cleanCode = code.trim().toUpperCase();
-    isValidActivationCode(cleanCode).then(function(valid) {
-      if (valid) {
-        var langUnlocked = 'all';
-        if (cleanCode.indexOf('MAT-ES-') === 0) langUnlocked = 'es';
-        else if (cleanCode.indexOf('MAT-EN-') === 0) langUnlocked = 'en';
-        else if (cleanCode.indexOf('MAT-ALL-') === 0) langUnlocked = 'all';
-        unlockDigitalBook({
-          id: cleanCode,
-          type: 'ACTIVATION_CODE',
-          date: new Date().toISOString()
-        }, langUnlocked);
-      } else {
-        alert('El código ingresado no es válido. Por favor verifica que esté bien escrito o contáctanos por WhatsApp.');
+  showGlobalPrompt(
+    'Activar Libro Digital',
+    'Ingresa tu Código de Activación (enviado por WhatsApp) o tu ID de transacción de PayPal:',
+    function(code) {
+      if (code && code.trim().length > 0) {
+        var cleanCode = code.trim().toUpperCase();
+        isValidActivationCode(cleanCode).then(function(valid) {
+          if (valid) {
+            var langUnlocked = 'all';
+            if (cleanCode.indexOf('MAT-ES-') === 0) langUnlocked = 'es';
+            else if (cleanCode.indexOf('MAT-EN-') === 0) langUnlocked = 'en';
+            else if (cleanCode.indexOf('MAT-ALL-') === 0) langUnlocked = 'all';
+            unlockDigitalBook({
+              id: cleanCode,
+              type: 'ACTIVATION_CODE',
+              date: new Date().toISOString()
+            }, langUnlocked);
+          } else {
+            showGlobalAlert('Código Inválido', 'El código ingresado no es válido. Por favor verifica que esté bien escrito o contáctanos por WhatsApp.');
+          }
+        });
       }
-    });
-  }
+    }
+  );
 }
 
 // Modal de compra digital
@@ -290,6 +380,21 @@ function initPayPalButtons() {
           var waUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(waMsg);
           window.open(waUrl, '_blank');
 
+          // Guardar compra en la base de datos de Django
+          fetch('/api/save-paypal-purchase/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id: details.id,
+              payerEmail: payerEmail,
+              status: details.status
+            })
+          }).then(response => response.json()).then(data => {
+            console.log('Compra guardada en DB:', data);
+          }).catch(err => console.error('Error guardando en DB:', err));
+
           unlockDigitalBook({
             id: details.id,
             payerName: payerName,
@@ -302,7 +407,7 @@ function initPayPalButtons() {
       onError: function(err) {
         console.error('Detalle error PayPal:', err);
         // Si el usuario intenta pagarse a sí mismo o la cuenta está en revisión
-        alert('Nota de PayPal: No es posible realizar un pago hacia tu misma cuenta personal o la cuenta requiere confirmar su correo en PayPal. Si eres el dueño de la cuenta, prueba con una cuenta o tarjeta distinta de un tercero.');
+        showGlobalAlert('Nota de PayPal', 'No es posible realizar un pago hacia tu misma cuenta personal o la cuenta requiere confirmar su correo en PayPal. Si eres el dueño de la cuenta, prueba con una cuenta o tarjeta distinta de un tercero.');
       }
     }).render('#paypal-button-container');
 

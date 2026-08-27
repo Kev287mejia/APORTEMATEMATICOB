@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
 <head>
@@ -44,15 +45,15 @@
   }
   </script>
 
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="{% static 'favicon.png' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="bookblock.css" />
-  <link rel="stylesheet" href="book-reader.css?v=3" />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <link rel="stylesheet" href="{% static 'bookblock.css' %}" />
+  <link rel="stylesheet" href="{% static 'book-reader.css?v=3' %}" />
   <!-- Odrin Modernizr for 3D Transform detection -->
-  <script src="assets_odrin/modernizr.js"></script>
+  <script src="{% static 'assets_odrin/modernizr.js' %}"></script>
   <!-- PayPal JavaScript SDK (Producción / Pagos Reales) -->
   <script src="https://www.paypal.com/sdk/js?client-id=BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4&currency=USD&disable-funding=credit,paylater"></script>
   <style>
@@ -82,9 +83,9 @@
   <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
-      <li><a href="index.html" class="active">Inicio</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
-      <li><a href="pedido.html">Libro Físico</a></li>
+      <li><a href="{% static 'index.html' %}" class="active">Inicio</a></li>
+      <li><a href="{% static 'contacto.html' %}">Contacto</a></li>
+      <li><a href="{% static 'pedido.html' %}">Libro Físico</a></li>
       <li><a href="#" onclick="closeMobileNav(); openDigitalPurchaseModal(); return false;">Libro Digital</a></li>
     </ul>
   </div>
@@ -94,16 +95,16 @@
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
         <ul>
-          <li class="menu-item current-menu-item"><a href="index.html" id="nav-inicio" class="nav-link active">Inicio</a></li>
-          <li class="menu-item"><a href="contacto.html" id="nav-contacto" class="nav-link">Contacto</a></li>
+          <li class="menu-item current-menu-item"><a href="{% static 'index.html' %}" id="nav-inicio" class="nav-link active">Inicio</a></li>
+          <li class="menu-item"><a href="{% static 'contacto.html' %}" id="nav-contacto" class="nav-link">Contacto</a></li>
         </ul>
       </nav>
       <div class="navigation-logo is-slicknav-logo">
-        <a href="index.html"><h1>Aporte Matematico</h1></a>
+        <a href="{% static 'index.html' %}"><h1>Aporte Matematico</h1></a>
       </div>
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
-          <li class="menu-item"><a href="pedido.html" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% static 'pedido.html' %}" class="nav-link">Libro Físico</a></li>
           <li class="menu-item"><a href="#" onclick="openDigitalPurchaseModal(); return false;" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
@@ -144,7 +145,7 @@
             </div>
             <div class="spacer-sm"></div>
             <div class="buttons-row">
-              <a href="pedido.html" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-pedir-libro" data-wow-delay="0.1s">
+              <a href="{% static 'pedido.html' %}" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-pedir-libro" data-wow-delay="0.1s">
                 <span>Pedir Libro Físico ($30)</span>
               </a>
               <button type="button" class="shortcode-button btn btn-color is-wow fadeIn" id="btn-comprar-digital" data-wow-delay="0.15s" onclick="openDigitalPurchaseModal()">
@@ -167,7 +168,7 @@
                 <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('es', 1);">
                   <span>Leer en Plataforma (ES)</span>
                 </button>
-                <a href="LIBROS/Libro español.pdf" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
+                <a href="{% static 'LIBROS/Libro español.pdf' %}" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                   <span>Descargar PDF (ES)</span>
                 </a>
@@ -176,7 +177,7 @@
                 <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('en', 1);">
                   <span>Read on Platform (EN)</span>
                 </button>
-                <a href="LIBROS/Libro Ingles.pdf" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
+                <a href="{% static 'LIBROS/Libro Ingles.pdf' %}" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                   <span>Download PDF (EN)</span>
                 </a>
@@ -185,7 +186,7 @@
           </div>
           <div class="fw-col-md-6 fw-col-sm-12">
             <div class="BookImage">
-              <img src="libro-full-2.png" alt="Un Aporte Matem&aacute;tico en el Siglo 21 - Portada" width="100%" />
+              <img src="{% static 'libro-full-2.png' %}" alt="Un Aporte Matem&aacute;tico en el Siglo 21 - Portada" width="100%" />
             </div>
           </div>
         </div>
@@ -205,7 +206,7 @@
             <div class="ContentSliderWrapper is-wow fadeInUp" data-wow-delay="0s">
               <div class="content-slider-images">
                 <div class="content-slider-image">
-                  <img src="libro.png" alt="Factorizaci&oacute;n de una Suma de Cuadrados" />
+                  <img src="{% static 'libro.png' %}" alt="Factorizaci&oacute;n de una Suma de Cuadrados" />
                 </div>
               </div>
               <div class="content-slider">
@@ -319,7 +320,7 @@
             </div>
 
             <!-- Kash QR (Carga kash_qr.png si existe o QR directo de WhatsApp) -->
-            <img id="kashQrCode" class="kash-qr-img" src="kash_qr.png" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F50584183408%3Ftext%3DHola%252C%2Bdeseo%2Bpagar%2Bpor%2BKash%2Bal%2Buser%2B%2524aportematematico';" alt="Código QR Kash $aportematematico" />
+            <img id="kashQrCode" class="kash-qr-img" src="{% static 'kash_qr.png' %}" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fwa.me%2F50584183408%3Ftext%3DHola%252C%2Bdeseo%2Bpagar%2Bpor%2BKash%2Bal%2Buser%2B%2524aportematematico';" alt="Código QR Kash $aportematematico" />
             
             <p style="font-family: var(--font-body); font-style: italic; font-size: 0.85rem; color: #666; margin-top: 8px; line-height: 1.5;">
               Transfiere <strong>$10 USD</strong> a <strong>$aportematematico</strong> desde tu aplicaci&oacute;n de Kash y env&iacute;anos tu captura para recibir tu clave de desbloqueo.
@@ -429,9 +430,9 @@
   </div><!-- end book-container -->
 
   <!-- SCRIPTS -->
-  <script src="assets_odrin/jquery.min.js"></script>
+  <script src="{% static 'assets_odrin/jquery.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
-  <script src="script.js?v=2"></script>
+  <script src="{% static 'script.js?v=2' %}"></script>
 
   <script>
     /* ---- Menú Hamburguesa Móvil ---- */

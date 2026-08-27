@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
 <head>
@@ -23,11 +24,11 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="https://kev287mejia.github.io/APORTEMATEMATICOB/contacto.html" />
 
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="{% static 'favicon.png' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
 </head>
 <body class="page-contacto">
 
@@ -35,10 +36,10 @@
   <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="contacto.html" class="active">Contacto</a></li>
-      <li><a href="pedido.html">Libro Físico</a></li>
-      <li><a href="index.html#digital">Libro Digital</a></li>
+      <li><a href="{% static 'index.html' %}">Inicio</a></li>
+      <li><a href="{% static 'contacto.html' %}" class="active">Contacto</a></li>
+      <li><a href="{% static 'pedido.html' %}">Libro Físico</a></li>
+      <li><a href="{% static 'index.html#digital' %}">Libro Digital</a></li>
     </ul>
   </div>
 
@@ -47,19 +48,19 @@
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
         <ul>
-          <li class="menu-item"><a href="index.html" id="nav-inicio" class="nav-link">Inicio</a></li>
-          <li class="menu-item current-menu-item"><a href="contacto.html" id="nav-contacto" class="nav-link active">Contacto</a></li>
+          <li class="menu-item"><a href="{% static 'index.html' %}" id="nav-inicio" class="nav-link">Inicio</a></li>
+          <li class="menu-item current-menu-item"><a href="{% static 'contacto.html' %}" id="nav-contacto" class="nav-link active">Contacto</a></li>
         </ul>
       </nav>
       <div class="navigation-logo is-slicknav-logo">
-        <a href="index.html">
+        <a href="{% static 'index.html' %}">
           <h1>Aporte Matematico</h1>
         </a>
       </div>
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
-          <li class="menu-item"><a href="pedido.html" class="nav-link">Libro Físico</a></li>
-          <li class="menu-item"><a href="index.html" class="nav-link">Libro Digital</a></li>
+          <li class="menu-item"><a href="{% static 'pedido.html' %}" class="nav-link">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% static 'index.html' %}" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
       <!-- Botón Hamburguesa (solo móvil) -->
@@ -93,6 +94,7 @@
           <!-- Right: form -->
           <div class="contact-right is-wow fadeInUp" style="transition-delay:0.15s">
             <form class="contact-form" id="contactForm" onsubmit="handleSubmit(event)" novalidate>
+              {% csrf_token %}
               <div class="form-group">
                 <label for="nombre">Tu Nombre</label>
                 <input type="text" id="nombre" name="nombre" autocomplete="name" required />
@@ -132,7 +134,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="{% static 'script.js' %}"></script>
   <script>
     function handleSubmit(e) {
       e.preventDefault();
@@ -142,23 +144,39 @@
       var subject = document.getElementById('asunto').value;
       var message = document.getElementById('mensaje').value;
 
-      // Al no tener backend, redirigimos la consulta directamente al WhatsApp oficial
-      var phone = '50588880000'; // <- Reemplazar con el número real de WhatsApp del profesor
-      var waMsg = 'Hola, mi nombre es ' + name + ' (' + email + ').\n\n' +
-                  'Asunto: ' + subject + '\n\n' +
-                  'Mensaje:\n' + message;
+      var formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('subject', subject);
+      formData.append('message', message);
       
-      var waUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(waMsg);
-      
-      // Abrir WhatsApp en nueva pestaña
-      window.open(waUrl, '_blank');
+      var csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-      // Limpiar formulario y mostrar éxito
-      var success = document.getElementById('formSuccess');
-      success.style.display = 'block';
-      document.getElementById('contactForm').reset();
-  
-      setTimeout(function() { success.style.display = 'none'; }, 5000);
+      fetch('/submit-contacto/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': csrfToken
+        }
+      }).then(() => {
+        // Al no tener backend que envíe correos, redirigimos la consulta directamente al WhatsApp oficial también
+        var phone = '50584183408'; // <- Número real de WhatsApp del profesor
+        var waMsg = 'Hola, mi nombre es ' + name + ' (' + email + ').\n\n' +
+                    'Asunto: ' + subject + '\n\n' +
+                    'Mensaje:\n' + message;
+        
+        var waUrl = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(waMsg);
+        
+        // Abrir WhatsApp en nueva pestaña
+        window.open(waUrl, '_blank');
+
+        // Limpiar formulario y mostrar éxito
+        var success = document.getElementById('formSuccess');
+        success.style.display = 'block';
+        document.getElementById('contactForm').reset();
+    
+        setTimeout(function() { success.style.display = 'none'; }, 5000);
+      }).catch(err => console.error(err));
     }
 
     /* ---- Menú Hamburguesa Móvil ---- */

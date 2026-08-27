@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
 <head>
@@ -23,11 +24,11 @@
   <!-- Canonical URL -->
   <link rel="canonical" href="https://kev287mejia.github.io/APORTEMATEMATICOB/pedido.html" />
 
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="{% static 'favicon.png' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
   <style>
     /* =========================================================
        PEDIDO PAGE — Editorial Styles (harmonized with Odrin)
@@ -179,6 +180,61 @@
       .form-grid-2 { grid-template-columns: 1fr; }
       .order-card { padding: 1.8rem 1.2rem; }
     }
+
+    /* Custom Alert Modal */
+    .custom-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(3px);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .custom-modal-overlay.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .custom-modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(250, 171, 159, 0.5);
+      padding: 2.5rem 2rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    
+    .custom-modal-overlay.is-active .custom-modal-content {
+      transform: translateY(0);
+    }
+    
+    .custom-modal-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-accent2);
+      margin-bottom: 0.8rem;
+    }
+    
+    .custom-modal-text {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--color-text);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
   </style>
 </head>
 <body class="page-pedido">
@@ -187,10 +243,10 @@
   <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
-      <li><a href="pedido.html" class="active">Libro Físico</a></li>
-      <li><a href="index.html#digital">Libro Digital</a></li>
+      <li><a href="{% static 'index.html' %}">Inicio</a></li>
+      <li><a href="{% static 'contacto.html' %}">Contacto</a></li>
+      <li><a href="{% static 'pedido.html' %}" class="active">Libro Físico</a></li>
+      <li><a href="{% static 'index.html#digital' %}">Libro Digital</a></li>
     </ul>
   </div>
 
@@ -199,17 +255,17 @@
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
         <ul>
-          <li class="menu-item"><a href="index.html" id="nav-inicio" class="nav-link">Inicio</a></li>
-          <li class="menu-item"><a href="contacto.html" id="nav-contacto" class="nav-link">Contacto</a></li>
+          <li class="menu-item"><a href="{% static 'index.html' %}" id="nav-inicio" class="nav-link">Inicio</a></li>
+          <li class="menu-item"><a href="{% static 'contacto.html' %}" id="nav-contacto" class="nav-link">Contacto</a></li>
         </ul>
       </nav>
       <div class="navigation-logo is-slicknav-logo">
-        <a href="index.html"><h1>Aporte Matematico</h1></a>
+        <a href="{% static 'index.html' %}"><h1>Aporte Matematico</h1></a>
       </div>
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
-          <li class="menu-item current-menu-item"><a href="pedido.html" class="nav-link active">Libro Físico</a></li>
-          <li class="menu-item"><a href="index.html" class="nav-link">Libro Digital</a></li>
+          <li class="menu-item current-menu-item"><a href="{% static 'pedido.html' %}" class="nav-link active">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% static 'index.html' %}" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
       <!-- Botón Hamburguesa (solo móvil) -->
@@ -269,7 +325,7 @@
                  class="shortcode-button btn btn-normal">
                 <span>Consultar por WhatsApp</span>
               </a>
-              <a href="index.html" class="shortcode-button btn btn-normal">
+              <a href="{% static 'index.html' %}" class="shortcode-button btn btn-normal">
                 <span>Volver al Inicio</span>
               </a>
             </div>
@@ -287,7 +343,7 @@
               </div>
 
               <form class="contact-form" id="orderForm" novalidate>
-                
+                {% csrf_token %}
                 <div class="form-grid-2">
                   <div class="form-group">
                     <label for="order-name">Nombre Completo *</label>
@@ -529,7 +585,7 @@
           var city = document.getElementById('order-city').value;
           
           if (!name || !phone || !email || !city) {
-            alert('Por favor completa todos los campos obligatorios marcados con asterisco (*).');
+            showCustomAlert();
             return;
           }
 
@@ -553,17 +609,42 @@
 
           var waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
 
-          setTimeout(function() {
-            form.style.display = 'none';
-            document.getElementById('orderSuccess').style.display = 'block';
-            window.open(waUrl, '_blank');
-          }, 600);
+          // Enviar al backend Django
+          var formData = new FormData();
+          formData.append('name', name);
+          formData.append('phone', phone);
+          formData.append('email', email);
+          formData.append('department', city);
+          formData.append('quantity', qty);
+          formData.append('notes', (address ? address + ' - ' : '') + notes);
+          
+          fetch('/submit-pedido/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+          }).then(() => {
+            setTimeout(function() {
+              form.style.display = 'none';
+              document.getElementById('orderSuccess').style.display = 'block';
+              window.open(waUrl, '_blank');
+            }, 600);
+          }).catch(err => console.error(err));
         });
       }
     });
   </script>
 
   <script>
+    /* ---- Custom Alert Modal Logic ---- */
+    function showCustomAlert() {
+      document.getElementById('customAlertOverlay').classList.add('is-active');
+    }
+    function closeCustomAlert() {
+      document.getElementById('customAlertOverlay').classList.remove('is-active');
+    }
+
     /* ---- Menú Hamburguesa Móvil ---- */
     function toggleMobileNav() {
       var overlay = document.getElementById('mobileNavOverlay');
@@ -588,6 +669,16 @@
       if (e.target === this) closeMobileNav();
     });
   </script>
+  <!-- Custom Alert Modal -->
+  <div class="custom-modal-overlay" id="customAlertOverlay">
+    <div class="custom-modal-content">
+      <div class="custom-modal-title">Aviso Importante</div>
+      <div class="custom-modal-text">Por favor completa todos los campos obligatorios marcados con asterisco (*).</div>
+      <button class="shortcode-button btn btn-normal" onclick="closeCustomAlert()">
+        <span>Entendido</span>
+      </button>
+    </div>
+  </div>
 </body>
 </html>
 
