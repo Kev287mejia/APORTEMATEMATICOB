@@ -243,9 +243,9 @@
   <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
     <div class="mobile-nav-logo">Aporte Matematico</div>
     <ul>
-      <li><a href="{% static 'index.html' %}">Inicio</a></li>
-      <li><a href="{% static 'contacto.html' %}">Contacto</a></li>
-      <li><a href="{% static 'pedido.html' %}" class="active">Libro Físico</a></li>
+      <li><a href="{% url 'index' %}">Inicio</a></li>
+      <li><a href="{% url 'contacto' %}">Contacto</a></li>
+      <li><a href="{% url 'pedido' %}" class="active">Libro Físico</a></li>
       <li><a href="{% static 'index.html#digital' %}">Libro Digital</a></li>
     </ul>
   </div>
@@ -255,17 +255,17 @@
     <div class="main-nav-inner">
       <nav class="main-navigation-menu navigation-left nav-left" id="main-navigation-menu-left">
         <ul>
-          <li class="menu-item"><a href="{% static 'index.html' %}" id="nav-inicio" class="nav-link">Inicio</a></li>
-          <li class="menu-item"><a href="{% static 'contacto.html' %}" id="nav-contacto" class="nav-link">Contacto</a></li>
+          <li class="menu-item"><a href="{% url 'index' %}" id="nav-inicio" class="nav-link">Inicio</a></li>
+          <li class="menu-item"><a href="{% url 'contacto' %}" id="nav-contacto" class="nav-link">Contacto</a></li>
         </ul>
       </nav>
       <div class="navigation-logo is-slicknav-logo">
-        <a href="{% static 'index.html' %}"><h1>Aporte Matematico</h1></a>
+        <a href="{% url 'index' %}"><h1>Aporte Matematico</h1></a>
       </div>
       <nav class="main-navigation-menu navigation-right nav-right" id="main-navigation-menu-right">
         <ul>
-          <li class="menu-item current-menu-item"><a href="{% static 'pedido.html' %}" class="nav-link active">Libro Físico</a></li>
-          <li class="menu-item"><a href="{% static 'index.html' %}" class="nav-link">Libro Digital</a></li>
+          <li class="menu-item current-menu-item"><a href="{% url 'pedido' %}" class="nav-link active">Libro Físico</a></li>
+          <li class="menu-item"><a href="{% url 'index' %}" class="nav-link">Libro Digital</a></li>
         </ul>
       </nav>
       <!-- Botón Hamburguesa (solo móvil) -->
@@ -325,7 +325,7 @@
                  class="shortcode-button btn btn-normal">
                 <span>Consultar por WhatsApp</span>
               </a>
-              <a href="{% static 'index.html' %}" class="shortcode-button btn btn-normal">
+              <a href="{% url 'index' %}" class="shortcode-button btn btn-normal">
                 <span>Volver al Inicio</span>
               </a>
             </div>
@@ -535,10 +535,10 @@
 
     // Dynamic WhatsApp URL builder
     function updateWhatsAppLinks(nombre, ciudad, cantidad) {
-      var msg = 'Hola, deseo solicitar el libro físico "Un Aporte Matemático en el Siglo 21".';
-      if (nombre) msg += '\n\nNombre: ' + nombre;
-      if (ciudad) msg += '\nDestino: ' + ciudad;
-      if (cantidad) msg += '\nCantidad: ' + cantidad;
+      var msg = '¡Hola Profesor Bienvenido! 👋\n\nEs un honor saludarle. Estoy sumamente interesado/a en adquirir la edición impresa de su libro "Un Aporte Matemático en el Siglo 21".\n\nMe gustaría coordinar con usted el pago y el envío.';
+      if (nombre) msg += '\n\n👤 Mi nombre es: ' + nombre;
+      if (ciudad) msg += '\n📍 Soy de: ' + ciudad;
+      if (cantidad) msg += '\n📚 Me interesan: ' + cantidad + ' ejemplares';
       var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
       var btnForm = document.getElementById('btnWhatsappForm');
       var btnDirect = document.getElementById('btnWhatsappDirect');
@@ -596,16 +596,17 @@
           var qty = document.getElementById('order-qty').value;
           var notes = document.getElementById('order-notes').value.trim();
           
-          var msg = 'PEDIDO DE LIBRO FÍSICO\n'
-            + 'Obra: Un Aporte Matemático en el Siglo 21\n\n'
-            + 'Nombre: ' + name + '\n'
-            + 'Teléfono: ' + phone + '\n'
-            + 'Correo: ' + email + '\n'
-            + 'Destino: ' + city + '\n'
-            + 'Cantidad: ' + qty + '\n'
-            + 'Dirección / Agencia: ' + (address || 'Por coordinar') + '\n'
-            + (notes ? 'Notas: ' + notes + '\n' : '')
-            + '\nSolicitud enviada para coordinar envío Cargo Trans.';
+          var msg = '¡Hola Profesor Bienvenido! 👋\n\n'
+            + 'Es un gran honor saludarle. Le escribo porque estoy sumamente interesado/a en adquirir la edición impresa de su obra "Un Aporte Matemático en el Siglo 21".\n\n'
+            + 'A continuación le comparto mis datos para que podamos coordinar el pago y el envío a través de Cargo Trans:\n\n'
+            + '👤 Nombre: ' + name + '\n'
+            + '📞 Teléfono: ' + phone + '\n'
+            + '✉️ Correo: ' + email + '\n'
+            + '📍 Destino: ' + city + '\n'
+            + '📚 Cantidad: ' + qty + ' ejemplares\n'
+            + '🏠 Dirección exacta: ' + (address || 'Por coordinar') + '\n'
+            + (notes ? '📝 Notas adicionales: ' + notes + '\n' : '')
+            + '\n¡Quedo a la espera de sus indicaciones para concretar la compra! Muchas gracias.';
 
           var waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
 
