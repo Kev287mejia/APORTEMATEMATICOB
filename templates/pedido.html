@@ -535,10 +535,10 @@
 
     // Dynamic WhatsApp URL builder
     function updateWhatsAppLinks(nombre, ciudad, cantidad) {
-      var msg = '¡Hola Profesor Bienvenido! 👋\n\nEs un honor saludarle. Estoy sumamente interesado/a en adquirir la edición impresa de su libro "Un Aporte Matemático en el Siglo 21".\n\nMe gustaría coordinar con usted el pago y el envío.';
-      if (nombre) msg += '\n\n👤 Mi nombre es: ' + nombre;
-      if (ciudad) msg += '\n📍 Soy de: ' + ciudad;
-      if (cantidad) msg += '\n📚 Me interesan: ' + cantidad + ' ejemplares';
+      var msg = '¡Hola Profesor Bienvenido!\n\nEs un honor saludarle. Estoy sumamente interesado/a en adquirir la edición impresa de su libro "Un Aporte Matemático en el Siglo 21".\n\nMe gustaría coordinar con usted el pago y el envío.';
+      if (nombre) msg += '\n\nMi nombre es: ' + nombre;
+      if (ciudad) msg += '\nSoy de: ' + ciudad;
+      if (cantidad) msg += '\nMe interesan: ' + cantidad + ' ejemplares';
       var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
       var btnForm = document.getElementById('btnWhatsappForm');
       var btnDirect = document.getElementById('btnWhatsappDirect');
@@ -596,16 +596,16 @@
           var qty = document.getElementById('order-qty').value;
           var notes = document.getElementById('order-notes').value.trim();
           
-          var msg = '¡Hola Profesor Bienvenido! 👋\n\n'
+          var msg = '¡Hola Profesor Bienvenido!\n\n'
             + 'Es un gran honor saludarle. Le escribo porque estoy sumamente interesado/a en adquirir la edición impresa de su obra "Un Aporte Matemático en el Siglo 21".\n\n'
             + 'A continuación le comparto mis datos para que podamos coordinar el pago y el envío a través de Cargo Trans:\n\n'
-            + '👤 Nombre: ' + name + '\n'
-            + '📞 Teléfono: ' + phone + '\n'
-            + '✉️ Correo: ' + email + '\n'
-            + '📍 Destino: ' + city + '\n'
-            + '📚 Cantidad: ' + qty + ' ejemplares\n'
-            + '🏠 Dirección exacta: ' + (address || 'Por coordinar') + '\n'
-            + (notes ? '📝 Notas adicionales: ' + notes + '\n' : '')
+            + 'Nombre: ' + name + '\n'
+            + 'Teléfono: ' + phone + '\n'
+            + 'Correo: ' + email + '\n'
+            + 'Destino: ' + city + '\n'
+            + 'Cantidad: ' + qty + ' ejemplares\n'
+            + 'Dirección exacta: ' + (address || 'Por coordinar') + '\n'
+            + (notes ? 'Notas adicionales: ' + notes + '\n' : '')
             + '\n¡Quedo a la espera de sus indicaciones para concretar la compra! Muchas gracias.';
 
           var waUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
