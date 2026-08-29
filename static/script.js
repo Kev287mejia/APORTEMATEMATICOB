@@ -368,8 +368,8 @@ function initPayPalButtons() {
           var payerName = (details.payer && details.payer.name) ? (details.payer.name.given_name + ' ' + (details.payer.name.surname || '')) : 'Comprador';
           var payerEmail = (details.payer) ? details.payer.email_address : '';
           
-          // Al no tener backend estático para correos, redirigimos al WhatsApp oficial con el recibo
-          var phone = '50588880000'; // <- Reemplazar con WhatsApp real
+          // Redirigir al WhatsApp oficial con el recibo y comprobante
+          var phone = '50584183408'; // WhatsApp oficial del autor
           var langText = (selectedLang === 'es') ? 'Español' : (selectedLang === 'en') ? 'Inglés' : 'Bundle (Ambos)';
           var waMsg = '¡Hola! Acabo de comprar tu libro digital a través de PayPal.\n\n' +
                       'Mi nombre: ' + payerName + '\n' +

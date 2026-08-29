@@ -1,20 +1,41 @@
-from django.shortcuts import render
+import os
+import logging
+import string
+import random
+import base64
+import resend
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.db import transaction
+from django.utils import timezone
+from django.conf import settings
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import DigitalPurchase, ActivationCode
-from django.utils import timezone
+
+from .models import DigitalPurchase, ActivationCode, PhysicalOrder, ContactMessage
+
+logger = logging.getLogger('store')
+
 
 def index_view(request):
     return render(request, 'index.html')
 
+
 def contacto_view(request):
     return render(request, 'contacto.html')
+
 
 def pedido_view(request):
     return render(request, 'pedido.html')
 
+
+@staff_member_required(login_url='/admin/login/?next=/activador.html')
 def activador_view(request):
     return render(request, 'activador.html')
+
 
 @api_view(['POST'])
 def verify_purchase(request):
@@ -33,6 +54,7 @@ def verify_purchase(request):
         activation.is_used = True
         activation.used_at = timezone.now()
         activation.save()
+        logger.info(f"ActivationCode {code} successfully activated.")
         return Response({'success': True, 'message': 'Código activado con éxito.'})
     except ActivationCode.DoesNotExist:
         pass
@@ -47,10 +69,11 @@ def verify_purchase(request):
         # Marcar como usado
         purchase.is_used = True
         purchase.save()
-        
+        logger.info(f"DigitalPurchase {code} successfully verified.")
         return Response({'success': True, 'message': 'Compra verificada con éxito.'})
     except DigitalPurchase.DoesNotExist:
         return Response({'success': False, 'message': 'Código o transacción inválidos.'}, status=404)
+
 
 @api_view(['POST'])
 def save_paypal_purchase(request):
@@ -62,47 +85,48 @@ def save_paypal_purchase(request):
     if not transaction_id:
         return Response({'success': False, 'message': 'Falta el ID de transacción'}, status=400)
     
-    # Crear o actualizar la compra digital
-    purchase, created = DigitalPurchase.objects.get_or_create(
-        transaction_id=transaction_id,
-        defaults={
-            'buyer_email': payer_email,
-            'payment_method': 'paypal',
-            'status': status
-        }
-    )
-    
-    # Si la compra es nueva y fue completada, generar código y enviar correo
-    if created and status == 'completed':
-        import resend
-        import string
-        import random
-        from django.conf import settings
-        
-        # Generar código aleatorio de 8 caracteres
-        code_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
-        activation = ActivationCode.objects.create(
-            purchase=purchase,
-            code=code_str
+    with transaction.atomic():
+        # Crear o actualizar la compra digital
+        purchase, created = DigitalPurchase.objects.get_or_create(
+            transaction_id=transaction_id,
+            defaults={
+                'buyer_email': payer_email,
+                'payment_method': 'paypal',
+                'status': status
+            }
         )
         
-        # Cargar firma manuscrita en base64
-        import base64
-        sig_file_path = os.path.join(settings.BASE_DIR, 'static', 'firma_acevedo.png')
-        sig_b64_src = ""
-        try:
-            with open(sig_file_path, 'rb') as sf:
-                sig_b64_src = f"data:image/png;base64,{base64.b64encode(sf.read()).decode('utf-8')}"
-        except Exception:
-            pass
+        # Si la compra es nueva y fue completada, generar código y enviar correo
+        if created and status == 'completed':
+            # Generar código único aleatorio de 8 caracteres
+            while True:
+                code_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+                if not ActivationCode.objects.filter(code=code_str).exists():
+                    break
 
-        # Enviar correo al comprador
-        resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
-        try:
-            resend.Emails.send({
-                "from": "onboarding@resend.dev",
-                "to": payer_email,
-                "subject": '¡Gracias por adquirir "Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"!',
+            activation = ActivationCode.objects.create(
+                purchase=purchase,
+                code=code_str
+            )
+            logger.info(f"Generated new activation code {code_str} for purchase {transaction_id}")
+            
+            # Cargar firma manuscrita en base64
+            sig_file_path = os.path.join(settings.BASE_DIR, 'static', 'firma_acevedo.png')
+            sig_b64_src = ""
+            try:
+                if os.path.exists(sig_file_path):
+                    with open(sig_file_path, 'rb') as sf:
+                        sig_b64_src = f"data:image/png;base64,{base64.b64encode(sf.read()).decode('utf-8')}"
+            except Exception as e:
+                logger.warning(f"Could not load signature file: {e}")
+
+            # Enviar correo al comprador
+            resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
+            try:
+                resend.Emails.send({
+                    "from": "onboarding@resend.dev",
+                    "to": payer_email,
+                    "subject": '¡Gracias por adquirir "Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"!',
                 "html": f"""
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,14 +231,12 @@ def save_paypal_purchase(request):
                 </div>
                 """
             })
-        except Exception as e:
-            print("Error enviando correo de compra:", e)
+                logger.info(f"Purchase confirmation email sent successfully to {payer_email}")
+            except Exception as e:
+                logger.error(f"Error sending purchase confirmation email to {payer_email}: {e}")
             
     return Response({'success': True, 'message': 'Compra guardada y correo enviado (si aplica).'})
 
-from .models import PhysicalOrder, ContactMessage
-from django.shortcuts import redirect
-from django.contrib import messages
 
 def submit_physical_order(request):
     if request.method == 'POST':
@@ -225,15 +247,21 @@ def submit_physical_order(request):
         notes = request.POST.get('notes', '')
         
         if name and phone and department:
-            PhysicalOrder.objects.create(
-                name=name, phone=phone, department=department, 
-                quantity=quantity, notes=notes
-            )
-            messages.success(request, '¡Tu pedido ha sido recibido con éxito! Nos pondremos en contacto pronto.')
+            try:
+                order = PhysicalOrder.objects.create(
+                    name=name, phone=phone, department=department, 
+                    quantity=quantity, notes=notes
+                )
+                logger.info(f"New physical order created: {order.id} for {name}")
+                messages.success(request, '¡Tu pedido ha sido recibido con éxito! Nos pondremos en contacto pronto.')
+            except Exception as e:
+                logger.error(f"Error creating physical order: {e}")
+                messages.error(request, 'Hubo un problema al procesar tu pedido. Por favor intenta nuevamente.')
             return redirect('pedido')
         else:
             messages.error(request, 'Por favor completa todos los campos requeridos.')
     return redirect('pedido')
+
 
 def submit_contact(request):
     if request.method == 'POST':
@@ -243,13 +271,15 @@ def submit_contact(request):
         message = request.POST.get('message')
         
         if name and email and message:
-            ContactMessage.objects.create(
-                name=name, email=email, subject=subject, message=message
-            )
+            try:
+                ContactMessage.objects.create(
+                    name=name, email=email, subject=subject, message=message
+                )
+                logger.info(f"New contact message from {name} ({email})")
+            except Exception as e:
+                logger.error(f"Error saving contact message: {e}")
             
             # Enviar correo de notificación al profesor
-            import resend
-            from django.conf import settings
             resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
             try:
                 resend.Emails.send({
@@ -311,8 +341,9 @@ def submit_contact(request):
                     </div>
                     """
                 })
+                logger.info(f"Contact notification email sent for message from {email}")
             except Exception as e:
-                print("Error enviando notificación de contacto:", e)
+                logger.error(f"Error sending contact notification email: {e}")
                 
             messages.success(request, '¡Gracias por contactarnos! Tu mensaje ha sido enviado.')
             return redirect('contacto')
