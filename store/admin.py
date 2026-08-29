@@ -131,7 +131,7 @@ def export_orders_to_excel(modeladmin, request, queryset):
     return response
 
 
-@admin.action(description="🔑 Exportar Códigos de Activación a Excel (.xlsx)")
+@admin.action(description="🔑 Exportar Códigos a Excel (.xlsx)")
 def export_codes_to_excel(modeladmin, request, queryset):
     wb = Workbook()
     ws = wb.active
@@ -157,6 +157,34 @@ def export_codes_to_excel(modeladmin, request, queryset):
 
     response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     filename = f"Reporte_Codigos_Activacion_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    wb.save(response)
+    return response
+
+
+@admin.action(description="✉️ Exportar Mensajes a Excel (.xlsx)")
+def export_messages_to_excel(modeladmin, request, queryset):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Mensajes de Contacto"
+
+    headers = ["ID", "Nombre del Remitente", "Correo Electrónico", "Asunto", "Mensaje", "Fecha de Envío"]
+    rows = []
+    for m in queryset:
+        date_str = m.created_at.strftime("%Y-%m-%d %H:%M") if m.created_at else ""
+        rows.append([
+            m.id,
+            m.name,
+            m.email,
+            m.subject or "Sin Asunto",
+            m.message,
+            date_str
+        ])
+
+    apply_excel_styling(ws, "Reporte de Mensajes de Contacto Web", headers, rows)
+
+    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    filename = f"Reporte_Mensajes_Contacto_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     wb.save(response)
     return response
@@ -203,5 +231,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
     ordering = ('-created_at',)
     date_hierarchy = 'created_at'
+    actions = [export_messages_to_excel]
+
 
 

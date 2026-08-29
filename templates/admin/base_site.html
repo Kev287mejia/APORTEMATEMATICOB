@@ -421,15 +421,60 @@
       box-shadow: 0 6px 18px rgba(211, 141, 69, 0.35) !important;
     }
 
+    /* ---- BARRA DE ACCIONES (EXPORTAR EXCEL / OPERACIONES) ---- */
+    .actions {
+      padding: 16px 20px !important;
+      background: #faf7f2 !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
+      border-radius: 6px !important;
+      margin-bottom: 20px !important;
+      display: flex !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 15px !important;
+    }
+
+    .actions label {
+      font-family: var(--font-ui) !important;
+      font-size: 0.9rem !important;
+      font-weight: 700 !important;
+      color: #2c2c2c !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+    }
+
     .actions select {
       font-family: var(--font-ui) !important;
-      font-size: 0.88rem !important;
-      padding: 9px 14px !important;
-      border: 1px solid rgba(250, 171, 159, 0.5) !important;
+      font-size: 0.9rem !important;
+      padding: 10px 18px !important;
+      border: 1px solid rgba(250, 171, 159, 0.6) !important;
       border-radius: 4px !important;
       background: #ffffff !important;
       color: #2c2c2c !important;
       font-weight: 600 !important;
+      min-width: 320px !important;
+      cursor: pointer !important;
+    }
+
+    .actions button.button,
+    .actions button {
+      padding: 10px 24px !important;
+      margin: 0 !important;
+      vertical-align: middle !important;
+    }
+
+    .actions .action-counter {
+      font-family: var(--font-ui) !important;
+      font-size: 0.88rem !important;
+      font-weight: 600 !important;
+      color: #d38d45 !important;
+      margin-left: 10px !important;
+      padding: 6px 14px !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(211, 141, 69, 0.3) !important;
+      border-radius: 20px !important;
+      display: inline-block !important;
     }
 
     /* Barra de búsqueda */
@@ -441,6 +486,7 @@
       border-radius: 4px !important;
       background: #ffffff !important;
     }
+
 
     /* ---- FORMULARIOS DE DETALLE (CHANGE FORM) ---- */
     .form-row {
