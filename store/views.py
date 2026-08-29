@@ -86,6 +86,16 @@ def save_paypal_purchase(request):
             code=code_str
         )
         
+        # Cargar firma manuscrita en base64
+        import base64
+        sig_file_path = os.path.join(settings.BASE_DIR, 'static', 'firma_acevedo.png')
+        sig_b64_src = ""
+        try:
+            with open(sig_file_path, 'rb') as sf:
+                sig_b64_src = f"data:image/png;base64,{base64.b64encode(sf.read()).decode('utf-8')}"
+        except Exception:
+            pass
+
         # Enviar correo al comprador
         resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
         try:
@@ -94,56 +104,105 @@ def save_paypal_purchase(request):
                 "to": payer_email,
                 "subject": '¡Gracias por adquirir "Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"!',
                 "html": f"""
-                <div style="font-family: 'Playfair Display', Georgia, serif; background-color: #f5f0eb; color: #2c2c2c; max-width: 600px; margin: 0 auto; padding: 40px 30px; border: 1px solid #e0d8cf; border-radius: 4px;">
-                    
-                    <div style="text-align: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #d38d45;">
-        <h1 style="font-family: 'Cinzel Decorative', serif; color: #333; font-size: 28px; margin: 0; letter-spacing: 1px; text-transform: uppercase;">Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales</h1>
-                    </div>
-                    
-                    <h2 style="font-family: 'Cinzel Decorative', serif; color: #d38d45; text-align: center; font-size: 22px; margin-bottom: 30px;">
-                        ¡Gracias por tu compra!
-                    </h2>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">Estimado/a Lector/a,</p>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                        Es un verdadero honor para mí agradecerle personalmente por la adquisición de mi libro digital: <strong>"Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"</strong>.
-                    </p>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                        Espero con esta obra satisfacer su curiosidad sobre la factorización de la suma de dos cuadrados (a² + b², el Teorema de Pitágoras), porque éste hasta la fecha ha sido irreductible.
-                    </p>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                        Al haber procesado su pago, el libro <strong>ya se ha desbloqueado de forma automática</strong> en el dispositivo desde el cual realizó la compra.
-                    </p>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                        Sin embargo, si en algún momento desea visualizar la obra desde un segundo dispositivo (como su computadora personal o una tablet), le proporciono a continuación su código de activación único:
-                    </p>
-                    
-                    <div style="text-align: center; margin: 40px 0;">
-                        <span style="background-color: #fafafa; color: #d38d45; padding: 15px 30px; font-size: 24px; font-weight: bold; border-radius: 4px; border: 1px solid #faab9f; letter-spacing: 2px;">
-                            {code_str}
-                        </span>
-                    </div>
-                    
-                    <div style="background-color: #fafafa; padding: 15px 20px; border-left: 4px solid #faab9f; margin: 30px 0;">
-                        <p style="font-size: 13px; color: #555; margin: 0; line-height: 1.5;">
-                            <em><strong>Nota de Seguridad:</strong> Le recordamos que, para proteger los derechos de autor, este código es de uso único. Una vez que lo ingrese en un nuevo dispositivo, quedará vinculado y el código caducará para evitar su distribución no autorizada.</em>
-                        </p>
-                    </div>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">Quedo a su entera disposición para cualquier consulta académica o comentario a través de la sección de contacto en nuestra página web.</p>
-                    
-                    <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">Nuevamente, muchas gracias por su confianza y apoyo a la educación matemática.</p>
-                    
-                    <div style="margin-top: 40px; border-top: 1px solid #e0d8cf; padding-top: 30px;">
-                        <p style="font-size: 16px; color: #555; margin-bottom: 5px;">Atentamente,</p>
-                        <p style="font-size: 18px; margin: 0;">
-                            <strong style="color: #333; font-family: 'Cinzel Decorative', serif; font-size: 18px;">Prof. Bienvenido Hernaldo Acevedo González</strong><br>
-                            <span style="color: #d38d45; font-size: 14px; font-style: italic;">Autor de "Un Aporte Matemático en el Siglo 21"</span>
-                        </p>
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+                
+                <div style="margin: 0; padding: 40px 15px; background-color: #ede7df; font-family: 'Playfair Display', Georgia, serif;">
+                    <div style="max-width: 600px; margin: 0 auto; background-color: #faf7f2; border: 1px solid #dcd4c8; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);">
+                        
+                        <!-- Header Odrin Classical -->
+                        <div style="background: #1a2744; padding: 36px 30px 28px 30px; text-align: center; border-bottom: 3px solid #d38d45;">
+                            <p style="font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; color: #faab9f; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 10px 0;">
+                                Aporte Matemático
+                            </p>
+                            <h1 style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 22px; font-weight: 700; color: #ffffff; margin: 0; letter-spacing: 1.5px; line-height: 1.3;">
+                                ¡Gracias por tu compra!
+                            </h1>
+                            <p style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; color: #e0d8cf; margin: 8px 0 0 0; letter-spacing: 1px;">
+                                Edición Digital Desbloqueada
+                            </p>
+                        </div>
+                        
+                        <!-- Body -->
+                        <div style="padding: 36px 34px 28px 34px; background-color: #faf7f2; color: #2c2c2c;">
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 16px; color: #2c2c2c; margin: 0 0 16px 0;">
+                                <strong>Estimado/a Lector/a:</strong>
+                            </p>
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 16px 0;">
+                                Es un verdadero honor para mí agradecerle personalmente por la adquisición de mi libro digital:
+                            </p>
+                            
+                            <!-- Book Title Box -->
+                            <div style="background-color: #ffffff; border: 1px solid #e8decb; border-left: 4px solid #d38d45; padding: 18px 22px; margin: 22px 0; border-radius: 0 4px 4px 0; text-align: center;">
+                                <span style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 15px; font-weight: 700; color: #1a2744; letter-spacing: 0.5px; line-height: 1.6; display: block;">
+                                    "Un Aporte Matemático en el Siglo 21:<br>
+                                    Factorización de a²+b², en los Números Reales"
+                                </span>
+                            </div>
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
+                                Espero con esta obra satisfacer su curiosidad sobre la factorización de la suma de dos cuadrados (a² + b², el Teorema de Pitágoras), porque éste hasta la fecha ha sido irreductible.
+                            </p>
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
+                                Al haber procesado su pago, el libro <strong style="color: #1a2744;">ya se ha desbloqueado de forma automática</strong> en el dispositivo desde el cual realizó la compra.
+                            </p>
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
+                                Sin embargo, si en algún momento desea visualizar la obra desde un segundo dispositivo (como su computadora personal o una tablet), le proporciono a continuación su código de activación único:
+                            </p>
+                            
+                            <div style="text-align: center; margin: 30px 0;">
+                                <span style="display: inline-block; background-color: #ffffff; color: #d38d45; padding: 14px 28px; font-size: 22px; font-weight: 700; font-family: 'Josefin Sans', sans-serif; border-radius: 4px; border: 1px solid #d38d45; letter-spacing: 3px; box-shadow: 0 4px 12px rgba(211,141,69,0.12);">
+                                    {code_str}
+                                </span>
+                            </div>
+                            
+                            <div style="background-color: #f4ede3; padding: 16px 20px; border-left: 4px solid #d38d45; border-radius: 0 4px 4px 0; margin: 26px 0;">
+                                <p style="font-family: 'Josefin Sans', sans-serif; font-size: 13px; color: #555; margin: 0; line-height: 1.6;">
+                                    <em><strong>Nota de Seguridad:</strong> Le recordamos que, para proteger los derechos de autor, este código es de uso único. Una vez que lo ingrese en un nuevo dispositivo, quedará vinculado y el código caducará para evitar su distribución no autorizada.</em>
+                                </p>
+                            </div>
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; line-height: 1.8; color: #3a3a3a; margin: 0 0 16px 0;">
+                                Quedo a su entera disposición para cualquier consulta académica o comentario a través de la sección de contacto en nuestra página web.
+                            </p>
+                            
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; line-height: 1.8; color: #3a3a3a; margin: 0 0 24px 0;">
+                                Nuevamente, muchas gracias por su confianza y apoyo a la educación matemática.
+                            </p>
+                        </div>
+                        
+                        <!-- Symmetrical Luxury Divider -->
+                        <div style="padding: 0 34px;">
+                            <div style="border-top: 1px solid #d38d45;"></div>
+                        </div>
+                        
+                        <!-- Footer con Firma -->
+                        <div style="background: #faf7f2; padding: 26px 34px 34px 34px; text-align: center;">
+                            <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; font-style: italic; color: #666; margin: 0 0 10px 0;">
+                                Atentamente,
+                            </p>
+                            
+                            <!-- Firma manuscrita Real -->
+                            <div style="margin: 6px auto 12px auto; text-align: center;">
+                                <img src="{sig_b64_src}" alt="Firma Prof. Bienvenido H. Acevedo" style="max-height: 85px; width: auto; max-width: 250px; display: inline-block;" />
+                            </div>
+
+                            <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #1a2744; font-family: 'Cinzel Decorative', Georgia, serif; letter-spacing: 0.5px;">
+                                Prof. Bienvenido Hernaldo Acevedo González
+                            </p>
+                            <p style="margin: 0 0 22px 0; font-size: 11px; font-weight: 700; color: #d38d45; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase;">
+                                Autor de "Un Aporte Matemático en el Siglo 21"
+                            </p>
+                            
+                            <p style="font-size: 11px; color: #9e9a93; font-family: 'Josefin Sans', sans-serif; margin: 0; padding-top: 16px; border-top: 1px solid #ebe4d8;">
+                                Este es un mensaje automático, por favor no respondas a este correo.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 """
@@ -199,39 +258,56 @@ def submit_contact(request):
                     "reply_to": email,
                     "subject": f"Nuevo mensaje web: {subject}",
                     "html": f"""
-                    <div style="font-family: 'Playfair Display', Georgia, serif; background-color: #f5f0eb; color: #2c2c2c; max-width: 600px; margin: 0 auto; padding: 40px 30px; border: 1px solid #e0d8cf; border-radius: 4px;">
-                        
-                        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #d38d45;">
-                            <h1 style="font-family: 'Cinzel Decorative', serif; color: #333; font-size: 24px; margin: 0; letter-spacing: 1px; text-transform: uppercase;">Notificación de Contacto</h1>
-                        </div>
-                        
-                        <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">Hola, <strong>Prof. Bienvenido</strong>,</p>
-                        
-                        <p style="font-size: 16px; line-height: 1.7; color: #2c2c2c;">
-                            Ha recibido un nuevo mensaje a través de la página web de su libro <em>"Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"</em>.
-                        </p>
-                        
-                        <div style="background-color: #fafafa; padding: 25px; border-radius: 4px; border: 1px solid #faab9f; margin: 30px 0;">
-                            <p style="font-size: 15px; margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                                <strong style="color: #d38d45;">Nombre:</strong> {name}
-                            </p>
-                            <p style="font-size: 15px; margin: 0 0 10px 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                                <strong style="color: #d38d45;">Correo:</strong> {email}
-                            </p>
-                            <p style="font-size: 15px; margin: 0 0 15px 0;">
-                                <strong style="color: #d38d45;">Asunto:</strong> {subject}
-                            </p>
+                    <link rel="preconnect" href="https://fonts.googleapis.com">
+                    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+                    
+                    <div style="margin: 0; padding: 40px 15px; background-color: #ede7df; font-family: 'Playfair Display', Georgia, serif;">
+                        <div style="max-width: 580px; margin: 0 auto; background-color: #faf7f2; border: 1px solid #dcd4c8; border-radius: 6px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06);">
                             
-                            <h3 style="font-size: 16px; color: #333; margin: 20px 0 10px 0; font-family: 'Cinzel Decorative', serif;">Mensaje:</h3>
-                            <p style="font-size: 15px; line-height: 1.6; color: #444; background-color: #fff; padding: 15px; border-left: 3px solid #faab9f; font-style: italic;">
-                                "{message}"
-                            </p>
+                            <div style="background: #1a2744; padding: 30px 28px 24px 28px; text-align: center; border-bottom: 3px solid #d38d45;">
+                                <p style="font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; color: #faab9f; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 8px 0;">
+                                    Aporte Matemático
+                                </p>
+                                <h1 style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 22px; font-weight: 700; color: #ffffff; margin: 0; letter-spacing: 1px;">
+                                    Notificación de Contacto
+                                </h1>
+                            </div>
+                            
+                            <div style="padding: 32px 30px 24px 30px; color: #2c2c2c;">
+                                <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 16px; margin: 0 0 14px 0;">
+                                    Hola, <strong>Prof. Bienvenido</strong>,
+                                </p>
+                                
+                                <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; line-height: 1.7; color: #3a3a3a; margin: 0 0 20px 0;">
+                                    Ha recibido un nuevo mensaje a través de la página web de su obra <em>"Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"</em>:
+                                </p>
+                                
+                                <div style="background-color: #ffffff; padding: 22px; border-radius: 4px; border: 1px solid #e8decb; border-left: 4px solid #d38d45; margin: 20px 0;">
+                                    <p style="font-family: 'Josefin Sans', sans-serif; font-size: 14px; margin: 0 0 10px 0; border-bottom: 1px solid #f0e9df; padding-bottom: 10px;">
+                                        <strong style="color: #888;">Nombre:</strong> <span style="font-weight: 700; color: #1a2744;">{name}</span>
+                                    </p>
+                                    <p style="font-family: 'Josefin Sans', sans-serif; font-size: 14px; margin: 0 0 10px 0; border-bottom: 1px solid #f0e9df; padding-bottom: 10px;">
+                                        <strong style="color: #888;">Correo:</strong> <span style="font-weight: 600; color: #d38d45;">{email}</span>
+                                    </p>
+                                    <p style="font-family: 'Josefin Sans', sans-serif; font-size: 14px; margin: 0 0 14px 0;">
+                                        <strong style="color: #888;">Asunto:</strong> <span style="font-weight: 600; color: #333;">{subject}</span>
+                                    </p>
+                                    
+                                    <h3 style="font-size: 13px; color: #888; margin: 16px 0 8px 0; font-family: 'Josefin Sans', sans-serif; text-transform: uppercase; letter-spacing: 1px;">Mensaje:</h3>
+                                    <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; line-height: 1.7; color: #3a3a3a; background-color: #faf7f2; padding: 14px 16px; border-radius: 4px; font-style: italic; margin: 0;">
+                                        "{message}"
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div style="background: #faf7f2; padding: 18px 30px; text-align: center; border-top: 1px solid #ebe4d8;">
+                                <p style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; color: #888; margin: 0; line-height: 1.5;">
+                                    Este es un correo automático generado por el sistema de su página web.<br>
+                                    <strong style="color: #1a2744;">Puede responder directamente a este mensaje para contactar al remitente.</strong>
+                                </p>
+                            </div>
                         </div>
-                        
-                        <p style="font-size: 15px; line-height: 1.7; color: #555; text-align: center; margin-top: 40px; border-top: 1px solid #e0d8cf; padding-top: 20px;">
-                            Este es un correo automático generado por el sistema de su página web.<br>
-                            <strong>Puede responder directamente a este mensaje para contactar al remitente.</strong>
-                        </p>
                     </div>
                     """
                 })

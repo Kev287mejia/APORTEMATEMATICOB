@@ -24,3 +24,6 @@ for filename in os.listdir(template_dir):
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(content)
             print(f"Updated {filename}")
+
+
+
