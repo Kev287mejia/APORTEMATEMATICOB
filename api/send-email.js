@@ -39,7 +39,7 @@ export default async function handler(req, res) {
         emailPayloads.push({
           from: `Aporte Matemático <${FROM_EMAIL}>`,
           to: [data.customerEmail],
-          subject: '¡Gracias por tu compra! Tu libro digital está desbloqueado 📚',
+          subject: '¡Gracias por su compra! Su libro digital está desbloqueado',
           html: `
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -141,7 +141,7 @@ export default async function handler(req, res) {
       emailPayloads.push({
         from: `Notificaciones <${FROM_EMAIL}>`,
         to: [ADMIN_EMAIL],
-        subject: `💰 Nueva Venta PayPal: $${data.price} USD`,
+        subject: `Nueva Venta PayPal: $${data.price} USD`,
         html: `
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

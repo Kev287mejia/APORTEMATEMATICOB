@@ -70,7 +70,7 @@ def apply_excel_styling(ws, title, headers, rows):
         ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
 
 
-@admin.action(description="📊 Exportar Compras seleccionadas a Excel (.xlsx)")
+@admin.action(description="Exportar Compras a Excel (.xlsx)")
 def export_purchases_to_excel(modeladmin, request, queryset):
     wb = Workbook()
     ws = wb.active
@@ -102,7 +102,7 @@ def export_purchases_to_excel(modeladmin, request, queryset):
     return response
 
 
-@admin.action(description="📦 Exportar Pedidos Físicos a Excel (.xlsx)")
+@admin.action(description="Exportar Pedidos Físicos a Excel (.xlsx)")
 def export_orders_to_excel(modeladmin, request, queryset):
     wb = Workbook()
     ws = wb.active
@@ -131,7 +131,7 @@ def export_orders_to_excel(modeladmin, request, queryset):
     return response
 
 
-@admin.action(description="🔑 Exportar Códigos a Excel (.xlsx)")
+@admin.action(description="Exportar Códigos a Excel (.xlsx)")
 def export_codes_to_excel(modeladmin, request, queryset):
     wb = Workbook()
     ws = wb.active
@@ -162,7 +162,7 @@ def export_codes_to_excel(modeladmin, request, queryset):
     return response
 
 
-@admin.action(description="✉️ Exportar Mensajes a Excel (.xlsx)")
+@admin.action(description="Exportar Mensajes a Excel (.xlsx)")
 def export_messages_to_excel(modeladmin, request, queryset):
     wb = Workbook()
     ws = wb.active
