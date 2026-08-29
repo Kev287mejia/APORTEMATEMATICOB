@@ -10,6 +10,9 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.utils import timezone
+from django.utils.html import escape
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.conf import settings
 
 from rest_framework.decorators import api_view
@@ -39,10 +42,15 @@ def activador_view(request):
 
 @api_view(['POST'])
 def verify_purchase(request):
-    code = request.data.get('code', '').strip()
+    raw_code = request.data.get('code', '')
+    if not isinstance(raw_code, str):
+        return Response({'success': False, 'message': 'Formato inválido.'}, status=400)
     
-    if not code:
-        return Response({'success': False, 'message': 'Código vacío'}, status=400)
+    code = raw_code.strip()
+    
+    # Input validation: check max length and characters
+    if not code or len(code) > 60:
+        return Response({'success': False, 'message': 'Código vacío o excede la longitud permitida.'}, status=400)
     
     # 1. Chequear si es un código de activación manual
     try:
@@ -240,13 +248,27 @@ def save_paypal_purchase(request):
 
 def submit_physical_order(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        department = request.POST.get('department')
-        quantity = request.POST.get('quantity', 1)
-        notes = request.POST.get('notes', '')
+        raw_name = request.POST.get('name', '').strip()
+        raw_phone = request.POST.get('phone', '').strip()
+        raw_department = request.POST.get('department', '').strip()
+        raw_quantity = request.POST.get('quantity', 1)
+        raw_notes = request.POST.get('notes', '').strip()
         
-        if name and phone and department:
+        # Validar campos requeridos
+        if raw_name and raw_phone and raw_department:
+            # Sanitizar y delimitar longitud
+            name = escape(raw_name)[:150]
+            phone = escape(raw_phone)[:40]
+            department = escape(raw_department)[:100]
+            notes = escape(raw_notes)[:1000]
+            
+            try:
+                quantity = int(raw_quantity)
+                if quantity < 1 or quantity > 100:
+                    quantity = 1
+            except (ValueError, TypeError):
+                quantity = 1
+            
             try:
                 order = PhysicalOrder.objects.create(
                     name=name, phone=phone, department=department, 
@@ -265,12 +287,25 @@ def submit_physical_order(request):
 
 def submit_contact(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        subject = request.POST.get('subject', '')
-        message = request.POST.get('message')
+        raw_name = request.POST.get('name', '').strip()
+        raw_email = request.POST.get('email', '').strip()
+        raw_subject = request.POST.get('subject', '').strip()
+        raw_message = request.POST.get('message', '').strip()
         
-        if name and email and message:
+        if raw_name and raw_email and raw_message:
+            # Validar formato de correo electrónico
+            try:
+                validate_email(raw_email)
+            except ValidationError:
+                messages.error(request, 'Por favor ingresa un correo electrónico válido.')
+                return redirect('contacto')
+            
+            # Sanitizar y delimitar campos
+            name = escape(raw_name)[:150]
+            email = escape(raw_email)[:254]
+            subject = escape(raw_subject)[:200] if raw_subject else 'Sin Asunto'
+            message = escape(raw_message)[:5000]
+            
             try:
                 ContactMessage.objects.create(
                     name=name, email=email, subject=subject, message=message
