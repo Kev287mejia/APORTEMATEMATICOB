@@ -13,49 +13,52 @@
 
   <style>
     /* =========================================================
-       TEMA ODRIN LUXURY — DJANGO ADMIN CUSTOM STYLING
-       Paleta: Azul Marino (#1a2744), Dorado (#d38d45), Pergamino (#faf7f2 / #ede7df)
-       Tipografías: Cinzel Decorative, Playfair Display, Josefin Sans
+       TEMA OFICIAL DE LA PLATAFORMA — DJANGO ADMIN
+       Paleta Exacta de style.css:
+       --color-bg:        #f5f0eb  (Fondo General Cálido)
+       --color-nav-bg:    #fafafa  (Fondo de Barra Superior)
+       --color-accent:    #faab9f  (Coral Rosado Odrin)
+       --color-accent2:   #d38d45  (Dorado / Ámbar)
+       --color-text:      #2c2c2c  (Carbón Suave)
+       --color-text-light:#555555
+       --font-heading:    'Cinzel Decorative', serif
+       --font-body:       'Playfair Display', Georgia, serif
+       --font-ui:         'Josefin Sans', sans-serif
        ========================================================= */
 
     :root {
-      --primary: #1a2744;
-      --secondary: #d38d45;
-      --accent: #faab9f;
-      --bg-page: #ede7df;
-      --bg-card: #faf7f2;
-      --text-main: #2c2c2c;
-      --text-muted: #777777;
-      --border-color: #dcd4c8;
-      --header-bg: #1a2744;
-      --header-color: #ffffff;
-      --breadcrumbs-bg: #f4ede3;
-      --link-color: #d38d45;
-      --link-hover: #b87333;
+      --color-accent: #faab9f;
+      --color-accent2: #d38d45;
+      --color-text: #2c2c2c;
+      --color-text-light: #555555;
+      --color-bg: #f5f0eb;
+      --color-nav-bg: #fafafa;
+      --color-card-bg: #ffffff;
+      --color-border: rgba(250, 171, 159, 0.45);
       --font-heading: 'Cinzel Decorative', Georgia, serif;
       --font-body: 'Playfair Display', Georgia, serif;
       --font-ui: 'Josefin Sans', sans-serif;
     }
 
     body {
-      background-color: var(--bg-page) !important;
-      color: var(--text-main) !important;
+      background-color: var(--color-bg) !important;
+      color: var(--color-text) !important;
       font-family: var(--font-body) !important;
       font-size: 15px !important;
     }
 
-    /* ---- HEADER PRINCIPAL ---- */
+    /* ---- HEADER PRINCIPAL (Exacto como la barra de navegación web) ---- */
     #header {
-      background: var(--primary) !important;
-      color: var(--header-color) !important;
-      padding: 18px 30px !important;
-      border-bottom: 3px solid var(--secondary) !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+      background: var(--color-nav-bg) !important;
+      color: var(--color-text) !important;
+      padding: 22px 35px !important;
+      border-bottom: 2px solid var(--color-accent) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
     }
 
     #header #branding h1 {
       font-family: var(--font-heading) !important;
-      font-size: 1.3rem !important;
+      font-size: 1.4rem !important;
       font-weight: 700 !important;
       letter-spacing: 1px !important;
       margin: 0 !important;
@@ -63,96 +66,97 @@
 
     #header #branding h1 a:link,
     #header #branding h1 a:visited {
-      color: #ffffff !important;
+      color: var(--color-text) !important;
       text-decoration: none !important;
     }
 
     #header #branding h1 a::after {
-      content: " • Panel Editorial";
+      content: " — Administración";
       font-family: var(--font-ui) !important;
-      font-size: 0.75rem !important;
-      color: var(--accent) !important;
+      font-size: 0.78rem !important;
+      color: var(--color-accent2) !important;
       letter-spacing: 2px !important;
       text-transform: uppercase !important;
       margin-left: 10px !important;
+      font-weight: 700 !important;
     }
 
     #user-tools {
       font-family: var(--font-ui) !important;
-      font-size: 0.8rem !important;
+      font-size: 0.82rem !important;
       letter-spacing: 1px !important;
-      color: #e0d8cf !important;
+      color: var(--color-text-light) !important;
     }
 
     #user-tools a {
-      color: var(--accent) !important;
+      color: var(--color-accent2) !important;
       text-decoration: none !important;
-      font-weight: 600 !important;
-      border-bottom: 1px dashed rgba(250, 171, 159, 0.5) !important;
+      font-weight: 700 !important;
+      border-bottom: 1px dashed rgba(211, 141, 69, 0.5) !important;
       transition: all 0.2s !important;
     }
 
     #user-tools a:hover {
-      color: #ffffff !important;
-      border-bottom-color: #ffffff !important;
+      color: var(--color-accent) !important;
+      border-bottom-color: var(--color-accent) !important;
     }
 
     /* ---- BREADCRUMBS ---- */
     div.breadcrumbs {
-      background: var(--breadcrumbs-bg) !important;
-      border-bottom: 1px solid var(--border-color) !important;
+      background: #fdfaf6 !important;
+      border-bottom: 1px solid rgba(250, 171, 159, 0.3) !important;
       font-family: var(--font-ui) !important;
       font-size: 0.82rem !important;
       letter-spacing: 0.5px !important;
-      color: var(--text-muted) !important;
-      padding: 12px 30px !important;
+      color: var(--color-text-light) !important;
+      padding: 12px 35px !important;
     }
 
     div.breadcrumbs a {
-      color: var(--primary) !important;
+      color: var(--color-text) !important;
       font-weight: 600 !important;
       text-decoration: none !important;
     }
 
     div.breadcrumbs a:hover {
-      color: var(--secondary) !important;
+      color: var(--color-accent2) !important;
     }
 
     /* ---- CONTENEDOR PRINCIPAL ---- */
     #content {
-      padding: 30px !important;
+      padding: 35px !important;
       max-width: 1300px !important;
       margin: 0 auto !important;
     }
 
     #content h1 {
       font-family: var(--font-heading) !important;
-      font-size: 1.5rem !important;
-      color: var(--primary) !important;
-      margin-bottom: 20px !important;
+      font-size: 1.6rem !important;
+      color: var(--color-text) !important;
+      margin-bottom: 24px !important;
       letter-spacing: 0.5px !important;
     }
 
     /* ---- TARJETAS Y MÓDULOS DEL DASHBOARD ---- */
     .module {
-      background: var(--bg-card) !important;
-      border: 1px solid var(--border-color) !important;
+      background: var(--color-card-bg) !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 6px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
       margin-bottom: 30px !important;
       overflow: hidden !important;
     }
 
     .module caption, 
     .module h2 {
-      background: var(--primary) !important;
-      color: #ffffff !important;
+      background: #faf7f2 !important;
+      color: var(--color-text) !important;
       font-family: var(--font-heading) !important;
       font-size: 1.05rem !important;
       font-weight: 700 !important;
-      padding: 14px 20px !important;
+      padding: 15px 22px !important;
       letter-spacing: 1px !important;
-      border-bottom: 2px solid var(--secondary) !important;
+      border-bottom: 2px solid var(--color-accent) !important;
       text-align: left !important;
     }
 
@@ -163,55 +167,55 @@
 
     .module th, 
     .module td {
-      padding: 12px 20px !important;
+      padding: 13px 22px !important;
       font-family: var(--font-ui) !important;
       font-size: 0.9rem !important;
-      border-bottom: 1px solid #ebe4d8 !important;
+      border-bottom: 1px solid #f4ece8 !important;
     }
 
     .module tr:hover {
-      background-color: #f4ede3 !important;
+      background-color: #faf5f0 !important;
     }
 
     .module th a {
-      color: var(--primary) !important;
+      color: var(--color-text) !important;
       font-weight: 700 !important;
       font-size: 0.95rem !important;
       text-decoration: none !important;
     }
 
     .module th a:hover {
-      color: var(--secondary) !important;
+      color: var(--color-accent2) !important;
     }
 
     /* ---- TABLAS DE LISTA DE OBJETOS (CHANGE LIST) ---- */
     #changelist {
-      background: var(--bg-card) !important;
-      border: 1px solid var(--border-color) !important;
+      background: var(--color-card-bg) !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 6px !important;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05) !important;
-      padding: 20px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+      padding: 22px !important;
     }
 
     #changelist table thead th {
-      background: var(--primary) !important;
-      color: #ffffff !important;
+      background: #faf7f2 !important;
+      color: var(--color-text) !important;
       font-family: var(--font-ui) !important;
       font-size: 0.8rem !important;
       font-weight: 700 !important;
       letter-spacing: 1.5px !important;
       text-transform: uppercase !important;
-      padding: 12px 14px !important;
-      border: none !important;
+      padding: 14px 16px !important;
+      border-bottom: 2px solid var(--color-accent) !important;
     }
 
     #changelist table thead th a {
-      color: #ffffff !important;
+      color: var(--color-text) !important;
       text-decoration: none !important;
     }
 
     #changelist table thead th a:hover {
-      color: var(--accent) !important;
+      color: var(--color-accent2) !important;
     }
 
     #result_list tbody tr {
@@ -224,86 +228,91 @@
     }
 
     #result_list tbody tr:hover {
-      background: #f4ede3 !important;
+      background: #fdf5f3 !important;
     }
 
     #result_list tbody td, 
     #result_list tbody th {
       font-family: var(--font-body) !important;
-      font-size: 0.92rem !important;
-      padding: 12px 14px !important;
-      border-bottom: 1px solid #ebe4d8 !important;
-      color: var(--text-main) !important;
+      font-size: 0.95rem !important;
+      padding: 13px 16px !important;
+      border-bottom: 1px solid #f4ece8 !important;
+      color: var(--color-text) !important;
     }
 
     #result_list tbody th a {
-      color: var(--primary) !important;
+      color: var(--color-text) !important;
       font-weight: 700 !important;
       text-decoration: none !important;
       font-family: var(--font-ui) !important;
     }
 
     #result_list tbody th a:hover {
-      color: var(--secondary) !important;
+      color: var(--color-accent2) !important;
     }
 
     /* ---- FILTROS LATERALES ---- */
     #changelist-filter {
       background: #ffffff !important;
-      border: 1px solid var(--border-color) !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 6px !important;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03) !important;
     }
 
     #changelist-filter h2 {
-      background: var(--primary) !important;
-      color: #ffffff !important;
+      background: #faf7f2 !important;
+      color: var(--color-text) !important;
       font-family: var(--font-heading) !important;
-      font-size: 0.9rem !important;
-      padding: 12px 16px !important;
+      font-size: 0.95rem !important;
+      padding: 13px 18px !important;
       letter-spacing: 1px !important;
+      border-bottom: 2px solid var(--color-accent) !important;
     }
 
     #changelist-filter h3 {
       font-family: var(--font-ui) !important;
       font-size: 0.78rem !important;
-      color: var(--secondary) !important;
+      color: var(--color-accent2) !important;
       text-transform: uppercase !important;
       letter-spacing: 1.5px !important;
       font-weight: 700 !important;
-      margin-top: 15px !important;
+      margin-top: 16px !important;
     }
 
     #changelist-filter ul li.selected a {
-      color: var(--secondary) !important;
+      color: var(--color-accent2) !important;
       font-weight: 700 !important;
     }
 
     #changelist-filter a {
       font-family: var(--font-body) !important;
-      font-size: 0.9rem !important;
-      color: var(--text-main) !important;
+      font-size: 0.92rem !important;
+      color: var(--color-text) !important;
     }
 
-    /* ---- BOTONES Y ACCIONES ---- */
+    #changelist-filter a:hover {
+      color: var(--color-accent) !important;
+    }
+
+    /* ---- BOTONES Y ACCIONES OFICIALES (Tema Odrin #faab9f y #d38d45) ---- */
     .button, 
     input[type=submit], 
     input[type=button], 
     .submit-row input, 
     a.button {
-      background: var(--secondary) !important;
+      background: var(--color-accent) !important;
       color: #ffffff !important;
-      border: 1px solid var(--secondary) !important;
+      border: 1px solid var(--color-accent) !important;
       border-radius: 4px !important;
       font-family: var(--font-ui) !important;
       font-size: 0.8rem !important;
       font-weight: 700 !important;
       letter-spacing: 1.5px !important;
       text-transform: uppercase !important;
-      padding: 10px 20px !important;
+      padding: 11px 22px !important;
       cursor: pointer !important;
-      box-shadow: 0 4px 12px rgba(211, 141, 69, 0.2) !important;
-      transition: all 0.2s ease !important;
+      box-shadow: 0 4px 14px rgba(250, 171, 159, 0.4) !important;
+      transition: all 0.25s ease !important;
     }
 
     .button:hover, 
@@ -311,20 +320,20 @@
     input[type=button]:hover, 
     .submit-row input:hover, 
     a.button:hover {
-      background: #b87333 !important;
-      border-color: #b87333 !important;
+      background: var(--color-accent2) !important;
+      border-color: var(--color-accent2) !important;
       transform: translateY(-1px) !important;
-      box-shadow: 0 6px 16px rgba(211, 141, 69, 0.3) !important;
+      box-shadow: 0 6px 18px rgba(211, 141, 69, 0.35) !important;
     }
 
     .actions select {
       font-family: var(--font-ui) !important;
-      font-size: 0.85rem !important;
-      padding: 8px 12px !important;
-      border: 1px solid var(--border-color) !important;
+      font-size: 0.88rem !important;
+      padding: 9px 14px !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 4px !important;
       background: #ffffff !important;
-      color: var(--primary) !important;
+      color: var(--color-text) !important;
       font-weight: 600 !important;
     }
 
@@ -332,27 +341,27 @@
     #searchbar {
       font-family: var(--font-body) !important;
       font-size: 0.95rem !important;
-      padding: 8px 14px !important;
-      border: 1px solid var(--border-color) !important;
+      padding: 9px 15px !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 4px !important;
       background: #ffffff !important;
     }
 
     #changelist-search input[type="submit"] {
-      padding: 8px 16px !important;
+      padding: 9px 18px !important;
     }
 
     /* ---- FORMULARIOS DE DETALLE (CHANGE FORM) ---- */
     .form-row {
-      border-bottom: 1px solid #ebe4d8 !important;
-      padding: 14px 10px !important;
+      border-bottom: 1px solid #f4ece8 !important;
+      padding: 15px 12px !important;
       font-family: var(--font-ui) !important;
     }
 
     .form-row label {
       font-family: var(--font-ui) !important;
       font-size: 0.85rem !important;
-      color: var(--primary) !important;
+      color: var(--color-text) !important;
       font-weight: 700 !important;
       letter-spacing: 0.5px !important;
     }
@@ -364,9 +373,9 @@
     input[type="number"], 
     textarea, 
     select {
-      border: 1px solid var(--border-color) !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 4px !important;
-      padding: 8px 12px !important;
+      padding: 9px 13px !important;
       font-family: var(--font-body) !important;
       font-size: 0.95rem !important;
       background: #ffffff !important;
@@ -375,42 +384,42 @@
     input:focus, 
     textarea:focus, 
     select:focus {
-      border-color: var(--secondary) !important;
+      border-color: var(--color-accent2) !important;
       outline: none !important;
       box-shadow: 0 0 0 2px rgba(211, 141, 69, 0.2) !important;
     }
 
     .submit-row {
-      background: var(--bg-card) !important;
-      border: 1px solid var(--border-color) !important;
+      background: #faf7f2 !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 6px !important;
-      padding: 16px !important;
+      padding: 16px 20px !important;
       margin-top: 25px !important;
     }
 
     /* Acciones recientes (sidebar) */
     #recent-actions-module {
-      background: var(--bg-card) !important;
-      border: 1px solid var(--border-color) !important;
+      background: var(--color-card-bg) !important;
+      border: 1px solid var(--color-border) !important;
       border-radius: 6px !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
     }
 
     #recent-actions-module h2 {
-      background: var(--primary) !important;
-      color: #ffffff !important;
+      background: #faf7f2 !important;
+      color: var(--color-text) !important;
       font-family: var(--font-heading) !important;
       font-size: 0.95rem !important;
       letter-spacing: 1px !important;
-      padding: 12px 18px !important;
-      border-bottom: 2px solid var(--secondary) !important;
+      padding: 14px 20px !important;
+      border-bottom: 2px solid var(--color-accent) !important;
     }
 
     #recent-actions-module ul li {
       font-family: var(--font-ui) !important;
       font-size: 0.82rem !important;
-      padding: 8px 14px !important;
-      border-bottom: 1px solid #f0e9df !important;
+      padding: 9px 16px !important;
+      border-bottom: 1px solid #f7efeb !important;
     }
   </style>
 {% endblock %}

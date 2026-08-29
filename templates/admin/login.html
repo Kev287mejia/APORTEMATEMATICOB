@@ -5,7 +5,7 @@
   {{ block.super }}
   <style>
     body.login {
-      background-color: #ede7df !important;
+      background-color: #f5f0eb !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -16,10 +16,10 @@
     }
 
     #container {
-      background: #faf7f2 !important;
-      border: 1px solid #dcd4c8 !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
       border-radius: 8px !important;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06) !important;
       width: 100% !important;
       max-width: 440px !important;
       margin: 0 auto !important;
@@ -27,22 +27,23 @@
     }
 
     #header {
-      background: #1a2744 !important;
-      border-bottom: 3px solid #d38d45 !important;
+      background: #fafafa !important;
+      border-bottom: 2px solid #faab9f !important;
       padding: 30px 24px 24px 24px !important;
       text-align: center !important;
+      box-shadow: none !important;
     }
 
     #header #branding h1 {
       font-family: 'Cinzel Decorative', Georgia, serif !important;
       font-size: 1.4rem !important;
-      color: #ffffff !important;
+      color: #2c2c2c !important;
       letter-spacing: 1.5px !important;
       margin: 0 !important;
     }
 
     #header #branding h1 a {
-      color: #ffffff !important;
+      color: #2c2c2c !important;
       text-decoration: none !important;
     }
 
@@ -53,10 +54,11 @@
     .login-subtitle {
       font-family: 'Josefin Sans', sans-serif !important;
       font-size: 0.75rem !important;
-      color: #faab9f !important;
+      color: #d38d45 !important;
       letter-spacing: 3px !important;
       text-transform: uppercase !important;
-      margin-top: 6px !important;
+      margin-top: 8px !important;
+      font-weight: 700 !important;
     }
 
     #content {
@@ -73,7 +75,7 @@
       font-size: 0.82rem !important;
       font-weight: 700 !important;
       letter-spacing: 1px !important;
-      color: #1a2744 !important;
+      color: #2c2c2c !important;
       text-transform: uppercase !important;
       display: block !important;
       margin-bottom: 6px !important;
@@ -84,7 +86,7 @@
       width: 100% !important;
       box-sizing: border-box !important;
       padding: 12px 14px !important;
-      border: 1px solid #dcd4c8 !important;
+      border: 1px solid rgba(250, 171, 159, 0.5) !important;
       border-radius: 4px !important;
       background: #ffffff !important;
       font-family: 'Playfair Display', serif !important;
@@ -109,9 +111,9 @@
 
     .submit-row input[type="submit"] {
       width: 100% !important;
-      background: #d38d45 !important;
+      background: #faab9f !important;
       color: #ffffff !important;
-      border: 1px solid #d38d45 !important;
+      border: 1px solid #faab9f !important;
       padding: 13px !important;
       font-family: 'Josefin Sans', sans-serif !important;
       font-size: 0.9rem !important;
@@ -120,13 +122,13 @@
       text-transform: uppercase !important;
       border-radius: 4px !important;
       cursor: pointer !important;
-      box-shadow: 0 4px 15px rgba(211, 141, 69, 0.25) !important;
+      box-shadow: 0 4px 15px rgba(250, 171, 159, 0.35) !important;
       transition: all 0.2s !important;
     }
 
     .submit-row input[type="submit"]:hover {
-      background: #b87333 !important;
-      border-color: #b87333 !important;
+      background: #d38d45 !important;
+      border-color: #d38d45 !important;
       transform: translateY(-1px) !important;
       box-shadow: 0 6px 20px rgba(211, 141, 69, 0.35) !important;
     }
@@ -155,3 +157,4 @@
     <div class="login-subtitle">Panel de Control Editorial</div>
   </div>
 {% endblock %}
+
