@@ -26,7 +26,7 @@
        --font-ui:         'Josefin Sans', sans-serif
        ========================================================= */
 
-    :root {
+    :root, [data-theme="light"], [data-theme="dark"], [data-theme="auto"] {
       --color-accent: #faab9f;
       --color-accent2: #d38d45;
       --color-text: #2c2c2c;
@@ -38,21 +38,71 @@
       --font-heading: 'Cinzel Decorative', Georgia, serif;
       --font-body: 'Playfair Display', Georgia, serif;
       --font-ui: 'Josefin Sans', sans-serif;
+
+      /* Django Internal CSS Variables Override */
+      --primary: #faab9f !important;
+      --secondary: #d38d45 !important;
+      --accent: #faab9f !important;
+      --primary-fg: #ffffff !important;
+      --body-fg: #2c2c2c !important;
+      --body-bg: #f5f0eb !important;
+      --body-quiet-color: #555555 !important;
+      --header-color: #2c2c2c !important;
+      --header-bg: #fafafa !important;
+      --header-branding-color: #2c2c2c !important;
+      --breadcrumbs-fg: #2c2c2c !important;
+      --breadcrumbs-bg: #fdfaf6 !important;
+      --breadcrumbs-link-fg: #2c2c2c !important;
+      --link-fg: #d38d45 !important;
+      --link-hover-color: #faab9f !important;
+      --link-selected-fg: #d38d45 !important;
+      --hairline-color: rgba(250, 171, 159, 0.45) !important;
+      --border-color: rgba(250, 171, 159, 0.45) !important;
+      --default-button-bg: #faab9f !important;
+      --default-button-hover-bg: #d38d45 !important;
+      --button-bg: #faab9f !important;
+      --button-hover-bg: #d38d45 !important;
+      --button-fg: #ffffff !important;
+      --object-tools-bg: #faab9f !important;
+      --object-tools-hover-bg: #d38d45 !important;
+      --object-tools-fg: #ffffff !important;
+      --close-button-bg: #d38d45 !important;
+      --close-button-hover-bg: #faab9f !important;
+      --delete-button-bg: #ba2121 !important;
+      --delete-button-hover-bg: #a41515 !important;
+      --message-success-bg: #e8f5e9 !important;
+      --message-warning-bg: #fff8e1 !important;
+      --message-error-bg: #ffebee !important;
+      --darkened-bg: #f5f0eb !important;
+      --selected-bg: #faf5f0 !important;
+      --selected-row: #faf5f0 !important;
     }
 
-    body {
-      background-color: var(--color-bg) !important;
-      color: var(--color-text) !important;
+    @media (prefers-color-scheme: dark) {
+      :root, body, #header, div.breadcrumbs, #content, .module, #changelist {
+        background-color: #f5f0eb !important;
+        color: #2c2c2c !important;
+      }
+    }
+
+    html, body {
+      background-color: #f5f0eb !important;
+      color: #2c2c2c !important;
       font-family: var(--font-body) !important;
       font-size: 15px !important;
     }
 
-    /* ---- HEADER PRINCIPAL (Exacto como la barra de navegación web) ---- */
+    /* Ocultar selector de tema oscuro de Django */
+    .theme-toggle, #theme-toggle {
+      display: none !important;
+    }
+
+    /* ---- HEADER PRINCIPAL ---- */
     #header {
-      background: var(--color-nav-bg) !important;
-      color: var(--color-text) !important;
+      background: #fafafa !important;
+      color: #2c2c2c !important;
       padding: 22px 35px !important;
-      border-bottom: 2px solid var(--color-accent) !important;
+      border-bottom: 2px solid #faab9f !important;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
     }
 
@@ -66,7 +116,7 @@
 
     #header #branding h1 a:link,
     #header #branding h1 a:visited {
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       text-decoration: none !important;
     }
 
@@ -74,7 +124,7 @@
       content: " — Administración";
       font-family: var(--font-ui) !important;
       font-size: 0.78rem !important;
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
       letter-spacing: 2px !important;
       text-transform: uppercase !important;
       margin-left: 10px !important;
@@ -85,11 +135,11 @@
       font-family: var(--font-ui) !important;
       font-size: 0.82rem !important;
       letter-spacing: 1px !important;
-      color: var(--color-text-light) !important;
+      color: #555555 !important;
     }
 
     #user-tools a {
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
       text-decoration: none !important;
       font-weight: 700 !important;
       border-bottom: 1px dashed rgba(211, 141, 69, 0.5) !important;
@@ -97,8 +147,8 @@
     }
 
     #user-tools a:hover {
-      color: var(--color-accent) !important;
-      border-bottom-color: var(--color-accent) !important;
+      color: #faab9f !important;
+      border-bottom-color: #faab9f !important;
     }
 
     /* ---- BREADCRUMBS ---- */
@@ -108,18 +158,18 @@
       font-family: var(--font-ui) !important;
       font-size: 0.82rem !important;
       letter-spacing: 0.5px !important;
-      color: var(--color-text-light) !important;
+      color: #555555 !important;
       padding: 12px 35px !important;
     }
 
     div.breadcrumbs a {
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-weight: 600 !important;
       text-decoration: none !important;
     }
 
     div.breadcrumbs a:hover {
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
     }
 
     /* ---- CONTENEDOR PRINCIPAL ---- */
@@ -132,15 +182,15 @@
     #content h1 {
       font-family: var(--font-heading) !important;
       font-size: 1.6rem !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       margin-bottom: 24px !important;
       letter-spacing: 0.5px !important;
     }
 
     /* ---- TARJETAS Y MÓDULOS DEL DASHBOARD ---- */
     .module {
-      background: var(--color-card-bg) !important;
-      border: 1px solid var(--color-border) !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
       border-radius: 6px !important;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
       margin-bottom: 30px !important;
@@ -150,13 +200,13 @@
     .module caption, 
     .module h2 {
       background: #faf7f2 !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-family: var(--font-heading) !important;
       font-size: 1.05rem !important;
       font-weight: 700 !important;
       padding: 15px 22px !important;
       letter-spacing: 1px !important;
-      border-bottom: 2px solid var(--color-accent) !important;
+      border-bottom: 2px solid #faab9f !important;
       text-align: left !important;
     }
 
@@ -171,6 +221,7 @@
       font-family: var(--font-ui) !important;
       font-size: 0.9rem !important;
       border-bottom: 1px solid #f4ece8 !important;
+      color: #2c2c2c !important;
     }
 
     .module tr:hover {
@@ -178,20 +229,20 @@
     }
 
     .module th a {
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-weight: 700 !important;
       font-size: 0.95rem !important;
       text-decoration: none !important;
     }
 
     .module th a:hover {
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
     }
 
     /* ---- TABLAS DE LISTA DE OBJETOS (CHANGE LIST) ---- */
     #changelist {
-      background: var(--color-card-bg) !important;
-      border: 1px solid var(--color-border) !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
       border-radius: 6px !important;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
       padding: 22px !important;
@@ -199,23 +250,23 @@
 
     #changelist table thead th {
       background: #faf7f2 !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-family: var(--font-ui) !important;
       font-size: 0.8rem !important;
       font-weight: 700 !important;
       letter-spacing: 1.5px !important;
       text-transform: uppercase !important;
       padding: 14px 16px !important;
-      border-bottom: 2px solid var(--color-accent) !important;
+      border-bottom: 2px solid #faab9f !important;
     }
 
     #changelist table thead th a {
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       text-decoration: none !important;
     }
 
     #changelist table thead th a:hover {
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
     }
 
     #result_list tbody tr {
@@ -237,42 +288,42 @@
       font-size: 0.95rem !important;
       padding: 13px 16px !important;
       border-bottom: 1px solid #f4ece8 !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
     }
 
     #result_list tbody th a {
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-weight: 700 !important;
       text-decoration: none !important;
       font-family: var(--font-ui) !important;
     }
 
     #result_list tbody th a:hover {
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
     }
 
     /* ---- FILTROS LATERALES ---- */
     #changelist-filter {
       background: #ffffff !important;
-      border: 1px solid var(--color-border) !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
       border-radius: 6px !important;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03) !important;
     }
 
     #changelist-filter h2 {
       background: #faf7f2 !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-family: var(--font-heading) !important;
       font-size: 0.95rem !important;
       padding: 13px 18px !important;
       letter-spacing: 1px !important;
-      border-bottom: 2px solid var(--color-accent) !important;
+      border-bottom: 2px solid #faab9f !important;
     }
 
     #changelist-filter h3 {
       font-family: var(--font-ui) !important;
       font-size: 0.78rem !important;
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
       text-transform: uppercase !important;
       letter-spacing: 1.5px !important;
       font-weight: 700 !important;
@@ -280,29 +331,39 @@
     }
 
     #changelist-filter ul li.selected a {
-      color: var(--color-accent2) !important;
+      color: #d38d45 !important;
       font-weight: 700 !important;
     }
 
     #changelist-filter a {
       font-family: var(--font-body) !important;
       font-size: 0.92rem !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
     }
 
     #changelist-filter a:hover {
-      color: var(--color-accent) !important;
+      color: #faab9f !important;
     }
 
-    /* ---- BOTONES Y ACCIONES OFICIALES (Tema Odrin #faab9f y #d38d45) ---- */
+    /* ---- BOTONES, OBJECT-TOOLS Y ACCIONES (CERO FONDO NEGRO) ---- */
     .button, 
+    button,
     input[type=submit], 
     input[type=button], 
     .submit-row input, 
-    a.button {
-      background: var(--color-accent) !important;
+    a.button,
+    .object-tools a,
+    .object-tools a:link,
+    .object-tools a:visited,
+    .object-tools li a,
+    .actions button,
+    .actions input[type="submit"],
+    #changelist-search input[type="submit"] {
+      background: #faab9f !important;
+      background-color: #faab9f !important;
+      background-image: none !important;
       color: #ffffff !important;
-      border: 1px solid var(--color-accent) !important;
+      border: 1px solid #faab9f !important;
       border-radius: 4px !important;
       font-family: var(--font-ui) !important;
       font-size: 0.8rem !important;
@@ -313,15 +374,25 @@
       cursor: pointer !important;
       box-shadow: 0 4px 14px rgba(250, 171, 159, 0.4) !important;
       transition: all 0.25s ease !important;
+      text-decoration: none !important;
+      display: inline-block !important;
     }
 
     .button:hover, 
+    button:hover,
     input[type=submit]:hover, 
     input[type=button]:hover, 
     .submit-row input:hover, 
-    a.button:hover {
-      background: var(--color-accent2) !important;
-      border-color: var(--color-accent2) !important;
+    a.button:hover,
+    .object-tools a:hover,
+    .actions button:hover,
+    .actions input[type="submit"]:hover,
+    #changelist-search input[type="submit"]:hover {
+      background: #d38d45 !important;
+      background-color: #d38d45 !important;
+      background-image: none !important;
+      border-color: #d38d45 !important;
+      color: #ffffff !important;
       transform: translateY(-1px) !important;
       box-shadow: 0 6px 18px rgba(211, 141, 69, 0.35) !important;
     }
@@ -330,10 +401,10 @@
       font-family: var(--font-ui) !important;
       font-size: 0.88rem !important;
       padding: 9px 14px !important;
-      border: 1px solid var(--color-border) !important;
+      border: 1px solid rgba(250, 171, 159, 0.5) !important;
       border-radius: 4px !important;
       background: #ffffff !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-weight: 600 !important;
     }
 
@@ -342,13 +413,9 @@
       font-family: var(--font-body) !important;
       font-size: 0.95rem !important;
       padding: 9px 15px !important;
-      border: 1px solid var(--color-border) !important;
+      border: 1px solid rgba(250, 171, 159, 0.5) !important;
       border-radius: 4px !important;
       background: #ffffff !important;
-    }
-
-    #changelist-search input[type="submit"] {
-      padding: 9px 18px !important;
     }
 
     /* ---- FORMULARIOS DE DETALLE (CHANGE FORM) ---- */
@@ -361,7 +428,7 @@
     .form-row label {
       font-family: var(--font-ui) !important;
       font-size: 0.85rem !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-weight: 700 !important;
       letter-spacing: 0.5px !important;
     }
@@ -373,25 +440,26 @@
     input[type="number"], 
     textarea, 
     select {
-      border: 1px solid var(--color-border) !important;
+      border: 1px solid rgba(250, 171, 159, 0.5) !important;
       border-radius: 4px !important;
       padding: 9px 13px !important;
       font-family: var(--font-body) !important;
       font-size: 0.95rem !important;
       background: #ffffff !important;
+      color: #2c2c2c !important;
     }
 
     input:focus, 
     textarea:focus, 
     select:focus {
-      border-color: var(--color-accent2) !important;
+      border-color: #d38d45 !important;
       outline: none !important;
       box-shadow: 0 0 0 2px rgba(211, 141, 69, 0.2) !important;
     }
 
     .submit-row {
       background: #faf7f2 !important;
-      border: 1px solid var(--color-border) !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
       border-radius: 6px !important;
       padding: 16px 20px !important;
       margin-top: 25px !important;
@@ -399,20 +467,20 @@
 
     /* Acciones recientes (sidebar) */
     #recent-actions-module {
-      background: var(--color-card-bg) !important;
-      border: 1px solid var(--color-border) !important;
+      background: #ffffff !important;
+      border: 1px solid rgba(250, 171, 159, 0.45) !important;
       border-radius: 6px !important;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04) !important;
     }
 
     #recent-actions-module h2 {
       background: #faf7f2 !important;
-      color: var(--color-text) !important;
+      color: #2c2c2c !important;
       font-family: var(--font-heading) !important;
       font-size: 0.95rem !important;
       letter-spacing: 1px !important;
       padding: 14px 20px !important;
-      border-bottom: 2px solid var(--color-accent) !important;
+      border-bottom: 2px solid #faab9f !important;
     }
 
     #recent-actions-module ul li {
@@ -420,6 +488,7 @@
       font-size: 0.82rem !important;
       padding: 9px 16px !important;
       border-bottom: 1px solid #f7efeb !important;
+      color: #555555 !important;
     }
   </style>
 {% endblock %}
@@ -435,3 +504,4 @@
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
+
