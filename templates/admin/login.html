@@ -1,0 +1,157 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    body.login {
+      background-color: #ede7df !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-height: 100vh !important;
+      margin: 0 !important;
+      padding: 20px !important;
+      box-sizing: border-box !important;
+    }
+
+    #container {
+      background: #faf7f2 !important;
+      border: 1px solid #dcd4c8 !important;
+      border-radius: 8px !important;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08) !important;
+      width: 100% !important;
+      max-width: 440px !important;
+      margin: 0 auto !important;
+      overflow: hidden !important;
+    }
+
+    #header {
+      background: #1a2744 !important;
+      border-bottom: 3px solid #d38d45 !important;
+      padding: 30px 24px 24px 24px !important;
+      text-align: center !important;
+    }
+
+    #header #branding h1 {
+      font-family: 'Cinzel Decorative', Georgia, serif !important;
+      font-size: 1.4rem !important;
+      color: #ffffff !important;
+      letter-spacing: 1.5px !important;
+      margin: 0 !important;
+    }
+
+    #header #branding h1 a {
+      color: #ffffff !important;
+      text-decoration: none !important;
+    }
+
+    #header #branding h1::after {
+      display: none !important;
+    }
+
+    .login-subtitle {
+      font-family: 'Josefin Sans', sans-serif !important;
+      font-size: 0.75rem !important;
+      color: #faab9f !important;
+      letter-spacing: 3px !important;
+      text-transform: uppercase !important;
+      margin-top: 6px !important;
+    }
+
+    #content {
+      padding: 35px 30px !important;
+    }
+
+    .form-row {
+      border: none !important;
+      padding: 10px 0 !important;
+    }
+
+    .form-row label {
+      font-family: 'Josefin Sans', sans-serif !important;
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 1px !important;
+      color: #1a2744 !important;
+      text-transform: uppercase !important;
+      display: block !important;
+      margin-bottom: 6px !important;
+    }
+
+    .form-row input[type="text"],
+    .form-row input[type="password"] {
+      width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 12px 14px !important;
+      border: 1px solid #dcd4c8 !important;
+      border-radius: 4px !important;
+      background: #ffffff !important;
+      font-family: 'Playfair Display', serif !important;
+      font-size: 1rem !important;
+      outline: none !important;
+      transition: all 0.2s !important;
+    }
+
+    .form-row input[type="text"]:focus,
+    .form-row input[type="password"]:focus {
+      border-color: #d38d45 !important;
+      box-shadow: 0 0 0 3px rgba(211, 141, 69, 0.15) !important;
+    }
+
+    .submit-row {
+      background: none !important;
+      border: none !important;
+      padding: 20px 0 0 0 !important;
+      margin: 0 !important;
+      text-align: center !important;
+    }
+
+    .submit-row input[type="submit"] {
+      width: 100% !important;
+      background: #d38d45 !important;
+      color: #ffffff !important;
+      border: 1px solid #d38d45 !important;
+      padding: 13px !important;
+      font-family: 'Josefin Sans', sans-serif !important;
+      font-size: 0.9rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 2px !important;
+      text-transform: uppercase !important;
+      border-radius: 4px !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 15px rgba(211, 141, 69, 0.25) !important;
+      transition: all 0.2s !important;
+    }
+
+    .submit-row input[type="submit"]:hover {
+      background: #b87333 !important;
+      border-color: #b87333 !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 6px 20px rgba(211, 141, 69, 0.35) !important;
+    }
+
+    .errornote {
+      background: #fdf2f2 !important;
+      color: #991b1b !important;
+      border: 1px solid #fecaca !important;
+      border-radius: 4px !important;
+      font-family: 'Josefin Sans', sans-serif !important;
+      font-size: 0.85rem !important;
+      padding: 12px !important;
+      margin-bottom: 20px !important;
+      text-align: center !important;
+    }
+  </style>
+{% endblock %}
+
+{% block branding %}
+  <div id="branding">
+    <h1 id="site-name">
+      <a href="{% url 'admin:index' %}">
+        Aporte Matemático
+      </a>
+    </h1>
+    <div class="login-subtitle">Panel de Control Editorial</div>
+  </div>
+{% endblock %}

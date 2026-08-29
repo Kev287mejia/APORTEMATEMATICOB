@@ -1,0 +1,428 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Aporte Matemático Admin{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <!-- Google Fonts Oficiales de la Plataforma -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Josefin+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="{% static 'favicon.png' %}" />
+
+  <style>
+    /* =========================================================
+       TEMA ODRIN LUXURY — DJANGO ADMIN CUSTOM STYLING
+       Paleta: Azul Marino (#1a2744), Dorado (#d38d45), Pergamino (#faf7f2 / #ede7df)
+       Tipografías: Cinzel Decorative, Playfair Display, Josefin Sans
+       ========================================================= */
+
+    :root {
+      --primary: #1a2744;
+      --secondary: #d38d45;
+      --accent: #faab9f;
+      --bg-page: #ede7df;
+      --bg-card: #faf7f2;
+      --text-main: #2c2c2c;
+      --text-muted: #777777;
+      --border-color: #dcd4c8;
+      --header-bg: #1a2744;
+      --header-color: #ffffff;
+      --breadcrumbs-bg: #f4ede3;
+      --link-color: #d38d45;
+      --link-hover: #b87333;
+      --font-heading: 'Cinzel Decorative', Georgia, serif;
+      --font-body: 'Playfair Display', Georgia, serif;
+      --font-ui: 'Josefin Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-page) !important;
+      color: var(--text-main) !important;
+      font-family: var(--font-body) !important;
+      font-size: 15px !important;
+    }
+
+    /* ---- HEADER PRINCIPAL ---- */
+    #header {
+      background: var(--primary) !important;
+      color: var(--header-color) !important;
+      padding: 18px 30px !important;
+      border-bottom: 3px solid var(--secondary) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    #header #branding h1 {
+      font-family: var(--font-heading) !important;
+      font-size: 1.3rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 1px !important;
+      margin: 0 !important;
+    }
+
+    #header #branding h1 a:link,
+    #header #branding h1 a:visited {
+      color: #ffffff !important;
+      text-decoration: none !important;
+    }
+
+    #header #branding h1 a::after {
+      content: " • Panel Editorial";
+      font-family: var(--font-ui) !important;
+      font-size: 0.75rem !important;
+      color: var(--accent) !important;
+      letter-spacing: 2px !important;
+      text-transform: uppercase !important;
+      margin-left: 10px !important;
+    }
+
+    #user-tools {
+      font-family: var(--font-ui) !important;
+      font-size: 0.8rem !important;
+      letter-spacing: 1px !important;
+      color: #e0d8cf !important;
+    }
+
+    #user-tools a {
+      color: var(--accent) !important;
+      text-decoration: none !important;
+      font-weight: 600 !important;
+      border-bottom: 1px dashed rgba(250, 171, 159, 0.5) !important;
+      transition: all 0.2s !important;
+    }
+
+    #user-tools a:hover {
+      color: #ffffff !important;
+      border-bottom-color: #ffffff !important;
+    }
+
+    /* ---- BREADCRUMBS ---- */
+    div.breadcrumbs {
+      background: var(--breadcrumbs-bg) !important;
+      border-bottom: 1px solid var(--border-color) !important;
+      font-family: var(--font-ui) !important;
+      font-size: 0.82rem !important;
+      letter-spacing: 0.5px !important;
+      color: var(--text-muted) !important;
+      padding: 12px 30px !important;
+    }
+
+    div.breadcrumbs a {
+      color: var(--primary) !important;
+      font-weight: 600 !important;
+      text-decoration: none !important;
+    }
+
+    div.breadcrumbs a:hover {
+      color: var(--secondary) !important;
+    }
+
+    /* ---- CONTENEDOR PRINCIPAL ---- */
+    #content {
+      padding: 30px !important;
+      max-width: 1300px !important;
+      margin: 0 auto !important;
+    }
+
+    #content h1 {
+      font-family: var(--font-heading) !important;
+      font-size: 1.5rem !important;
+      color: var(--primary) !important;
+      margin-bottom: 20px !important;
+      letter-spacing: 0.5px !important;
+    }
+
+    /* ---- TARJETAS Y MÓDULOS DEL DASHBOARD ---- */
+    .module {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 6px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+      margin-bottom: 30px !important;
+      overflow: hidden !important;
+    }
+
+    .module caption, 
+    .module h2 {
+      background: var(--primary) !important;
+      color: #ffffff !important;
+      font-family: var(--font-heading) !important;
+      font-size: 1.05rem !important;
+      font-weight: 700 !important;
+      padding: 14px 20px !important;
+      letter-spacing: 1px !important;
+      border-bottom: 2px solid var(--secondary) !important;
+      text-align: left !important;
+    }
+
+    .module table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+    }
+
+    .module th, 
+    .module td {
+      padding: 12px 20px !important;
+      font-family: var(--font-ui) !important;
+      font-size: 0.9rem !important;
+      border-bottom: 1px solid #ebe4d8 !important;
+    }
+
+    .module tr:hover {
+      background-color: #f4ede3 !important;
+    }
+
+    .module th a {
+      color: var(--primary) !important;
+      font-weight: 700 !important;
+      font-size: 0.95rem !important;
+      text-decoration: none !important;
+    }
+
+    .module th a:hover {
+      color: var(--secondary) !important;
+    }
+
+    /* ---- TABLAS DE LISTA DE OBJETOS (CHANGE LIST) ---- */
+    #changelist {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 6px !important;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05) !important;
+      padding: 20px !important;
+    }
+
+    #changelist table thead th {
+      background: var(--primary) !important;
+      color: #ffffff !important;
+      font-family: var(--font-ui) !important;
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 1.5px !important;
+      text-transform: uppercase !important;
+      padding: 12px 14px !important;
+      border: none !important;
+    }
+
+    #changelist table thead th a {
+      color: #ffffff !important;
+      text-decoration: none !important;
+    }
+
+    #changelist table thead th a:hover {
+      color: var(--accent) !important;
+    }
+
+    #result_list tbody tr {
+      background: #ffffff !important;
+      transition: background 0.15s !important;
+    }
+
+    #result_list tbody tr:nth-child(even) {
+      background: #faf7f2 !important;
+    }
+
+    #result_list tbody tr:hover {
+      background: #f4ede3 !important;
+    }
+
+    #result_list tbody td, 
+    #result_list tbody th {
+      font-family: var(--font-body) !important;
+      font-size: 0.92rem !important;
+      padding: 12px 14px !important;
+      border-bottom: 1px solid #ebe4d8 !important;
+      color: var(--text-main) !important;
+    }
+
+    #result_list tbody th a {
+      color: var(--primary) !important;
+      font-weight: 700 !important;
+      text-decoration: none !important;
+      font-family: var(--font-ui) !important;
+    }
+
+    #result_list tbody th a:hover {
+      color: var(--secondary) !important;
+    }
+
+    /* ---- FILTROS LATERALES ---- */
+    #changelist-filter {
+      background: #ffffff !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 6px !important;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    #changelist-filter h2 {
+      background: var(--primary) !important;
+      color: #ffffff !important;
+      font-family: var(--font-heading) !important;
+      font-size: 0.9rem !important;
+      padding: 12px 16px !important;
+      letter-spacing: 1px !important;
+    }
+
+    #changelist-filter h3 {
+      font-family: var(--font-ui) !important;
+      font-size: 0.78rem !important;
+      color: var(--secondary) !important;
+      text-transform: uppercase !important;
+      letter-spacing: 1.5px !important;
+      font-weight: 700 !important;
+      margin-top: 15px !important;
+    }
+
+    #changelist-filter ul li.selected a {
+      color: var(--secondary) !important;
+      font-weight: 700 !important;
+    }
+
+    #changelist-filter a {
+      font-family: var(--font-body) !important;
+      font-size: 0.9rem !important;
+      color: var(--text-main) !important;
+    }
+
+    /* ---- BOTONES Y ACCIONES ---- */
+    .button, 
+    input[type=submit], 
+    input[type=button], 
+    .submit-row input, 
+    a.button {
+      background: var(--secondary) !important;
+      color: #ffffff !important;
+      border: 1px solid var(--secondary) !important;
+      border-radius: 4px !important;
+      font-family: var(--font-ui) !important;
+      font-size: 0.8rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 1.5px !important;
+      text-transform: uppercase !important;
+      padding: 10px 20px !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 12px rgba(211, 141, 69, 0.2) !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .button:hover, 
+    input[type=submit]:hover, 
+    input[type=button]:hover, 
+    .submit-row input:hover, 
+    a.button:hover {
+      background: #b87333 !important;
+      border-color: #b87333 !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 6px 16px rgba(211, 141, 69, 0.3) !important;
+    }
+
+    .actions select {
+      font-family: var(--font-ui) !important;
+      font-size: 0.85rem !important;
+      padding: 8px 12px !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 4px !important;
+      background: #ffffff !important;
+      color: var(--primary) !important;
+      font-weight: 600 !important;
+    }
+
+    /* Barra de búsqueda */
+    #searchbar {
+      font-family: var(--font-body) !important;
+      font-size: 0.95rem !important;
+      padding: 8px 14px !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 4px !important;
+      background: #ffffff !important;
+    }
+
+    #changelist-search input[type="submit"] {
+      padding: 8px 16px !important;
+    }
+
+    /* ---- FORMULARIOS DE DETALLE (CHANGE FORM) ---- */
+    .form-row {
+      border-bottom: 1px solid #ebe4d8 !important;
+      padding: 14px 10px !important;
+      font-family: var(--font-ui) !important;
+    }
+
+    .form-row label {
+      font-family: var(--font-ui) !important;
+      font-size: 0.85rem !important;
+      color: var(--primary) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.5px !important;
+    }
+
+    input[type="text"], 
+    input[type="password"], 
+    input[type="email"], 
+    input[type="url"], 
+    input[type="number"], 
+    textarea, 
+    select {
+      border: 1px solid var(--border-color) !important;
+      border-radius: 4px !important;
+      padding: 8px 12px !important;
+      font-family: var(--font-body) !important;
+      font-size: 0.95rem !important;
+      background: #ffffff !important;
+    }
+
+    input:focus, 
+    textarea:focus, 
+    select:focus {
+      border-color: var(--secondary) !important;
+      outline: none !important;
+      box-shadow: 0 0 0 2px rgba(211, 141, 69, 0.2) !important;
+    }
+
+    .submit-row {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 6px !important;
+      padding: 16px !important;
+      margin-top: 25px !important;
+    }
+
+    /* Acciones recientes (sidebar) */
+    #recent-actions-module {
+      background: var(--bg-card) !important;
+      border: 1px solid var(--border-color) !important;
+      border-radius: 6px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    #recent-actions-module h2 {
+      background: var(--primary) !important;
+      color: #ffffff !important;
+      font-family: var(--font-heading) !important;
+      font-size: 0.95rem !important;
+      letter-spacing: 1px !important;
+      padding: 12px 18px !important;
+      border-bottom: 2px solid var(--secondary) !important;
+    }
+
+    #recent-actions-module ul li {
+      font-family: var(--font-ui) !important;
+      font-size: 0.82rem !important;
+      padding: 8px 14px !important;
+      border-bottom: 1px solid #f0e9df !important;
+    }
+  </style>
+{% endblock %}
+
+{% block branding %}
+  <div id="branding">
+    <h1 id="site-name">
+      <a href="{% url 'admin:index' %}">
+        Aporte Matemático
+      </a>
+    </h1>
+  </div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
