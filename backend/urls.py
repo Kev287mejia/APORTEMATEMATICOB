@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from store.views import export_master_report_excel
 
 urlpatterns = [
+    path('admin/exportar-reporte-general/', export_master_report_excel, name='export_master_report_excel'),
     path('admin/', admin.site.urls),
     path('', include('store.urls')),
 ]
+

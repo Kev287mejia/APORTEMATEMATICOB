@@ -1,0 +1,19 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content_title %}
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid rgba(250, 171, 159, 0.45);">
+    <div>
+      <h1 style="margin: 0; font-family: 'Cinzel Decorative', Georgia, serif; font-size: 1.6rem; color: #2c2c2c; letter-spacing: 0.5px;">
+        Panel de Control Editorial
+      </h1>
+      <p style="font-family: 'Josefin Sans', sans-serif; font-size: 0.8rem; color: #777777; letter-spacing: 1.5px; text-transform: uppercase; margin: 4px 0 0 0;">
+        Monitoreo de Ventas, Pedidos Físicos y Activaciones
+      </p>
+    </div>
+    
+    <a href="{% url 'export_master_report_excel' %}" class="button" style="padding: 12px 24px; font-size: 0.82rem; font-family: 'Josefin Sans', sans-serif; letter-spacing: 1px; text-transform: uppercase;">
+      Descargar Reporte Ejecutivo Completo (.xlsx)
+    </a>
+  </div>
+{% endblock %}

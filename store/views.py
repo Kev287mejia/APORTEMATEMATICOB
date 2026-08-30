@@ -5,7 +5,9 @@ import random
 import base64
 import resend
 
+import datetime
 from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
@@ -14,6 +16,7 @@ from django.utils.html import escape
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.conf import settings
+
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -35,9 +38,23 @@ def pedido_view(request):
     return render(request, 'pedido.html')
 
 
+from .excel_reports import generate_master_executive_workbook
+
 @staff_member_required(login_url='/admin/login/?next=/activador.html')
 def activador_view(request):
     return render(request, 'activador.html')
+
+
+@staff_member_required(login_url='/admin/login/?next=/admin/exportar-reporte-general/')
+def export_master_report_excel(request):
+    """Endpoint administrativo para descargar el Reporte Maestro en Excel con KPIs ejecutivos."""
+    wb = generate_master_executive_workbook()
+    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    filename = f"Reporte_General_Estadisticas_Aporte_Matematico_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.xlsx"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    wb.save(response)
+    return response
+
 
 
 @api_view(['POST'])

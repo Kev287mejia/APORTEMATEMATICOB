@@ -573,5 +573,13 @@
   </div>
 {% endblock %}
 
+{% block userlinks %}
+  <a href="{% url 'export_master_report_excel' %}" style="background: #faab9f !important; color: #ffffff !important; padding: 7px 16px !important; border-radius: 4px !important; font-family: 'Josefin Sans', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; text-decoration: none !important; margin-right: 18px !important; border: 1px solid #faab9f !important; display: inline-block !important; letter-spacing: 1px !important; text-transform: uppercase !important; box-shadow: 0 4px 10px rgba(250, 171, 159, 0.4) !important;" onmouseover="this.style.background='#d38d45'; this.style.borderColor='#d38d45';" onmouseout="this.style.background='#faab9f'; this.style.borderColor='#faab9f';">
+    Exportar Reporte General (.xlsx)
+  </a>
+  {{ block.super }}
+{% endblock %}
+
 {% block nav-global %}{% endblock %}
+
 
