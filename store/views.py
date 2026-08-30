@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.utils import timezone
-from django.utils.html import escape
+from django.utils.html import escape, strip_tags
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -317,17 +317,18 @@ def submit_contact(request):
                 messages.error(request, 'Por favor ingresa un correo electrónico válido.')
                 return redirect('contacto')
             
-            # Sanitizar y delimitar campos
-            name = escape(raw_name)[:150]
-            email = escape(raw_email)[:254]
-            subject = escape(raw_subject)[:200] if raw_subject else 'Sin Asunto'
-            message = escape(raw_message)[:5000]
+            # Sanitizar y limpiar etiquetas HTML para almacenamiento
+            name = strip_tags(raw_name)[:150]
+            email = strip_tags(raw_email)[:254]
+            subject = strip_tags(raw_subject)[:200] if raw_subject else 'Sin Asunto'
+            message = strip_tags(raw_message)[:5000]
             
             try:
                 ContactMessage.objects.create(
                     name=name, email=email, subject=subject, message=message
                 )
                 logger.info(f"New contact message from {name} ({email})")
+
             except Exception as e:
                 logger.error(f"Error saving contact message: {e}")
             
