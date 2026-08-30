@@ -136,15 +136,9 @@ def save_paypal_purchase(request):
             )
             logger.info(f"Generated new activation code {code_str} for purchase {transaction_id}")
             
-            # Cargar firma manuscrita en base64
-            sig_file_path = os.path.join(settings.BASE_DIR, 'static', 'firma_acevedo.png')
-            sig_b64_src = ""
-            try:
-                if os.path.exists(sig_file_path):
-                    with open(sig_file_path, 'rb') as sf:
-                        sig_b64_src = f"data:image/png;base64,{base64.b64encode(sf.read()).decode('utf-8')}"
-            except Exception as e:
-                logger.warning(f"Could not load signature file: {e}")
+            # URL publica alojada en CDN para maxima compatibilidad en Gmail/Outlook
+            sig_image_url = "https://raw.githubusercontent.com/Kev287mejia/APORTEMATEMATICOB/main/static/firma_acevedo.png"
+
 
             # Enviar correo al comprador
             resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
@@ -239,8 +233,9 @@ def save_paypal_purchase(request):
                             
                             <!-- Firma manuscrita Real -->
                             <div style="margin: 6px auto 12px auto; text-align: center;">
-                                <img src="{sig_b64_src}" alt="Firma Prof. Bienvenido H. Acevedo" style="max-height: 85px; width: auto; max-width: 250px; display: inline-block;" />
+                                <img src="{sig_image_url}" alt="Firma Prof. Bienvenido H. Acevedo" width="220" style="max-height: 85px; width: 220px; max-width: 100%; height: auto; display: inline-block; border: 0;" />
                             </div>
+
 
                             <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #1a2744; font-family: 'Cinzel Decorative', Georgia, serif; letter-spacing: 0.5px;">
                                 Prof. Bienvenido Hernaldo Acevedo González
