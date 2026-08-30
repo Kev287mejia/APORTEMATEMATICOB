@@ -149,12 +149,27 @@
   <!-- ===== FIN PANEL DE LOGIN ===== -->
 
 
-  <div class="admin-card">
+  <div style="max-width: 600px; margin: 20px auto 0; display: flex; justify-content: space-between; align-items: center; padding: 0 10px;">
+    <a href="{% url 'index' %}" style="font-family: var(--font-ui); font-size: 0.78rem; color: #777; text-decoration: none; font-weight: 600;" onmouseover="this.style.color='#D38D45'" onmouseout="this.style.color='#777'">
+      &larr; Volver al Sitio Web
+    </a>
+    <div style="display: flex; gap: 15px;">
+      <a href="{% url 'admin:index' %}" style="font-family: var(--font-ui); font-size: 0.78rem; color: #1a2744; text-decoration: none; font-weight: 700; border-bottom: 1px solid #1a2744;">
+        Panel Django Admin &rarr;
+      </a>
+      <a href="{% url 'export_master_report_excel' %}" style="font-family: var(--font-ui); font-size: 0.78rem; color: #D38D45; text-decoration: none; font-weight: 700;">
+        Reporte Excel (.xlsx)
+      </a>
+    </div>
+  </div>
+
+  <div class="admin-card" style="margin-top: 15px;">
     <div class="SpecialHeading text-center mb-20">
       <h1 style="font-family: var(--font-heading); font-size: 1.4rem; color: #333;">Generador de Claves de Acceso</h1>
       <div class="special-subtitle">Panel Privado para Clientes de Kash / Transferencia</div>
       <div class="special-subtitle-line" style="margin: 0.8rem auto 1rem;"></div>
     </div>
+
 
     <form id="genForm" onsubmit="generateActivationCode(event)">
       <div class="form-group" style="margin-bottom: 15px;">

@@ -574,6 +574,12 @@
 {% endblock %}
 
 {% block userlinks %}
+  <a href="{% url 'index' %}" target="_blank" style="color: #2c2c2c !important; font-family: 'Josefin Sans', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; text-decoration: none !important; margin-right: 14px !important; letter-spacing: 0.5px !important;" onmouseover="this.style.color='#d38d45';" onmouseout="this.style.color='#2c2c2c';">
+    Ver Plataforma Web &rarr;
+  </a>
+  <a href="{% url 'activador' %}" style="color: #d38d45 !important; font-family: 'Josefin Sans', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; text-decoration: none !important; margin-right: 16px !important; letter-spacing: 0.5px !important;" onmouseover="this.style.color='#faab9f';" onmouseout="this.style.color='#d38d45';">
+    Generador de Claves Kash &rarr;
+  </a>
   <a href="{% url 'export_master_report_excel' %}" style="background: #faab9f !important; color: #ffffff !important; padding: 7px 16px !important; border-radius: 4px !important; font-family: 'Josefin Sans', sans-serif !important; font-size: 0.8rem !important; font-weight: 700 !important; text-decoration: none !important; margin-right: 18px !important; border: 1px solid #faab9f !important; display: inline-block !important; letter-spacing: 1px !important; text-transform: uppercase !important; box-shadow: 0 4px 10px rgba(250, 171, 159, 0.4) !important;" onmouseover="this.style.background='#d38d45'; this.style.borderColor='#d38d45';" onmouseout="this.style.background='#faab9f'; this.style.borderColor='#faab9f';">
     Exportar Reporte General (.xlsx)
   </a>
@@ -581,5 +587,6 @@
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
+
 
 
