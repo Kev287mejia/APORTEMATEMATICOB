@@ -54,7 +54,7 @@ export default async function handler(req, res) {
                     Aporte Matemático
                   </p>
                   <h1 style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 24px; font-weight: 700; color: #ffffff; margin: 0; letter-spacing: 1.5px; line-height: 1.3;">
-                    ¡Gracias por tu compra!
+                    ¡Gracias!
                   </h1>
                   <p style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; color: #e0d8cf; margin: 8px 0 0 0; letter-spacing: 1px;">
                     Edición Digital Desbloqueada
@@ -74,26 +74,44 @@ export default async function handler(req, res) {
 
                   <!-- Book Title Box -->
                   <div style="background-color: #ffffff; border: 1px solid #e8decb; border-left: 4px solid #d38d45; padding: 18px 22px; margin: 22px 0; border-radius: 0 4px 4px 0; text-align: center;">
-                    <em style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 15px; font-weight: 700; color: #1a2744; letter-spacing: 0.5px; line-height: 1.6; display: block; font-style: normal;">
+                    <span style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 15px; font-weight: 700; color: #1a2744; letter-spacing: 0.5px; line-height: 1.6; display: block;">
                       "Un Aporte Matemático en el Siglo 21:<br>
                       Factorización de a²+b², en los Números Reales"
-                    </em>
+                    </span>
                   </div>
 
                   <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
-                    Como autor del libro, me place tu adquisición y espero que lo disfrutes y que, a la vez, satisfaga tu curiosidad de ver cómo se factoriza en los Números Reales, la Suma de Dos Cuadrados. Los matemáticos de toda época han dicho que este polinomio es irreducible, es decir, que no tiene factorización en el conjunto de los Números Reales; ahora tú tienes a tu disposición algo inédito.
+                    Como autor del libro, me place tu adquisición y espero que lo disfrutes y que, a la vez, satisfaga tu curiosidad de ver cómo se factoriza en los Números Reales, la Suma de Dos Cuadrados. Los matemáticos de toda época, han dicho que este polinomio es irreducible, es decir, que no tiene factorización en el conjunto de los Números Reales, ahora tú tienes a tu disposición algo inédito.
                   </p>
 
                   <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
-                    Al haber procesado tu pago de <strong style="color: #1a2744;">$${data.price} USD</strong> a través de PayPal, el acceso a tu edición digital (<em style="color: #d38d45; font-weight: 600;">${data.language}</em>) ha sido desbloqueado en tu dispositivo automáticamente.
+                    Al haber procesado su pago de <strong style="color: #1a2744;">$${data.price} USD</strong> a través de PayPal, el libro <strong style="color: #1a2744;">ya se ha desbloqueado de forma automática</strong> en el dispositivo desde el cual realizó la compra.
                   </p>
 
-                  <!-- Security / Transaction Box -->
-                  <div style="background-color: #f4ede3; border: 1px dashed #d38d45; border-radius: 4px; padding: 14px 18px; margin: 24px 0;">
-                    <p style="font-family: 'Josefin Sans', sans-serif; font-size: 13px; color: #555; line-height: 1.6; margin: 0;">
-                      Si tienes problemas para visualizarlo, o si borras la memoria de tu navegador, por favor contáctanos con tu código de transacción: <strong style="color: #1a2744; letter-spacing: 1px;">${data.transactionId}</strong>.
+                  <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
+                    Sin embargo, si en algún momento desea visualizar la obra desde un segundo dispositivo (como su computadora personal o una tablet), le proporciono a continuación su código de activación único:
+                  </p>
+
+                  <!-- Activation Code Box -->
+                  <div style="text-align: center; margin: 28px 0;">
+                    <span style="display: inline-block; background-color: #ffffff; color: #d38d45; padding: 14px 28px; font-size: 22px; font-weight: 700; font-family: 'Josefin Sans', sans-serif; border-radius: 4px; border: 1px solid #d38d45; letter-spacing: 3px; box-shadow: 0 4px 12px rgba(211,141,69,0.12);">
+                      ${data.activationCode || 'MAT-ES-XXXX-YYYY'}
+                    </span>
+                  </div>
+
+                  <div style="background-color: #f4ede3; padding: 16px 20px; border-left: 4px solid #d38d45; border-radius: 0 4px 4px 0; margin: 26px 0;">
+                    <p style="font-family: 'Josefin Sans', sans-serif; font-size: 13px; color: #555; margin: 0; line-height: 1.6;">
+                      <em><strong>Nota de Seguridad:</strong> Le recordamos que, para proteger los derechos de autor, este código es de uso único. Una vez que lo ingrese en un nuevo dispositivo, quedará vinculado y el código caducará para evitar su distribución no autorizada.</em>
                     </p>
                   </div>
+
+                  <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; line-height: 1.8; color: #3a3a3a; margin: 0 0 16px 0;">
+                    Quedo a su entera disposición para cualquier consulta académica o comentario a través de la sección de contacto en nuestra página web.
+                  </p>
+
+                  <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; line-height: 1.8; color: #3a3a3a; margin: 0 0 24px 0;">
+                    Nuevamente, muchas gracias por su confianza y apoyo a la educación matemática.
+                  </p>
 
                 </div>
 
@@ -114,7 +132,6 @@ export default async function handler(req, res) {
                     <img src="${SIGNATURE_IMAGE}" alt="Firma Prof. Bienvenido H. Acevedo" width="220" style="max-height: 85px; width: 220px; max-width: 100%; height: auto; display: inline-block; border: 0;" />
                   </div>
 
-
                   <!-- Nombre completo -->
                   <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #1a2744; font-family: 'Cinzel Decorative', Georgia, serif; letter-spacing: 0.5px;">
                     Prof. Bienvenido Hernaldo Acevedo González
@@ -122,7 +139,7 @@ export default async function handler(req, res) {
 
                   <!-- Rol -->
                   <p style="margin: 0 0 22px 0; font-size: 11px; font-weight: 700; color: #d38d45; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase;">
-                    Autor — Aporte Matemático
+                    Autor de "Un Aporte Matemático en el Siglo 21"
                   </p>
 
                   <!-- Aviso -->
@@ -136,6 +153,7 @@ export default async function handler(req, res) {
             </div>
           `
         });
+
       }
 
       // 2. Email al administrador (Alerta de Venta)

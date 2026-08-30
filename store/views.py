@@ -160,8 +160,8 @@ def save_paypal_purchase(request):
                             <p style="font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700; color: #faab9f; letter-spacing: 3px; text-transform: uppercase; margin: 0 0 10px 0;">
                                 Aporte Matemático
                             </p>
-                            <h1 style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 22px; font-weight: 700; color: #ffffff; margin: 0; letter-spacing: 1.5px; line-height: 1.3;">
-                                ¡Gracias por tu compra!
+                            <h1 style="font-family: 'Cinzel Decorative', Georgia, serif; font-size: 24px; font-weight: 700; color: #ffffff; margin: 0; letter-spacing: 1.5px; line-height: 1.3;">
+                                ¡Gracias!
                             </h1>
                             <p style="font-family: 'Josefin Sans', sans-serif; font-size: 12px; color: #e0d8cf; margin: 8px 0 0 0; letter-spacing: 1px;">
                                 Edición Digital Desbloqueada
@@ -172,11 +172,11 @@ def save_paypal_purchase(request):
                         <div style="padding: 36px 34px 28px 34px; background-color: #faf7f2; color: #2c2c2c;">
                             
                             <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 16px; color: #2c2c2c; margin: 0 0 16px 0;">
-                                <strong>Estimado/a Lector/a:</strong>
+                                <strong>Estimado(a) Lector(a):</strong>
                             </p>
                             
                             <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 16px 0;">
-                                Es un verdadero honor para mí agradecerle personalmente por la adquisición de mi libro digital:
+                                Gracias por la adquisición de esta obra literaria:
                             </p>
                             
                             <!-- Book Title Box -->
@@ -188,7 +188,7 @@ def save_paypal_purchase(request):
                             </div>
                             
                             <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
-                                Espero con esta obra satisfacer su curiosidad sobre la factorización de la suma de dos cuadrados (a² + b², el Teorema de Pitágoras), porque éste hasta la fecha ha sido irreductible.
+                                Como autor del libro, me place tu adquisición y espero que lo disfrutes y que, a la vez, satisfaga tu curiosidad de ver cómo se factoriza en los Números Reales, la Suma de Dos Cuadrados. Los matemáticos de toda época, han dicho que este polinomio es irreducible, es decir, que no tiene factorización en el conjunto de los Números Reales, ahora tú tienes a tu disposición algo inédito.
                             </p>
                             
                             <p style="font-family: 'Playfair Display', Georgia, serif; font-size: 15px; color: #3a3a3a; line-height: 1.8; margin: 0 0 18px 0;">
@@ -199,7 +199,7 @@ def save_paypal_purchase(request):
                                 Sin embargo, si en algún momento desea visualizar la obra desde un segundo dispositivo (como su computadora personal o una tablet), le proporciono a continuación su código de activación único:
                             </p>
                             
-                            <div style="text-align: center; margin: 30px 0;">
+                            <div style="text-align: center; margin: 28px 0;">
                                 <span style="display: inline-block; background-color: #ffffff; color: #d38d45; padding: 14px 28px; font-size: 22px; font-weight: 700; font-family: 'Josefin Sans', sans-serif; border-radius: 4px; border: 1px solid #d38d45; letter-spacing: 3px; box-shadow: 0 4px 12px rgba(211,141,69,0.12);">
                                     {code_str}
                                 </span>
@@ -219,6 +219,7 @@ def save_paypal_purchase(request):
                                 Nuevamente, muchas gracias por su confianza y apoyo a la educación matemática.
                             </p>
                         </div>
+
                         
                         <!-- Symmetrical Luxury Divider -->
                         <div style="padding: 0 34px;">
