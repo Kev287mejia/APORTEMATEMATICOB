@@ -40,9 +40,10 @@ def pedido_view(request):
 
 from .excel_reports import generate_master_executive_workbook
 
-@staff_member_required(login_url='/admin/login/?next=/activador.html')
+@staff_member_required(login_url='/admin/login/?next=/activador/')
 def activador_view(request):
     return render(request, 'activador.html')
+
 
 
 @staff_member_required(login_url='/admin/login/?next=/admin/exportar-reporte-general/')
