@@ -1092,10 +1092,12 @@ a:hover { color: var(--color-accent2); }
   width: 100%;
   height: 100%;
   background-image: url('autor.png');
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: center bottom;
   background-repeat: no-repeat;
 }
+
+
 .SpecialTextBlock .special-text-block-image:after {
   position: absolute;
   content: "";
@@ -1194,3 +1196,28 @@ a:hover { color: var(--color-accent2); }
   position: relative;
   z-index: 1;
 }
+
+/* =========================================================
+   DRM & DIGITAL CONTENT PROTECTION
+   ========================================================= */
+@media print {
+  #book-container,
+  .book-container,
+  .bb-custom-wrapper,
+  .bb-bookblock,
+  .book-page,
+  .bb-item {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  body::before {
+    content: "La impresión y exportación directa de este libro digital está deshabilitada para proteger los derechos de autor.";
+    display: block;
+    text-align: center;
+    padding: 50px;
+    font-size: 16px;
+    font-family: serif;
+    color: #444;
+  }
+}
+
