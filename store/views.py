@@ -234,15 +234,15 @@ def save_paypal_purchase(request):
                             
                             <!-- Firma manuscrita Real -->
                             <div style="margin: 6px auto 12px auto; text-align: center;">
-                                <img src="{sig_image_url}" alt="Firma Prof. Bienvenido H. Acevedo" width="220" style="max-height: 85px; width: 220px; max-width: 100%; height: auto; display: inline-block; border: 0;" />
+                                <img src="{sig_image_url}" alt="Firma Bienvenido Hernaldo Acevedo" width="220" style="max-height: 95px; width: 220px; max-width: 100%; height: auto; display: inline-block; border: 0;" />
                             </div>
 
 
                             <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #1a2744; font-family: 'Cinzel Decorative', Georgia, serif; letter-spacing: 0.5px;">
-                                Prof. Bienvenido Hernaldo Acevedo González
+                                Bienvenido Hernaldo Acevedo González
                             </p>
-                            <p style="margin: 0 0 22px 0; font-size: 11px; font-weight: 700; color: #d38d45; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase;">
-                                Autor de "Un Aporte Matemático en el Siglo 21"
+                            <p style="margin: 0 0 22px 0; font-size: 12px; font-weight: 700; color: #d38d45; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase;">
+                                El Autor
                             </p>
                             
                             <p style="font-size: 11px; color: #9e9a93; font-family: 'Josefin Sans', sans-serif; margin: 0; padding-top: 16px; border-top: 1px solid #ebe4d8;">

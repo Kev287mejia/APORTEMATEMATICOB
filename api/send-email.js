@@ -129,17 +129,17 @@ export default async function handler(req, res) {
 
                   <!-- Firma Manuscrita Real -->
                   <div style="margin: 6px auto 12px auto; text-align: center;">
-                    <img src="${SIGNATURE_IMAGE}" alt="Firma Prof. Bienvenido H. Acevedo" width="220" style="max-height: 85px; width: 220px; max-width: 100%; height: auto; display: inline-block; border: 0;" />
+                    <img src="${SIGNATURE_IMAGE}" alt="Firma Bienvenido Hernaldo Acevedo" width="220" style="max-height: 95px; width: 220px; max-width: 100%; height: auto; display: inline-block; border: 0;" />
                   </div>
 
                   <!-- Nombre completo -->
                   <p style="margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: #1a2744; font-family: 'Cinzel Decorative', Georgia, serif; letter-spacing: 0.5px;">
-                    Prof. Bienvenido Hernaldo Acevedo González
+                    Bienvenido Hernaldo Acevedo González
                   </p>
 
                   <!-- Rol -->
-                  <p style="margin: 0 0 22px 0; font-size: 11px; font-weight: 700; color: #d38d45; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase;">
-                    Autor de "Un Aporte Matemático en el Siglo 21"
+                  <p style="margin: 0 0 22px 0; font-size: 12px; font-weight: 700; color: #d38d45; font-family: 'Josefin Sans', sans-serif; letter-spacing: 2px; text-transform: uppercase;">
+                    El Autor
                   </p>
 
                   <!-- Aviso -->
