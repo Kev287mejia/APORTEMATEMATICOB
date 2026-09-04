@@ -3,6 +3,8 @@ import logging
 import string
 import random
 import base64
+import uuid
+import requests
 import resend
 
 import datetime
@@ -101,6 +103,84 @@ def verify_purchase(request):
         return Response({'success': False, 'message': 'Código o transacción inválidos.'}, status=404)
 
 
+def verify_paypal_order(order_id):
+    """
+    Verifica una orden de compra contra la API REST oficial de PayPal.
+    Retorna (is_valid: bool, result_or_error: dict/str).
+    """
+    client_id = getattr(settings, 'PAYPAL_CLIENT_ID', '')
+    client_secret = getattr(settings, 'PAYPAL_CLIENT_SECRET', '')
+    mode = getattr(settings, 'PAYPAL_MODE', 'live').lower()
+    base_url = "https://api-m.sandbox.paypal.com" if mode == 'sandbox' else "https://api-m.paypal.com"
+
+    if not client_id or not client_secret:
+        # En modo de desarrollo (DEBUG=True), permitir simulación para testing local
+        if getattr(settings, 'DEBUG', True):
+            logger.warning(f"PAYPAL_CLIENT_SECRET no configurado. Permitiendo simulación de orden {order_id} en modo DEBUG.")
+            return True, {'status': 'COMPLETED', 'simulated': True}
+        return False, "Credenciales de PayPal no configuradas en el servidor de producción."
+
+    try:
+        # 1. Obtener Token de acceso OAuth2
+        auth_resp = requests.post(
+            f"{base_url}/v1/oauth2/token",
+            auth=(client_id, client_secret),
+            data={'grant_type': 'client_credentials'},
+            headers={'Accept': 'application/json'},
+            timeout=10
+        )
+        if auth_resp.status_code != 200:
+            logger.error(f"Fallo de autenticación OAuth2 en PayPal: {auth_resp.status_code} - {auth_resp.text}")
+            return False, f"Error de autenticación con PayPal (código {auth_resp.status_code})."
+
+        access_token = auth_resp.json().get('access_token')
+
+        # 2. Consultar detalles de la orden
+        order_resp = requests.get(
+            f"{base_url}/v2/checkout/orders/{order_id}",
+            headers={
+                'Authorization': f'Bearer {access_token}',
+                'Content-Type': 'application/json',
+            },
+            timeout=10
+        )
+        if order_resp.status_code != 200:
+            logger.error(f"Fallo consultando orden {order_id} en PayPal: {order_resp.status_code} - {order_resp.text}")
+            return False, f"Orden no encontrada en PayPal (código {order_resp.status_code})."
+
+        order_data = order_resp.json()
+        status = order_data.get('status', '').upper()
+        if status != 'COMPLETED':
+            return False, f"Estado de orden no completado: {status}."
+
+        # 3. Validar montos y moneda
+        purchase_units = order_data.get('purchase_units', [])
+        if not purchase_units:
+            return False, "Orden sin unidades de compra válidas."
+
+        amount_info = purchase_units[0].get('amount', {})
+        currency = amount_info.get('currency_code', '')
+        value_str = amount_info.get('value', '0')
+
+        if currency != 'USD':
+            return False, f"Moneda inválida ({currency}). Se requiere USD."
+
+        try:
+            val_float = float(value_str)
+            if val_float < 9.99:
+                return False, f"Monto recibido insuficiente (${val_float} USD)."
+        except ValueError:
+            return False, f"Monto no convertible: {value_str}."
+
+        return True, order_data
+    except requests.RequestException as e:
+        logger.error(f"Error de conexión con la API de PayPal: {e}")
+        return False, f"Error de comunicación con PayPal: {str(e)}"
+    except Exception as e:
+        logger.error(f"Error inesperado validando orden PayPal: {e}")
+        return False, f"Error interno: {str(e)}"
+
+
 @api_view(['POST'])
 def save_paypal_purchase(request):
     data = request.data
@@ -110,6 +190,17 @@ def save_paypal_purchase(request):
     
     if not transaction_id:
         return Response({'success': False, 'message': 'Falta el ID de transacción'}, status=400)
+    
+    # Verificación server-side con la API oficial de PayPal
+    is_valid, paypal_res = verify_paypal_order(transaction_id)
+    if not is_valid:
+        logger.warning(f"Intento de registro de compra PayPal inválido: {transaction_id} - {paypal_res}")
+        return Response({'success': False, 'message': f'Verificación de PayPal fallida: {paypal_res}'}, status=400)
+
+    # Si PayPal retornó información detallada del pagador y no venía en la petición, usarla
+    if isinstance(paypal_res, dict) and not payer_email:
+        payer_info = paypal_res.get('payer', {})
+        payer_email = payer_info.get('email_address', payer_email)
     
     with transaction.atomic():
         # Crear o actualizar la compra digital
@@ -139,12 +230,12 @@ def save_paypal_purchase(request):
             # URL publica alojada en CDN para maxima compatibilidad en Gmail/Outlook
             sig_image_url = "https://raw.githubusercontent.com/Kev287mejia/APORTEMATEMATICOB/main/static/firma_acevedo.png"
 
-
             # Enviar correo al comprador
             resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
+            from_email = getattr(settings, 'RESEND_FROM_EMAIL', 'onboarding@resend.dev')
             try:
                 resend.Emails.send({
-                    "from": "onboarding@resend.dev",
+                    "from": f"Aporte Matemático <{from_email}>",
                     "to": payer_email,
                     "subject": '¡Gracias por adquirir "Un Aporte Matemático en el Siglo 21 - Factorización de a^2+b^2, en los Números Reales"!',
                 "html": f"""
@@ -260,6 +351,60 @@ def save_paypal_purchase(request):
     return Response({'success': True, 'message': 'Compra guardada y correo enviado (si aplica).'})
 
 
+@api_view(['POST'])
+def admin_generate_code(request):
+    """
+    Endpoint administrativo para generar códigos de activación únicos (Kash / Transferencia / Manual)
+    y persistirlos atómicamente en la base de datos de Django para que el cliente pueda canjearlos.
+    """
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return Response({'success': False, 'message': 'No autorizado. Se requiere sesión de administrador.'}, status=403)
+
+    data = request.data
+    name = (data.get('name') or 'Cliente').strip()[:150]
+    phone = (data.get('phone') or '').strip()[:50]
+    lang = (data.get('lang') or 'ES').upper().strip()
+    if lang not in ('ES', 'EN', 'ALL'):
+        lang = 'ES'
+
+    with transaction.atomic():
+        # Generar código único con formato MAT-{LANG}-{CHUNK1}-{CHUNK2}
+        while True:
+            chunk1 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+            chunk2 = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+            code_str = f"MAT-{lang}-{chunk1}-{chunk2}"
+            if not ActivationCode.objects.filter(code=code_str).exists():
+                break
+
+        # Crear la venta digital asociada (método Kash / Manual)
+        tx_id = f"KASH-{uuid.uuid4().hex[:10].upper()}"
+        placeholder_email = f"{phone.replace(' ', '').replace('+', '')}@kash.com" if phone else f"cliente_{uuid.uuid4().hex[:6]}@aporte.com"
+
+        purchase = DigitalPurchase.objects.create(
+            transaction_id=tx_id,
+            buyer_email=placeholder_email,
+            amount=10.00,
+            currency='USD',
+            payment_method='kash',
+            status='completed'
+        )
+
+        activation = ActivationCode.objects.create(
+            purchase=purchase,
+            code=code_str
+        )
+
+        logger.info(f"Staff member {request.user.username} generated activation code {code_str} for {name} ({phone})")
+
+        return Response({
+            'success': True,
+            'code': code_str,
+            'transaction_id': tx_id,
+            'message': 'Código generado y registrado con éxito en la base de datos.'
+        })
+
+
+
 def submit_physical_order(request):
     if request.method == 'POST':
         raw_name = request.POST.get('name', '').strip()
@@ -331,10 +476,12 @@ def submit_contact(request):
             
             # Enviar correo de notificación al profesor
             resend.api_key = getattr(settings, 'RESEND_API_KEY', '')
+            from_email = getattr(settings, 'RESEND_FROM_EMAIL', 'onboarding@resend.dev')
+            admin_email = getattr(settings, 'ADMIN_EMAIL', 'bienvenidohernaldoa@gmail.com')
             try:
                 resend.Emails.send({
-                    "from": "onboarding@resend.dev",
-                    "to": "bienvenidohernaldoa@gmail.com",
+                    "from": f"Notificaciones Aporte Matemático <{from_email}>",
+                    "to": admin_email,
                     "reply_to": email,
                     "subject": f"Nuevo mensaje web: {subject}",
                     "html": f"""

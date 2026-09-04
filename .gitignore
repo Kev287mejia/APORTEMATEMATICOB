@@ -1,10 +1,30 @@
+# Environment variables & secrets
 .env
+.env.*
+
+# Python & Django caches
 __pycache__/
 *.pyc
-scratch/
-static/LIBROS/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Static compilation & SQLite DB
 staticfiles/
 *.sqlite3
 db.sqlite3
+
+# Development, scratch & test debris
+_dev/
+scratch/
+fix_*.py
 mockup_*.jpg
 
+# Editor / OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

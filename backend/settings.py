@@ -197,4 +197,17 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY", "")
+RESEND_FROM_EMAIL = os.environ.get("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "bienvenidohernaldoa@gmail.com")
+
+# ==============================================================================
+# PAYPAL CONFIGURATION (Server-Side Verification)
+# ==============================================================================
+PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "BAAp02jzkyLJ-o690kKBpq3MJeyUxUVVkEtRj4GMMosTCgWpEmSUAf3aqK6J6v3kuSByVqTKsRnk3P2cR4")
+PAYPAL_CLIENT_SECRET = os.environ.get("PAYPAL_CLIENT_SECRET", "")
+PAYPAL_MODE = os.environ.get("PAYPAL_MODE", "live").lower()  # 'live' o 'sandbox'
+
+# Reverse proxy SSL header (essential for Render, Railway, Vercel, Heroku, Nginx)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
