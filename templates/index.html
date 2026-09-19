@@ -10,7 +10,7 @@
   <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
   <meta property="og:type" content="book" />
   <meta property="og:title" content="Un Aporte Matemático en el Siglo 21" />
-  <meta property="og:description" content="Descubre la factorización de a^2+b^2 en los Números Reales. Un libro revelador de Kevin Mejia." />
+  <meta property="og:description" content="Descubre la factorización de a^2+b^2 en los Números Reales. Una obra inédita del Prof. Bienvenido Hernaldo Acevedo González." />
   <meta property="og:image" content="https://kev287mejia.github.io/APORTEMATEMATICOB/IMG-20240409-WA0001.jpg" />
   <meta property="og:url" content="https://kev287mejia.github.io/APORTEMATEMATICOB/index.html" />
   <meta property="og:locale" content="es_NI" />
@@ -18,7 +18,7 @@
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Un Aporte Matemático en el Siglo 21" />
-  <meta name="twitter:description" content="Descubre la factorización de a^2+b^2 en los Números Reales. Un libro revelador de Kevin Mejia." />
+  <meta name="twitter:description" content="Descubre la factorización de a^2+b^2 en los Números Reales. Una obra inédita del Prof. Bienvenido Hernaldo Acevedo González." />
   <meta name="twitter:image" content="https://kev287mejia.github.io/APORTEMATEMATICOB/IMG-20240409-WA0001.jpg" />
 
   <!-- Canonical URL -->
@@ -32,7 +32,7 @@
     "name": "Un Aporte Matemático en el Siglo 21",
     "author": {
       "@type": "Person",
-      "name": "Kevin Mejia"
+      "name": "Bienvenido Hernaldo Acevedo González"
     },
     "description": "Factorización de a^2+b^2, en los Números Reales (Spanish Edition)",
     "inLanguage": ["es", "en"],
@@ -152,7 +152,10 @@
                 <span>Comprar Libro Digital ($10 USD)</span>
               </button>
               <a href="#" onclick="openBookReader('es', 1); return false;" class="shortcode-button btn is-page-flip btn-normal is-wow fadeIn" id="btn-leer-libro" data-wow-delay="0.2s">
-                <span>Leer el libro</span>
+                <span>Leer en Español</span>
+              </a>
+              <a href="#" onclick="openBookReader('en', 1); return false;" class="shortcode-button btn is-page-flip btn-normal is-wow fadeIn" id="btn-leer-libro-en" data-wow-delay="0.25s">
+                <span>Read in English</span>
               </a>
             </div>
 
@@ -162,25 +165,17 @@
                 ¡Edición Digital Completa Desbloqueada!
               </div>
               <p style="font-family: var(--font-body); font-size: 0.85rem; color: #555; margin-bottom: 10px; line-height: 1.5;">
-                Lectura interactiva y protegida habilitada en la plataforma, o descargue los archivos PDF:
+                Lectura interactiva y protegida habilitada exclusivamente en la plataforma:
               </p>
               <div id="unlocked-es-links" style="display: flex; gap: 8px; flex-wrap: wrap;">
                 <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('es', 1);">
                   <span>Leer en Plataforma (ES)</span>
                 </button>
-                <a href="{% static 'LIBROS/Libro español.pdf' %}" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Descargar PDF (ES)</span>
-                </a>
               </div>
               <div id="unlocked-en-links" style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;">
                 <button type="button" class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem;" onclick="openBookReader('en', 1);">
                   <span>Read on Platform (EN)</span>
                 </button>
-                <a href="{% static 'LIBROS/Libro Ingles.pdf' %}" download class="shortcode-button btn btn-color" style="padding: 7px 16px; font-size: 0.75rem; background-color: #555; display: inline-flex; align-items: center;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                  <span>Download PDF (EN)</span>
-                </a>
               </div>
             </div>
           </div>
@@ -257,7 +252,7 @@
   <footer class="site-footer">
     <div class="overlay-pattern-6"></div>
     <div class="footer-inner">
-      <p>&copy; APORTE MATEMATICO 2026. ALL RIGHTS RESERVED | <a href="{% url 'admin:index' %}" class="footer-credit" title="Acceso al Panel Editorial">Acceso Editorial</a></p>
+      <p>&copy; APORTE MATEMATICO 2026. ALL RIGHTS RESERVED | MADE WITH LOVE BY <a href="#" class="footer-credit">EternalLabsNic</a></p>
     </div>
   </footer>
 
@@ -433,7 +428,7 @@
   <!-- SCRIPTS -->
   <script src="{% static 'assets_odrin/jquery.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
-  <script src="{% static 'script.js?v=2' %}"></script>
+  <script src="{% static 'script.js' %}?v=5"></script>
 
   <script>
     /* ---- Menú Hamburguesa Móvil ---- */

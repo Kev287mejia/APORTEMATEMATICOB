@@ -20,7 +20,8 @@ from django.core.exceptions import ValidationError
 from django.conf import settings
 
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from .models import DigitalPurchase, ActivationCode, PhysicalOrder, ContactMessage
@@ -61,6 +62,8 @@ def export_master_report_excel(request):
 
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def verify_purchase(request):
     raw_code = request.data.get('code', '')
     if not isinstance(raw_code, str):
@@ -73,8 +76,8 @@ def verify_purchase(request):
         return Response({'success': False, 'message': 'Código vacío o excede la longitud permitida.'}, status=400)
     
     # 1. Chequear si es un código de activación manual
-    try:
-        activation = ActivationCode.objects.get(code=code)
+    activation = ActivationCode.objects.filter(code__iexact=code).first()
+    if activation:
         if activation.is_used:
             return Response({'success': False, 'message': 'Este código ya ha sido utilizado.'}, status=400)
         
@@ -84,13 +87,10 @@ def verify_purchase(request):
         activation.save()
         logger.info(f"ActivationCode {code} successfully activated.")
         return Response({'success': True, 'message': 'Código activado con éxito.'})
-    except ActivationCode.DoesNotExist:
-        pass
     
     # 2. Chequear si es un ID de transacción de PayPal completado
-    try:
-        purchase = DigitalPurchase.objects.get(transaction_id=code, status='completed')
-        
+    purchase = DigitalPurchase.objects.filter(transaction_id__iexact=code, status='completed').first()
+    if purchase:
         if purchase.is_used:
             return Response({'success': False, 'message': 'Este ID de transacción ya fue utilizado en otro dispositivo.'}, status=400)
             
@@ -99,8 +99,8 @@ def verify_purchase(request):
         purchase.save()
         logger.info(f"DigitalPurchase {code} successfully verified.")
         return Response({'success': True, 'message': 'Compra verificada con éxito.'})
-    except DigitalPurchase.DoesNotExist:
-        return Response({'success': False, 'message': 'Código o transacción inválidos.'}, status=404)
+
+    return Response({'success': False, 'message': 'Código o transacción inválidos.'}, status=404)
 
 
 def verify_paypal_order(order_id):
@@ -182,6 +182,8 @@ def verify_paypal_order(order_id):
 
 
 @api_view(['POST'])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def save_paypal_purchase(request):
     data = request.data
     transaction_id = data.get('id')

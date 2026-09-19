@@ -270,23 +270,43 @@ function updateUnlockUI() {
 //  Sin la clave secreta del generador, es imposible fabricar
 //  un código válido aunque se conozca el formato.
 // =====================================================
+function getCsrfToken() {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.substring(0, 10) === 'csrftoken=') {
+        cookieValue = decodeURIComponent(cookie.substring(10));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 async function isValidActivationCode(code) {
-  if (!code) return false;
+  if (!code) return { success: false, message: 'Ingresa un código válido.' };
   var c = code.trim().toUpperCase();
 
   try {
+    var csrf = getCsrfToken();
+    var headers = { 'Content-Type': 'application/json' };
+    if (csrf) headers['X-CSRFToken'] = csrf;
+
     var response = await fetch('/api/verify-purchase/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
       body: JSON.stringify({ code: c })
     });
     var data = await response.json();
-    return data.success === true;
+    return {
+      success: data.success === true,
+      message: data.message || (data.detail ? data.detail : 'El código ingresado no es válido.')
+    };
   } catch (e) {
     console.error("Error validando el código con el servidor:", e);
-    return false;
+    return { success: false, message: 'Error de conexión con el servidor. Intenta de nuevo.' };
   }
 }
 
@@ -298,8 +318,8 @@ function restorePurchasePrompt() {
     function(code) {
       if (code && code.trim().length > 0) {
         var cleanCode = code.trim().toUpperCase();
-        isValidActivationCode(cleanCode).then(function(valid) {
-          if (valid) {
+        isValidActivationCode(cleanCode).then(function(result) {
+          if (result && result.success) {
             var langUnlocked = 'all';
             if (cleanCode.indexOf('MAT-ES-') === 0) langUnlocked = 'es';
             else if (cleanCode.indexOf('MAT-EN-') === 0) langUnlocked = 'en';
@@ -310,7 +330,7 @@ function restorePurchasePrompt() {
               date: new Date().toISOString()
             }, langUnlocked);
           } else {
-            showGlobalAlert('Código Inválido', 'El código ingresado no es válido. Por favor verifica que esté bien escrito o contáctanos por WhatsApp.');
+            showGlobalAlert('Código Inválido', (result && result.message) ? result.message : 'El código ingresado no es válido. Por favor verifica que esté bien escrito o contáctanos por WhatsApp.');
           }
         });
       }
@@ -381,11 +401,13 @@ function initPayPalButtons() {
           window.open(waUrl, '_blank');
 
           // Guardar compra en la base de datos de Django
+          var csrf = getCsrfToken();
+          var saveHeaders = { 'Content-Type': 'application/json' };
+          if (csrf) saveHeaders['X-CSRFToken'] = csrf;
+
           fetch('/api/save-paypal-purchase/', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
+            headers: saveHeaders,
             body: JSON.stringify({
               id: details.id,
               payerEmail: payerEmail,
@@ -449,7 +471,7 @@ var currentBookLang = 'es';
 var isFlipping = false;
 
 function getPageFolder(lang) {
-  return (lang === 'en') ? 'LIBROS/paginas_en' : 'LIBROS/paginas_es';
+  return (lang === 'en') ? '/static/LIBROS/paginas_en' : '/static/LIBROS/paginas_es';
 }
 
 function updatePageCounter(pageNum) {
@@ -468,15 +490,35 @@ function checkDRM(pageNum) {
 }
 
 var pageFlipInstance = null;
+var currentLoadedLang = null;
 
 function initOrUpdatePageFlip(lang) {
-  var bookEl = document.getElementById('stPageFlipBook');
-  if (!bookEl) return;
+  var viewport = document.getElementById('flipViewport');
+  if (!viewport) return;
   
   if (pageFlipInstance) {
-    pageFlipInstance.destroy();
+    try {
+      pageFlipInstance.destroy();
+    } catch (e) {
+      console.warn("Error destruyendo instancia previa de PageFlip:", e);
+    }
     pageFlipInstance = null;
   }
+  
+  // St.PageFlip.destroy() remueve el elemento block del DOM. Lo recreamos si no existe:
+  var bookEl = document.getElementById('stPageFlipBook');
+  if (!bookEl) {
+    bookEl = document.createElement('div');
+    bookEl.id = 'stPageFlipBook';
+    var counter = document.getElementById('flipPageCounter');
+    if (counter) {
+      viewport.insertBefore(bookEl, counter);
+    } else {
+      viewport.appendChild(bookEl);
+    }
+  }
+  
+  currentLoadedLang = lang;
   
   var folder = getPageFolder(lang);
   var html = '';
@@ -504,7 +546,7 @@ function initOrUpdatePageFlip(lang) {
     swipeDistance: 30
   });
 
-  pageFlipInstance.loadFromHTML(document.querySelectorAll('.st-page'));
+  pageFlipInstance.loadFromHTML(bookEl.querySelectorAll('.st-page'));
 
   pageFlipInstance.on('flip', function(e) {
     var newPage = e.data + 1; // e.data is 0-indexed
@@ -514,7 +556,9 @@ function initOrUpdatePageFlip(lang) {
     
     if (newPage > SAMPLE_LIMIT && !isDigitalBookPurchased(currentBookLang)) {
       checkDRM(newPage);
-      setTimeout(function() { pageFlipInstance.flip(SAMPLE_LIMIT - 1); }, 10);
+      setTimeout(function() { 
+        if (pageFlipInstance) pageFlipInstance.flip(SAMPLE_LIMIT - 1); 
+      }, 10);
     } else {
       checkDRM(newPage);
     }
@@ -523,10 +567,16 @@ function initOrUpdatePageFlip(lang) {
 
 function showPageInstant(pageNum, lang) {
   currentBookPage = pageNum;
-  if (!pageFlipInstance) {
+  if (!pageFlipInstance || currentLoadedLang !== lang) {
     initOrUpdatePageFlip(lang);
   }
-  pageFlipInstance.flip(pageNum - 1);
+  if (pageFlipInstance) {
+    if (typeof pageFlipInstance.turnToPage === 'function') {
+      pageFlipInstance.turnToPage(pageNum - 1);
+    } else {
+      pageFlipInstance.flip(pageNum - 1);
+    }
+  }
   updatePageCounter(pageNum);
   syncTOC(pageNum);
   checkDRM(pageNum);
@@ -556,8 +606,22 @@ function switchBookLang(lang) {
     btnEs.classList.toggle('active', currentBookLang === 'es');
     btnEn.classList.toggle('active', currentBookLang === 'en');
   }
+  
   initOrUpdatePageFlip(currentBookLang);
-  pageFlipInstance.flip(currentBookPage - 1);
+  
+  var targetPage = currentBookPage || 1;
+  setTimeout(function() {
+    if (pageFlipInstance) {
+      if (typeof pageFlipInstance.turnToPage === 'function') {
+        pageFlipInstance.turnToPage(targetPage - 1);
+      } else {
+        pageFlipInstance.flip(targetPage - 1);
+      }
+      updatePageCounter(targetPage);
+      syncTOC(targetPage);
+      checkDRM(targetPage);
+    }
+  }, 50);
 }
 
 function openBookReader(lang, page) {
@@ -581,14 +645,22 @@ function openBookReader(lang, page) {
   var startPage = page ? parseInt(page, 10) : currentBookPage;
   if (isNaN(startPage) || startPage < 1) startPage = 1;
   
-  if (!pageFlipInstance) {
+  if (!pageFlipInstance || currentLoadedLang !== currentBookLang) {
     initOrUpdatePageFlip(currentBookLang);
   }
   
-  pageFlipInstance.flip(startPage - 1);
-  updatePageCounter(startPage);
-  syncTOC(startPage);
-  checkDRM(startPage);
+  setTimeout(function() {
+    if (pageFlipInstance) {
+      if (typeof pageFlipInstance.turnToPage === 'function') {
+        pageFlipInstance.turnToPage(startPage - 1);
+      } else {
+        pageFlipInstance.flip(startPage - 1);
+      }
+      updatePageCounter(startPage);
+      syncTOC(startPage);
+      checkDRM(startPage);
+    }
+  }, 50);
 }
 
 function closeBookReader() {
