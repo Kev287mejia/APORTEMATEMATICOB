@@ -474,9 +474,94 @@ function getPageFolder(lang) {
   return (lang === 'en') ? '/static/LIBROS/paginas_en' : '/static/LIBROS/paginas_es';
 }
 
+var TOC_DATA = {
+  es: {
+    title: 'Índice de Capítulos (168 Págs)',
+    menuBtn: 'Índice',
+    menuBtnTitle: 'Ver Índice',
+    backBtn: 'Volver al Inicio',
+    badge: 'Edición Completa Desbloqueada',
+    prevTitle: 'Página Anterior',
+    nextTitle: 'Página Siguiente',
+    closeTitle: 'Cerrar lector',
+    chapters: [
+      { page: 1, title: 'Pág 1: Portada' },
+      { page: 7, title: 'Pág 7: Resumen de la Obra' },
+      { page: 11, title: 'Pág 11: Cap. I - Algo que se dice de las Matemáticas' },
+      { page: 27, title: 'Pág 27: Cap. II - Vida y Obra de Pitágoras' },
+      { page: 43, title: 'Pág 43: Cap. III - Teorema de Pitágoras' },
+      { page: 57, title: 'Pág 57: Cap. IV - Conceptos Geométricos' },
+      { page: 75, title: 'Pág 75: Cap. V - Suma de Dos Cuadrados' },
+      { page: 93, title: 'Pág 93: Cap. VI - Fórmulas Bienve1 y Bienve2' },
+      { page: 115, title: 'Pág 115: Cap. VII - Ejemplos de Factorización' },
+      { page: 147, title: 'Pág 147: Cap. VIII - Conclusiones y Legado' },
+      { page: 165, title: 'Pág 165: Bibliografía y Contraportada' }
+    ]
+  },
+  en: {
+    title: 'Table of Contents (168 Pages)',
+    menuBtn: 'Contents',
+    menuBtnTitle: 'View Contents',
+    backBtn: 'Back to Home',
+    badge: 'Full Edition Unlocked',
+    prevTitle: 'Previous Page',
+    nextTitle: 'Next Page',
+    closeTitle: 'Close reader',
+    chapters: [
+      { page: 1, title: 'Page 1: Cover' },
+      { page: 7, title: 'Page 7: Summary of the Work' },
+      { page: 11, title: 'Page 11: Ch. I - Something Said About Mathematics' },
+      { page: 27, title: 'Page 27: Ch. II - Life and Work of Pythagoras' },
+      { page: 43, title: 'Page 43: Ch. III - Pythagorean Theorem' },
+      { page: 57, title: 'Page 57: Ch. IV - Geometric Concepts' },
+      { page: 75, title: 'Page 75: Ch. V - Sum of Two Squares' },
+      { page: 93, title: 'Page 93: Ch. VI - Formulas Bienve1 and Bienve2' },
+      { page: 115, title: 'Page 115: Ch. VII - Factorization Examples' },
+      { page: 147, title: 'Page 147: Ch. VIII - Conclusions and Legacy' },
+      { page: 165, title: 'Page 165: Bibliography and Back Cover' }
+    ]
+  }
+};
+
+function renderTOC(lang) {
+  var l = (lang === 'en') ? 'en' : 'es';
+  var data = TOC_DATA[l];
+  if (!data) return;
+  
+  var titleEl = document.getElementById('tocTitle');
+  if (titleEl) titleEl.textContent = data.title;
+  
+  var menuBtnText = document.getElementById('tocMenuBtnText');
+  if (menuBtnText) menuBtnText.textContent = data.menuBtn;
+  var tblcontents = document.getElementById('tblcontents');
+  if (tblcontents) tblcontents.title = data.menuBtnTitle;
+
+  var backBtnText = document.getElementById('readerBackBtnText');
+  if (backBtnText) backBtnText.textContent = data.backBtn;
+
+  var badge = document.getElementById('unlockedBadge');
+  if (badge && badge.classList.contains('show')) badge.textContent = data.badge;
+
+  var prevBtn = document.getElementById('bb-nav-prev');
+  if (prevBtn) prevBtn.title = data.prevTitle;
+  var nextBtn = document.getElementById('bb-nav-next');
+  if (nextBtn) nextBtn.title = data.nextTitle;
+
+  var ul = document.getElementById('menu-toc');
+  if (ul) {
+    var html = '';
+    data.chapters.forEach(function(ch) {
+      html += '<li><a href="#item' + ch.page + '" onclick="goToBookPage(' + ch.page + '); return false;">' + ch.title + '</a></li>';
+    });
+    ul.innerHTML = html;
+  }
+  syncTOC(currentBookPage);
+}
+
 function updatePageCounter(pageNum) {
   var el = document.getElementById('flipPageCounter');
-  if (el) el.textContent = 'Página ' + pageNum + ' / ' + TOTAL_BOOK_PAGES;
+  var prefix = (currentBookLang === 'en') ? 'Page ' : 'Página ';
+  if (el) el.textContent = prefix + pageNum + ' / ' + TOTAL_BOOK_PAGES;
 }
 
 function checkDRM(pageNum) {
@@ -607,6 +692,7 @@ function switchBookLang(lang) {
     btnEn.classList.toggle('active', currentBookLang === 'en');
   }
   
+  renderTOC(currentBookLang);
   initOrUpdatePageFlip(currentBookLang);
   
   var targetPage = currentBookPage || 1;
@@ -641,6 +727,8 @@ function openBookReader(lang, page) {
       btnEn.classList.toggle('active', currentBookLang === 'en');
     }
   }
+
+  renderTOC(currentBookLang);
 
   var startPage = page ? parseInt(page, 10) : currentBookPage;
   if (isNaN(startPage) || startPage < 1) startPage = 1;
@@ -713,6 +801,7 @@ document.addEventListener('keydown', function(e) {
 document.addEventListener('DOMContentLoaded', function() {
   initScrollAnimations();
   updateUnlockUI();
+  renderTOC(currentBookLang);
 
   // Auto-open reader if URL contains read-book (identical to https://aportematematico.com/?&read-book=9)
   if (window.location.search.indexOf('read-book') !== -1) {

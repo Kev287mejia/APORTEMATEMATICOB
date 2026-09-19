@@ -350,12 +350,12 @@
     <!-- Top Bar with Mode Switcher -->
     <div class="reader-top-bar">
       <div style="display:flex; align-items:center; gap:15px;">
-        <span onclick="closeBookReader()" title="Volver al Inicio" style="background: #c17a4d; color: #1c1a17; padding: 6px 12px; border-radius: 4px; font-family: 'Josefin Sans', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-          <span>Volver al Inicio</span>
+        <span onclick="closeBookReader()" id="readerBackBtn" title="Volver al Inicio" style="background: #c17a4d; color: #1c1a17; padding: 6px 12px; border-radius: 4px; font-family: 'Josefin Sans', sans-serif; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+          <span id="readerBackBtnText">Volver al Inicio</span>
         </span>
         <span id="tblcontents" class="menu-button" onclick="toggleBookMenu()" title="Ver Índice" style="position: relative; left: 0; top: 0;">
           <i class="icon-menu">&#9776;</i>
-          <span>&Iacute;ndice</span>
+          <span id="tocMenuBtnText">&Iacute;ndice</span>
         </span>
       </div>
 
@@ -380,7 +380,7 @@
 
     <!-- TOC Menu Panel (slides from left) -->
     <div class="menu-panel" id="menu-panel">
-      <h3>Índice de Capítulos (168 Págs)</h3>
+      <h3 id="tocTitle">Índice de Capítulos (168 Págs)</h3>
       <ul id="menu-toc" class="menu-toc">
         <li class="menu-toc-current"><a href="#item1" onclick="goToBookPage(1); return false;">Pág 1: Portada</a></li>
         <li><a href="#item7" onclick="goToBookPage(7); return false;">Pág 7: Resumen de la Obra</a></li>
@@ -428,7 +428,7 @@
   <!-- SCRIPTS -->
   <script src="{% static 'assets_odrin/jquery.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
-  <script src="{% static 'script.js' %}?v=5"></script>
+  <script src="{% static 'script.js' %}?v=6"></script>
 
   <script>
     /* ---- Menú Hamburguesa Móvil ---- */
